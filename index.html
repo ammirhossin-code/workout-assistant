@@ -8,43 +8,56 @@
         :root {
             --bg-color: #f4f7f6; --card-bg: #ffffff; --text-main: #2c3e50; --text-sec: #7f8c8d;
             --primary: #2980b9; --primary-light: #d6eaf8; --success: #27ae60;
-            --warning: #f39c12; --danger: #e74c3c; --purple: #8e44ad; --border: #ecf0f1;
+            --warning: #f39c12; --danger: #e74c3c; --border: #ecf0f1;
         }
         body.dark-mode {
-            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #ecf0f1;
-            --text-sec: #bdc3c7; --primary: #3498db; --primary-light: #2c3e50; --border: #333;
+            --bg-color: #121212; --card-bg: #1a1a1a; --text-main: #e0e0e0;
+            --text-sec: #95a5a6; --primary: #3498db; --primary-light: #212f3d; --border: #2c2c2c;
         }
-        body { font-family: Tahoma, Arial, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; text-align: center; }
+        body { font-family: Tahoma, Arial, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; text-align: center; transition: background 0.3s, color 0.3s; }
         .hidden { display: none !important; }
         .card { background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--border); }
         h2 { color: var(--primary); font-size: 1.4rem; margin: 10px 0; font-weight: bold; }
         
         .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.2rem; padding: 8px 12px; border-radius: 10px; cursor: pointer; color: var(--text-main); }
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.1rem; padding: 8px 12px; border-radius: 10px; cursor: pointer; color: var(--text-main); }
 
         button { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        /* حالت تاریک ملایم و خوانا بدون تضاد زننده */
+        body.dark-mode button { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
+        body.dark-mode button.legs { background: #3d2d14; border-color: #5c431d; color: #f39c12; }
+        body.dark-mode button.cardio { background: #3d1a1a; border-color: #5c2626; color: #e74c3c; }
+        body.dark-mode button.walk { background: #143d22; border-color: #1e5c33; color: #2ecc71; }
+        
         button.legs { background: #f39c12; }
         button.cardio { background: #e74c3c; }
         button.walk { background: var(--card-bg); color: var(--success); border: 2px solid var(--success); }
         button.alt { background: var(--text-sec); padding: 12px; margin-top: 15px; }
         button.outline { background: transparent; color: var(--text-sec); border: 2px solid var(--border); box-shadow: none; }
-        
-        /* تقویم هفتگی هوشمند */
-        .week-grid { display: flex; justify-content: space-between; gap: 5px; margin-top: 10px; }
-        .day-col { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
+        body.dark-mode button.outline { color: #a0a0a0; border-color: #444; }
+
+        /* تقویم هفتگی با نقطه‌های رنگی تفکیک شده */
+        .week-grid { display: flex; justify-content: space-between; gap: 4px; margin-top: 10px; }
+        .day-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
         .day-name { font-size: 0.8rem; color: var(--text-sec); font-weight: bold; }
-        .day-circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--bg-color); color: var(--text-sec); transition: all 0.3s; }
+        .day-box { width: 100%; height: 48px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); gap: 3px; padding: 2px; }
+        .dots-container { display: flex; gap: 3px; justify-content: center; align-items: center; min-height: 10px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
         
-        /* استایل تایمر و فونت‌های بزرگ */
-        .timer { font-size: 5rem; font-weight: bold; color: var(--success); margin: 15px 0; font-family: monospace;}
-        .reps-display { font-size: 4.5rem; font-weight: bold; color: var(--primary); margin: 15px 0; }
+        .timer { font-size: 4.5rem; font-weight: bold; color: var(--success); margin: 15px 0; font-family: monospace;}
+        .reps-display { font-size: 4rem; font-weight: bold; color: var(--primary); margin: 15px 0; }
         .instruction { font-size: 1.1rem; line-height: 1.6; padding: 12px; background: var(--bg-color); border-radius: 10px; border: 1px solid var(--border); text-align: justify; }
+        body.dark-mode .instruction { background: #121212; border-color: #333; }
         
-        .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 6px 15px; border-radius: 15px; font-size: 1rem; font-weight: bold; margin-bottom: 10px; }
+        .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 6px 15px; border-radius: 15px; font-size: 1rem; font-weight: bold; margin-bottom: 5px; }
+        body.dark-mode .badge { background: #1b365d; color: #61b0ff; }
         
+        .en-subtitle { font-size: 0.95rem; color: var(--text-sec); margin-bottom: 10px; direction: ltr; font-weight: bold; }
+
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 1rem; font-weight: bold; }
-        .settings-row input[type="number"] { width: 50px; padding: 5px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; }
-        .settings-row input[type="checkbox"] { width: 22px; height: 22px; }
+        .settings-row input[type="number"] { width: 55px; padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; }
+        .settings-row input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -54,20 +67,20 @@
     <div class="header-bar">
         <button class="icon-btn" onclick="openSettings()">⚙️ تنظیمات</button>
         <h2>دستیار تمرین ساسان</h2>
-        <div style="width: 70px;"></div>
+        <div style="width: 60px;"></div>
     </div>
 
-    <!-- تقویم هفتگی -->
+    <!-- تقویم هفتگی پیشرفته -->
     <div class="card">
         <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 5px;">📊 وضعیت تمرینات این هفته</div>
         <div class="week-grid">
-            <div class="day-col"><span class="day-name">ش</span><div class="day-circle" id="day-0"></div></div>
-            <div class="day-col"><span class="day-name">ی</span><div class="day-circle" id="day-1"></div></div>
-            <div class="day-col"><span class="day-name">د</span><div class="day-circle" id="day-2"></div></div>
-            <div class="day-col"><span class="day-name">س</span><div class="day-circle" id="day-3"></div></div>
-            <div class="day-col"><span class="day-name">چ</span><div class="day-circle" id="day-4"></div></div>
-            <div class="day-col"><span class="day-name">پ</span><div class="day-circle" id="day-5"></div></div>
-            <div class="day-col"><span class="day-name">ج</span><div class="day-circle" id="day-6"></div></div>
+            <div class="day-col"><span class="day-name">ش</span><div class="day-box"><span style="font-size:0.7rem">ش</span><div class="dots-container" id="dots-0"></div></div></div>
+            <div class="day-col"><span class="day-name">ی</span><div class="day-box"><span style="font-size:0.7rem">ی</span><div class="dots-container" id="dots-1"></div></div></div>
+            <div class="day-col"><span class="day-name">د</span><div class="day-box"><span style="font-size:0.7rem">د</span><div class="dots-container" id="dots-2"></div></div></div>
+            <div class="day-col"><span class="day-name">س</span><div class="day-box"><span style="font-size:0.7rem">س</span><div class="dots-container" id="dots-3"></div></div></div>
+            <div class="day-col"><span class="day-name">چ</span><div class="day-box"><span style="font-size:0.7rem">چ</span><div class="dots-container" id="dots-4"></div></div></div>
+            <div class="day-col"><span class="day-name">پ</span><div class="day-box"><span style="font-size:0.7rem">پ</span><div class="dots-container" id="dots-5"></div></div></div>
+            <div class="day-col"><span class="day-name">ج</span><div class="day-box"><span style="font-size:0.7rem">ج</span><div class="dots-container" id="dots-6"></div></div></div>
         </div>
     </div>
 
@@ -82,17 +95,17 @@
 <!-- مودال پیاده‌روی -->
 <div id="modal-walk" class="card hidden" style="position: fixed; top: 20%; left: 5%; right: 5%; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
     <h3 style="font-size: 1.3rem;">انتخاب فعالیت امروز 🎯</h3>
-    <button style="background: var(--success);" onclick="recordActivity('تکمیل ۵۰۰۰ قدم', '🚶‍♂️', 'walk')"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
-    <button style="background: var(--success);" onclick="recordActivity('کوه صفه', '⛰️', 'walk')"><span>⛰️</span> هایکینگ کوه صفه</button>
+    <button style="background: var(--success); color: white;" onclick="recordActivity('تکمیل ۵۰۰۰ قدم', '🚶‍♂️', 'walk')"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
+    <button style="background: var(--success); color: white;" onclick="recordActivity('کوه صفه', '⛰️', 'walk')"><span>⛰️</span> هایکینگ کوه صفه</button>
     <button class="outline" onclick="closeWalkModal()">انصراف</button>
 </div>
 
-<!-- صفحه تنظیمات -->
+<!-- تنظیمات -->
 <div id="settings-screen" class="hidden">
     <h2 style="font-size: 1.5rem;">تنظیمات برنامه</h2>
     <div class="card">
         <div class="settings-row">
-            <span>حالت شب (تاریک) 🌙</span>
+            <span>حالت شب (تاریک ملایم) 🌙</span>
             <input type="checkbox" id="chk-dark" onchange="toggleDark()">
         </div>
         <div class="settings-row">
@@ -116,16 +129,15 @@
     <div class="badge" id="badge-info">ست ۱ از ۳</div>
     <div class="badge hidden" id="badge-side" style="background:#fff3cd; color:#856404;">سمت چپ ⬅️</div>
     
-    <h3 id="ex-title" style="color: var(--primary); font-size: 1.6rem; margin: 10px 0;">نام تمرین</h3>
+    <h3 id="ex-title" style="color: var(--primary); font-size: 1.5rem; margin: 5px 0;">نام تمرین</h3>
+    <div id="ex-en" class="en-subtitle">Exercise Name</div>
     <div id="ex-desc" class="instruction">توضیحات تمرین...</div>
     
     <div class="card" style="margin-top: 15px;">
         <h4 id="phase-title" style="font-size: 1.3rem; color: var(--text-sec); margin: 5px 0;">آماده‌سازی</h4>
-        
-        <!-- جایگاه نمایش تایمر یا تکرار -->
         <div id="timer-display" class="timer">5</div>
         
-        <button id="btn-done" class="hidden" onclick="nextStep()" style="background: var(--success);">انجام شد ✔️</button>
+        <button id="btn-done" class="hidden" onclick="nextStep()" style="background: var(--success); color: white;">انجام شد ✔️</button>
         <button id="btn-skip" class="outline" onclick="nextStep()">رد کردن مرحله ⏭️</button>
     </div>
     
@@ -133,36 +145,45 @@
 </div>
 
 <script>
-    function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
-    function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
+    function safeGet(key) {
+        try { return localStorage.getItem(key); } catch(e) { return null; }
+    }
+    function safeSet(key, val) {
+        try { localStorage.setItem(key, val); } catch(e) {}
+    }
 
     window.onload = function() {
-        if(safeGet('dark') === '1') {
-            document.body.classList.add('dark-mode');
-            let chk = document.getElementById('chk-dark');
-            if(chk) chk.checked = true;
-        }
-        if(safeGet('sound') === '0') {
-            let sChk = document.getElementById('chk-sound');
-            if(sChk) sChk.checked = false;
-        }
-        updateCalendarUI();
+        try {
+            if(safeGet('dark') === '1') {
+                document.body.classList.add('dark-mode');
+                let chk = document.getElementById('chk-dark');
+                if(chk) chk.checked = true;
+            }
+            if(safeGet('sound') === '0') {
+                let sChk = document.getElementById('chk-sound');
+                if(sChk) sChk.checked = false;
+            }
+            updateCalendarUI();
+        } catch(e) {}
     };
 
     function toggleDark() {
-        if(document.getElementById('chk-dark').checked) {
-            document.body.classList.add('dark-mode'); safeSet('dark', '1');
+        let chk = document.getElementById('chk-dark');
+        if(chk && chk.checked) {
+            document.body.classList.add('dark-mode');
+            safeSet('dark', '1');
         } else {
-            document.body.classList.remove('dark-mode'); safeSet('dark', '0');
+            document.body.classList.remove('dark-mode');
+            safeSet('dark', '0');
         }
     }
     
     function toggleSound() {
-        if(document.getElementById('chk-sound').checked) safeSet('sound', '1');
+        let sChk = document.getElementById('chk-sound');
+        if(sChk && sChk.checked) safeSet('sound', '1');
         else safeSet('sound', '0');
     }
 
-    // پخش صدای ایمن بدون مسدود شدن برنامه
     let audioCtx = null;
     function playBeep(freq = 600, duration = 0.2) {
         if(safeGet('sound') === '0') return;
@@ -175,72 +196,68 @@
             let gainNode = audioCtx.createGain();
             osc.type = "sine";
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); // صدای ملایم
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
             osc.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + duration);
-        } catch(e) {
-            // اگر مرورگر یا فیلترشکن صدا را مسدود کرد، خطا اینجا بلعیده میشود و برنامه کرش نمیکند
-            console.log("Audio blocked"); 
-        }
+        } catch(e) {}
     }
 
+    const dotColors = {
+        spine: '#2980b9', 
+        legs: '#f39c12',  
+        cardio: '#e74c3c',
+        walk: '#27ae60'   
+    };
+
     function updateCalendarUI() {
-        for(let i=0; i<=6; i++) {
-            let data = safeGet('day_' + i);
-            let el = document.getElementById('day-' + i);
-            if(el) {
-                el.innerText = ''; // پاک کردن محتوای قبلی
-                el.style.background = 'var(--bg-color)';
-                el.style.borderColor = 'var(--border)';
-                
-                if(data) {
-                    let types = data.split(',').filter(x => x);
-                    if(types.length > 1) {
-                        // روز با چند تمرین مختلف
-                        el.style.background = "linear-gradient(135deg, #f1c40f, #e74c3c)";
-                        el.style.borderColor = "transparent";
-                        el.innerText = '🌟';
-                    } else {
-                        // روز با یک نوع تمرین
-                        let t = types[0];
-                        if(t === 'spine') { el.style.background = 'var(--primary)'; el.innerText = '🧘‍♂️'; el.style.color='white'; }
-                        if(t === 'legs') { el.style.background = '#f39c12'; el.innerText = '🦵'; }
-                        if(t === 'cardio') { el.style.background = 'var(--danger)'; el.innerText = '🔥'; el.style.color='white';}
-                        if(t === 'walk') { el.style.background = 'var(--success)'; el.innerText = '⛰️'; }
-                        el.style.borderColor = 'transparent';
+        try {
+            for(let i=0; i<=6; i++) {
+                let data = safeGet('day_' + i);
+                let dotsContainer = document.getElementById('dots-' + i);
+                if(dotsContainer) {
+                    dotsContainer.innerHTML = '';
+                    if(data) {
+                        let types = data.split(',').filter(x => x);
+                        types.forEach(t => {
+                            let dot = document.createElement('span');
+                            dot.className = 'dot';
+                            dot.style.backgroundColor = dotColors[t] || '#95a5a6';
+                            dotsContainer.appendChild(dot);
+                        });
                     }
                 }
             }
-        }
+        } catch(e) {}
     }
 
     function markTodayDone(type) {
-        let dayIdx = new Date().getDay();
-        let targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
-        let existingData = safeGet('day_' + targetDay) || "";
-        
-        // جلوگیری از ثبت تکراری یک نوع تمرین در یک روز
-        if(!existingData.includes(type)) {
-            safeSet('day_' + targetDay, existingData + type + ",");
-        }
-        updateCalendarUI();
+        try {
+            let dayIdx = new Date().getDay();
+            let targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
+            let existingData = safeGet('day_' + targetDay) || "";
+            if(!existingData.includes(type)) {
+                safeSet('day_' + targetDay, existingData + type + ",");
+            }
+            updateCalendarUI();
+        } catch(e) {}
     }
 
     const routines = {
         spine: [
-            { title: "چرخش لگن روی زمین", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین.", type: "reps", val: "۱۲", sets: 3 },
-            { title: "گربه-گاو آرام", desc: "چهار دست و پا. تمرکز روی مهره‌های کمر.", type: "reps", val: "۱۵", sets: 3 },
-            { title: "پلانک جانبی", desc: "بدن در یک خط صاف روی آرنج.", type: "time", time: 30, sets: 3, bilateral: true }
+            { title: "چرخش لگن روی زمین", en: "Pelvic Tilt", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین.", type: "reps", val: "۱۲", sets: 3 },
+            { title: "گربه-گاو آرام", en: "Slow Cat-Cow", desc: "چهار دست و پا. تمرکز روی مهره‌های کمر.", type: "reps", val: "۱۵", sets: 3 },
+            { title: "پلانک جانبی", en: "Side Plank", desc: "بدن در یک خط صاف روی آرنج.", type: "time", time: 30, sets: 3, bilateral: true },
+            { title: "آویزان شدن از بارفیکس", en: "Dead Hang", desc: "آویزان شدن ریلکس از بارفیکس برای کشش مهره‌ها.", type: "time", time: 30, sets: 3 }
         ],
         legs: [
-            { title: "اسکات روی صندلی", desc: "نشستن کنترل‌شده روی لبه صندلی.", type: "reps", val: "۱۵", sets: 3 },
-            { title: "لانژ رو به جلو", desc: "زانوی عقب نزدیک زمین.", type: "reps", val: "۱۰", sets: 3, bilateral: true }
+            { title: "اسکات روی صندلی", en: "Box Squat", desc: "نشستن کنترل‌شده روی لبه صندلی.", type: "reps", val: "۱۵", sets: 3 },
+            { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "زانوی عقب نزدیک زمین.", type: "reps", val: "10", sets: 3, bilateral: true }
         ],
         cardio: [
-            { title: "درجا زدن ایستاده", desc: "سینه صاف، زانوها بالا.", type: "time", time: 40, sets: 1, customBadge: "راند کاردیو" },
-            { title: "پروانه بدون پرش", desc: "سرعت بالا بدون پرش.", type: "time", time: 40, sets: 1, customBadge: "راند کاردیو" }
+            { title: "درجا زدن ایستاده", en: "Standing March", desc: "سینه صاف، زانوها بالا.", type: "time", time: 40, sets: 1, customBadge: "راند کاردیو" },
+            { title: "پروانه بدون پرش", en: "Step-Jacks", desc: "سرعت بالا بدون پرش.", type: "time", time: 40, sets: 1, customBadge: "راند کاردیو" }
         ]
     };
 
@@ -268,9 +285,7 @@
     }
 
     function startWorkout(type) {
-        // فعال کردن اولیه صدا با کلیک کاربر برای اجازه مرورگر
         playBeep(0, 0.01); 
-        
         currentWorkoutType = type;
         activeRoutine = routines[type];
         exIndex = 0; currentSet = 1; currentSide = 'left';
@@ -291,12 +306,13 @@
     function loadEx() {
         if (exIndex >= activeRoutine.length) {
             markTodayDone(currentWorkoutType);
-            playBeep(1000, 0.5); // صدای پایان
+            playBeep(1000, 0.5);
             setTimeout(() => { alert("🏆 عالی بود! تمرین امروز با موفقیت ثبت شد."); goHome(); }, 300);
             return;
         }
         let ex = activeRoutine[exIndex];
         document.getElementById('ex-title').innerText = ex.title;
+        document.getElementById('ex-en').innerText = ex.en;
         document.getElementById('ex-desc').innerText = ex.desc;
         
         let badgeInfo = document.getElementById('badge-info');
@@ -310,7 +326,8 @@
             sideBadge.classList.add('hidden');
         }
 
-        let prepVal = parseInt(document.getElementById('inp-prep').value) || 5;
+        let prepInput = document.getElementById('inp-prep');
+        let prepVal = prepInput ? (parseInt(prepInput.value) || 5) : 5;
         startPhase('prep', prepVal);
     }
 
@@ -325,42 +342,48 @@
         let btnSkip = document.getElementById('btn-skip');
 
         if (phase === 'prep') {
-            phaseTitle.innerText = "آماده‌سازی...";
-            display.className = "timer";
-            display.style.color = "var(--warning)";
-            display.innerText = timeLeft;
-            btnDone.classList.add('hidden');
-            btnSkip.classList.remove('hidden');
+            if(phaseTitle) phaseTitle.innerText = "آماده‌سازی...";
+            if(display) {
+                display.className = "timer";
+                display.style.color = "var(--warning)";
+                display.innerText = timeLeft;
+            }
+            if(btnDone) btnDone.classList.add('hidden');
+            if(btnSkip) btnSkip.classList.remove('hidden');
             runClock();
             playBeep(500, 0.1);
         } else if (phase === 'work') {
-            phaseTitle.innerText = "🔥 در حال اجرا";
+            if(phaseTitle) phaseTitle.innerText = "🔥 در حال اجرا";
             let ex = activeRoutine[exIndex];
             
             if (ex.type === 'reps') {
-                // نمایش بزرگ تعداد تکرار
-                display.className = "reps-display";
-                display.innerText = ex.val + " تکرار";
-                
-                btnDone.classList.remove('hidden');
-                btnSkip.classList.add('hidden');
+                if(display) {
+                    display.className = "reps-display";
+                    display.innerText = ex.val + " تکرار";
+                }
+                if(btnDone) btnDone.classList.remove('hidden');
+                if(btnSkip) btnSkip.classList.add('hidden');
                 playBeep(800, 0.3);
             } else {
-                display.className = "timer";
-                display.style.color = "var(--success)";
-                display.innerText = timeLeft;
-                btnDone.classList.add('hidden');
-                btnSkip.classList.add('hidden');
+                if(display) {
+                    display.className = "timer";
+                    display.style.color = "var(--success)";
+                    display.innerText = timeLeft;
+                }
+                if(btnDone) btnDone.classList.add('hidden');
+                if(btnSkip) btnSkip.classList.add('hidden');
                 runClock();
                 playBeep(800, 0.3);
             }
         } else if (phase === 'rest') {
-            phaseTitle.innerText = "استراحت ☕";
-            display.className = "timer";
-            display.style.color = "var(--danger)";
-            display.innerText = timeLeft;
-            btnDone.classList.add('hidden');
-            btnSkip.classList.remove('hidden');
+            if(phaseTitle) phaseTitle.innerText = "استراحت ☕";
+            if(display) {
+                display.className = "timer";
+                display.style.color = "var(--danger)";
+                display.innerText = timeLeft;
+            }
+            if(btnDone) btnDone.classList.add('hidden');
+            if(btnSkip) btnSkip.classList.remove('hidden');
             runClock();
             playBeep(400, 0.2);
         }
@@ -369,11 +392,10 @@
     function runClock() {
         timer = setInterval(() => {
             timeLeft--;
-            document.getElementById('timer-display').innerText = timeLeft;
+            let display = document.getElementById('timer-display');
+            if(display) display.innerText = timeLeft;
             
-            // صدای تیک-تاک برای 3 ثانیه آخر
             if(timeLeft <= 3 && timeLeft > 0) playBeep(900, 0.1);
-            
             if (timeLeft <= 0) {
                 clearInterval(timer);
                 nextStep();
@@ -381,35 +403,4 @@
         }, 1000);
     }
 
-    function nextStep() {
-        clearInterval(timer);
-        if (phase === 'prep') {
-            let ex = activeRoutine[exIndex];
-            startPhase('work', ex.time || 0);
-        } else if (phase === 'work') {
-            let restVal = parseInt(document.getElementById('inp-rest').value) || 20;
-            startPhase('rest', restVal);
-        } else if (phase === 'rest') {
-            let ex = activeRoutine[exIndex];
-            if (ex.bilateral && currentSide === 'left') {
-                currentSide = 'right';
-                let prepVal = parseInt(document.getElementById('inp-prep').value) || 5;
-                startPhase('prep', prepVal);
-            } else {
-                if (ex.bilateral) currentSide = 'left';
-                if (currentSet < ex.sets) {
-                    currentSet++;
-                    let prepVal = parseInt(document.getElementById('inp-prep').value) || 5;
-                    startPhase('prep', prepVal);
-                } else {
-                    currentSet = 1;
-                    exIndex++;
-                    loadEx();
-                }
-            }
-        }
-    }
-</script>
-</body>
-        </html>
-        
+    func
