@@ -2,324 +2,155 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>دستیار هوشمند تمرین</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دستیار تمرین (نسخه پایه)</title>
     <style>
-        :root {
-            --bg-color: #f4f7f6; --card-bg: #ffffff; --text-main: #2c3e50; --text-sec: #7f8c8d;
-            --primary: #2980b9; --primary-light: #d6eaf8; --success: #27ae60;
-            --warning: #f39c12; --danger: #e74c3c; --purple: #8e44ad; --border: #ecf0f1;
-        }
-        body.dark-mode {
-            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #ecf0f1;
-            --text-sec: #bdc3c7; --primary: #3498db; --primary-light: #2c3e50; --border: #333;
-        }
-        body { margin: 0; padding: 0; font-family: Tahoma, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; touch-action: manipulation; }
-        
-        .app-wrapper { display: flex; flex-direction: column; height: 100vh; }
-        .header { display: flex; align-items: center; justify-content: center; padding: 15px; background: var(--card-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: relative; z-index: 10; }
-        .header h2 { margin: 0; color: var(--primary); font-size: 1.4rem; font-weight: bold; }
-        .header-icon { position: absolute; font-size: 1.5rem; cursor: pointer; top: 12px; padding: 5px; transition: transform 0.2s; }
-        
-        .icon-right { right: 15px; } .icon-left { left: 15px; } 
-        
-        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 40px; }
-        
-        .calendar-card { background: var(--card-bg); padding: 20px 15px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); }
-        .calendar-title { font-size: 1rem; color: var(--text-main); text-align: center; margin-bottom: 15px; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 8px;}
-        .week-grid { display: flex; justify-content: space-between; padding: 0 5px; }
-        .day-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .day-name { font-size: 0.85rem; color: var(--text-sec); font-weight: bold; }
-        .day-circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: transparent; background: var(--bg-color); transition: all 0.4s ease;}
-        .day-circle.done { background: var(--success); border-color: var(--success); color: white; transform: scale(1.1); }
-        .day-circle.done::after { content: '✔️'; font-size: 0.9rem; }
-
-        .menu-grid { display: flex; flex-direction: column; gap: 15px; }
-        .menu-btn { display: flex; align-items: center; padding: 18px 15px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .menu-icon { font-size: 1.5rem; margin-left: 15px; background: rgba(255,255,255,0.2); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
-        
-        .btn-spine { background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; }
-        .btn-legs { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #fff; border: none; }
-        .btn-cardio { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; }
-        .btn-walk { background: var(--card-bg); color: var(--success); border: 2px solid var(--success); }
-        .btn-walk .menu-icon { background: rgba(39, 174, 96, 0.1); }
-
-        .en-title { font-size: 1.8rem; font-weight: bold; color: var(--primary); direction: ltr; margin-bottom: 5px; text-align: center;}
-        .fa-title { font-size: 1.3rem; margin-bottom: 15px; text-align: center; font-weight: bold; color: var(--text-main);}
-        .badge-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;}
-        .badge { background: var(--primary-light); color: var(--primary); padding: 6px 15px; border-radius: 20px; font-size: 0.95rem; font-weight: bold; }
-        .instructions { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 12px; line-height: 1.7; font-size: 1rem; text-align: justify; }
-        
-        .bottom-action-bar { background: var(--card-bg); padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); text-align: center; border-top-left-radius: 20px; border-top-right-radius: 20px; margin-top: auto; }
-        .timer-display { font-size: 4rem; font-weight: bold; margin: 10px 0; font-family: monospace; }
-        .timer-display.work-time { color: var(--success); }
-        .timer-display.work-reps { font-size: 2.5rem; color: var(--text-main); font-family: Tahoma, sans-serif;}
-        .timer-display.prep { color: var(--warning); }
-        .timer-display.rest { color: var(--danger); }
-        .phase-text { font-size: 1.2rem; color: var(--text-sec); font-weight: bold; margin-bottom: 5px;}
-        
-        button.btn-main { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.2rem; border-radius: 12px; width: 100%; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
-        button.btn-skip { background: transparent; color: var(--text-sec); border: 2px solid var(--border); padding: 12px; font-size: 1rem; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold;}
-        
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 100; }
-        .modal-box { background: var(--card-bg); padding: 30px 20px; border-radius: 20px; width: 85%; max-width: 380px; text-align: center; }
-        .modal-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 12px; font-size: 1.1rem; border: none; font-weight: bold; cursor: pointer; }
-        
-        .settings-card { background: var(--card-bg); padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); font-size: 1rem; font-weight: bold; color: var(--text-main);}
-        .settings-row input[type="number"] { width: 60px; padding: 8px; text-align: center; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-weight: bold; background: var(--bg-color); color: var(--text-main);}
-        
-        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: 0.4s;}
-        input:checked + .slider { background-color: var(--success); }
-        input:checked + .slider:before { transform: translateX(22px); }
-
+        body { font-family: Tahoma, Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; text-align: center; color: #2c3e50;}
         .hidden { display: none !important; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid #ecf0f1;}
+        h2 { color: #2980b9; }
+        button { background: #2980b9; color: white; border: none; padding: 18px; font-size: 1.2rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 15px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button.legs { background: #f39c12; }
+        button.cardio { background: #e74c3c; }
+        button.alt { background: #95a5a6; padding: 15px; margin-top: 20px; }
+        button.outline { background: transparent; color: #7f8c8d; border: 2px solid #bdc3c7; box-shadow: none; }
+        .timer { font-size: 4rem; font-weight: bold; color: #27ae60; margin: 20px 0; font-family: monospace;}
+        .instruction { font-size: 1.1rem; line-height: 1.6; padding: 10px; background: #f8f9fa; border-radius: 10px;}
     </style>
 </head>
 <body>
 
-<div class="app-wrapper">
-    <div class="header">
-        <div class="header-icon icon-right" onclick="showScreen('settings')">⚙️</div>
-        <h2 id="header-title">دستیار تمرین (نسخه جدید)</h2>
-        <div id="btn-home-header" class="header-icon icon-left hidden" onclick="goHome()">🏠</div>
-    </div>
-
-    <div id="screen-home" class="content-area">
-        <div class="calendar-card">
-            <div class="calendar-title">📊 وضعیت تمرینات این هفته</div>
-            <div class="week-grid">
-                <div class="day-col"><span class="day-name">ش</span><div class="day-circle" id="day-0"></div></div>
-                <div class="day-col"><span class="day-name">ی</span><div class="day-circle" id="day-1"></div></div>
-                <div class="day-col"><span class="day-name">د</span><div class="day-circle" id="day-2"></div></div>
-                <div class="day-col"><span class="day-name">س</span><div class="day-circle" id="day-3"></div></div>
-                <div class="day-col"><span class="day-name">چ</span><div class="day-circle" id="day-4"></div></div>
-                <div class="day-col"><span class="day-name">پ</span><div class="day-circle" id="day-5"></div></div>
-                <div class="day-col"><span class="day-name">ج</span><div class="day-circle" id="day-6"></div></div>
-            </div>
-        </div>
-
-        <div class="menu-grid">
-            <div class="menu-btn btn-spine" onclick="startRoutine('spine')">
-                <div class="menu-icon">🧘‍♂️</div>
-                <div>۱. روتین کمر و عضله‌سازی</div>
-            </div>
-            
-            <div class="menu-btn btn-legs" onclick="startRoutine('legs')">
-                <div class="menu-icon">🦵</div>
-                <div>۲. تمرینات پا (۳ روز در هفته)</div>
-            </div>
-            
-            <div class="menu-btn btn-cardio" onclick="startRoutine('cardio')">
-                <div class="menu-icon">🔥</div>
-                <div>۳. تمرین کاردیو (چربی‌سوز)</div>
-            </div>
-            
-            <div class="menu-btn btn-walk" id="walk-btn" onclick="openWalkModal()">
-                <div class="menu-icon">🚶‍♂️</div>
-                <div>۴. ثبت پیاده‌روی / کوه</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-walk" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h3 style="margin-top: 0; color: var(--text-main); margin-bottom: 25px;">نوع فعالیت امروز چیست؟ 🎯</h3>
-            <button class="modal-btn" style="background: var(--success); color: white;" onclick="recordActivity('۵۰۰۰ قدم', 'var(--success)', '🚶‍♂️')">
-                <span>🚶‍♂️</span> تکمیل ۵۰۰۰ قدم
-            </button>
-            <button class="modal-btn" style="background: var(--purple); color: white;" onclick="recordActivity('کوه صفه', 'var(--purple)', '⛰️')">
-                <span>⛰️</span> هایکینگ کوه صفه
-            </button>
-            <button class="modal-btn" style="background: var(--bg-color); color: var(--text-sec); border: 2px solid var(--border);" onclick="closeWalkModal()">
-                انصراف
-            </button>
-        </div>
-    </div>
-
-    <div id="screen-settings" class="content-area hidden">
-        <div class="settings-card">
-            <div class="settings-row">
-                <span>حالت شب 🌙</span>
-                <label class="switch"><input type="checkbox" id="set-theme" onchange="saveSettings()"><span class="slider"></span></label>
-            </div>
-            <div class="settings-row">
-                <span>بی‌صدا کردن 🔇</span>
-                <label class="switch"><input type="checkbox" id="set-mute" onchange="saveSettings()"><span class="slider"></span></label>
-            </div>
-            <div class="settings-row">
-                <span>آماده‌سازی (ثانیه) ⏱️</span>
-                <input type="number" id="set-prep" value="5" onchange="saveSettings()">
-            </div>
-            <div class="settings-row">
-                <span>استراحت (ثانیه) ☕</span>
-                <input type="number" id="set-rest" value="20" onchange="saveSettings()">
-            </div>
-        </div>
-        <button class="btn-main" onclick="goHome()">ذخیره و بازگشت 🏠</button>
-    </div>
-
-    <div id="screen-workout" class="content-area hidden" style="display: flex; flex-direction: column; padding: 0;">
-        <div id="workout-content" style="padding: 20px; flex: 1;">
-            <div class="en-title" id="ex-en">Exercise</div>
-            <div class="fa-title" id="ex-fa">نام تمرین</div>
-            
-            <div class="badge-container">
-                <div class="badge" id="badge-set">ست ۱ از ۳</div>
-                <div class="badge hidden" id="badge-side" style="background:#fff3cd; color:#856404; border: 1px solid #ffeeba;">سمت چپ</div>
-            </div>
-            
-            <div class="instructions" id="ex-inst">توضیحات تمرین...</div>
-        </div>
-
-        <div id="workout-finish" class="hidden" style="padding: 40px 20px; text-align: center; flex: 1;">
-            <div style="font-size: 5rem; margin-bottom: 20px;">🏆</div>
-            <h2 style="color: var(--success); margin-bottom: 10px;">عالی بود خسته نباشید!</h2>
-            <button class="btn-main" onclick="finishAndSave()" style="margin-top: 30px;">بازگشت به منوی اصلی 🏠</button>
-        </div>
-
-        <div id="workout-bottom-bar" class="bottom-action-bar hidden">
-            <div class="phase-text" id="phase-name">آماده‌سازی</div>
-            <div class="timer-display" id="timer-display">5</div>
-            <button id="btn-action" class="btn-main hidden" onclick="nextPhase()">انجام شد ✔️</button>
-            <button id="btn-skip" class="btn-skip hidden" onclick="skipTimer()">رد کردن مرحله ⏭️</button>
-        </div>
+<div id="home-screen">
+    <h2>دستیار تمرین ساسان</h2>
+    <p>نسخه سبک و سریع</p>
+    <div class="card">
+        <button onclick="startWorkout('spine')">۱. روتین کمر و عضله‌سازی</button>
+        <button class="legs" onclick="startWorkout('legs')">۲. تمرینات پا</button>
+        <button class="cardio" onclick="startWorkout('cardio')">۳. تمرین کاردیو</button>
     </div>
 </div>
 
+<div id="workout-screen" class="hidden">
+    <h3 id="ex-title" style="color: #2980b9; font-size: 1.4rem;">نام تمرین</h3>
+    <div id="ex-desc" class="instruction">توضیحات تمرین در اینجا قرار می‌گیرد.</div>
+    
+    <div class="card" style="margin-top: 20px;">
+        <h4 id="phase-title" style="font-size: 1.2rem; color: #7f8c8d;">آماده‌سازی</h4>
+        <div id="timer-display" class="timer">5</div>
+        <button id="btn-done" class="hidden" onclick="nextStep()" style="background: #27ae60;">انجام شد ✔️</button>
+        <button id="btn-skip" class="outline" onclick="nextStep()">رد کردن ⏭️</button>
+    </div>
+    
+    <button class="alt" onclick="goHome()">توقف و بازگشت 🏠</button>
+</div>
+
 <script>
-    // سیستم عیب یابی در صورت خرابی مجدد مرورگر
-    window.onerror = function(msg, url, line) {
-        alert("خطای مرورگر رخ داد و اجازه اجرای دکمه ها را نمیدهد:\n" + msg + "\nخط: " + line);
-        return true; 
+    // حذف کامل امکانات پیچیده، فقط منطق ساده جاوااسکریپت
+    const exercises = {
+        spine: [
+            { title: "چرخش لگن روی زمین", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین. (۱۲ تکرار)", type: "reps" },
+            { title: "گربه-گاو آرام", desc: "چهار دست و پا. تمرکز روی مهره‌های کمر. (۱۵ تکرار)", type: "reps" },
+            { title: "پلانک جانبی (چپ)", desc: "بدن در یک خط صاف روی آرنج چپ.", type: "time", time: 30 },
+            { title: "پلانک جانبی (راست)", desc: "بدن در یک خط صاف روی آرنج راست.", type: "time", time: 30 }
+        ],
+        legs: [
+            { title: "اسکات روی صندلی", desc: "نشستن کنترل‌شده روی لبه صندلی. (۱۵ تکرار)", type: "reps" },
+            { title: "لانژ رو به جلو", desc: "زانوی عقب نزدیک زمین. (۱۰ تکرار)", type: "reps" }
+        ],
+        cardio: [
+            { title: "درجا زدن ایستاده", desc: "سینه صاف، زانوها بالا.", type: "time", time: 40 },
+            { title: "پروانه بدون پرش", desc: "سرعت بالا بدون پرش.", type: "time", time: 40 }
+        ]
     };
 
-    const spineExercises = [
-        { en: "Pelvic Tilt", fa: "چرخش لگن روی زمین", type: "reps", val: "۱۲ تکرار", sets: 3, inst: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین." },
-        { en: "Slow Cat-Cow", fa: "گربه-گاو آرام", type: "reps", val: "۱۵ تکرار", sets: 3, inst: "چهار دست و پا. تمرکز روی مهره‌های کمر." },
-        { en: "Side Plank", fa: "پلانک جانبی", type: "time", val: 30, sets: 3, bilateral: true, inst: "بدن در یک خط صاف روی آرنج." }
-    ];
-    const legsExercises = [
-        { en: "Box Squat", fa: "اسکات روی صندلی", type: "reps", val: "۱۵ تکرار", sets: 3, inst: "نشستن کنترل‌شده روی لبه صندلی." },
-        { en: "Forward Lunge", fa: "لانژ رو به جلو", type: "reps", val: "۱۰ تکرار", sets: 3, bilateral: true, inst: "زانوی عقب نزدیک زمین." }
-    ];
-    const baseCardio = [
-        { en: "Standing March", fa: "درجا زدن ایستاده", type: "time", val: 40, inst: "سینه صاف، زانوها بالا." },
-        { en: "Step-Jacks", fa: "پروانه بدون پرش", type: "time", val: 40, inst: "سرعت بالا بدون پرش." }
-    ];
-    
-    let cardioExercises = [];
-    for(let i=1; i<=4; i++) { baseCardio.forEach(ex => { cardioExercises.push(Object.assign({}, ex, {sets: 1, customBadge: `راند ${i} از ۴`})); }); }
+    let currentList = [];
+    let currentIndex = 0;
+    let phase = 'prep'; 
+    let timer = null;
+    let timeLeft = 0;
 
-    let audioCtx = null; let currentRoutine = []; let exIndex = 0; let currentSet = 1; let currentSide = 'left'; 
-    let phase = 'prep'; let timerInterval = null; let timeRemaining = 0;
-
-    // توابع ایمن برای جلوگیری از کرش شدن جاوااسکریپت
-    function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
-    function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
-
-    window.onload = function() {
-        try { loadSettings(); updateCalendar(); } catch(e) { console.log("Load error"); }
-    };
-
-    function loadSettings() {
-        if(safeGet('themeDark') === 'true') { document.getElementById('set-theme').checked = true; document.body.classList.add('dark-mode'); }
-        if(safeGet('muteApp') === 'true') document.getElementById('set-mute').checked = true;
-        if(safeGet('prepTime')) document.getElementById('set-prep').value = safeGet('prepTime');
-        if(safeGet('restTime')) document.getElementById('set-rest').value = safeGet('restTime');
+    function startWorkout(type) {
+        currentList = exercises[type];
+        currentIndex = 0;
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('workout-screen').classList.remove('hidden');
+        loadExercise();
     }
 
-    function saveSettings() {
-        let isDark = document.getElementById('set-theme').checked;
-        safeSet('themeDark', isDark);
-        if(isDark) document.body.classList.add('dark-mode'); else document.body.classList.remove('dark-mode');
-        safeSet('muteApp', document.getElementById('set-mute').checked);
-        safeSet('prepTime', document.getElementById('set-prep').value);
-        safeSet('restTime', document.getElementById('set-rest').value);
+    function goHome() {
+        clearInterval(timer);
+        document.getElementById('workout-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
     }
 
-    function updateCalendar() {
-        for(let i=0; i<=6; i++) {
-            if(safeGet('day_' + i) === 'done') {
-                let dayEl = document.getElementById('day-' + i);
-                if(dayEl) dayEl.classList.add('done');
-            }
+    function loadExercise() {
+        if (currentIndex >= currentList.length) {
+            alert("🏆 عالی بود! تمرین تمام شد.");
+            goHome();
+            return;
         }
+        let ex = currentList[currentIndex];
+        document.getElementById('ex-title').innerText = ex.title;
+        document.getElementById('ex-desc').innerText = ex.desc;
+        startPhase('prep', 5);
     }
 
-    function markTodayAsDone() {
-        let dayIndex = new Date().getDay();
-        let jalaliDay = (dayIndex === 6) ? 0 : dayIndex + 1; 
-        safeSet('day_' + jalaliDay, 'done');
-        updateCalendar();
-    }
-
-    function showScreen(screenId) {
-        document.getElementById('screen-home').classList.add('hidden');
-        document.getElementById('screen-settings').classList.add('hidden');
-        document.getElementById('screen-workout').classList.add('hidden');
-        document.getElementById('workout-bottom-bar').classList.add('hidden');
+    function startPhase(newPhase, time) {
+        clearInterval(timer);
+        phase = newPhase;
+        timeLeft = time;
         
-        if(screenId === 'workout') {
-            document.getElementById('screen-workout').classList.remove('hidden');
-            document.getElementById('workout-content').classList.remove('hidden');
-            document.getElementById('workout-finish').classList.add('hidden');
-            document.getElementById('workout-bottom-bar').classList.remove('hidden');
-            document.getElementById('header-title').innerText = "در حال تمرین...";
-            document.getElementById('btn-home-header').classList.remove('hidden');
-        } else if (screenId === 'settings') {
-            document.getElementById('screen-settings').classList.remove('hidden');
-            document.getElementById('header-title').innerText = "تنظیمات";
-            document.getElementById('btn-home-header').classList.remove('hidden');
-        } else {
-            document.getElementById('screen-home').classList.remove('hidden');
-            document.getElementById('header-title').innerText = "دستیار تمرین (نسخه جدید)";
-            document.getElementById('btn-home-header').classList.add('hidden');
+        let phaseTitle = document.getElementById('phase-title');
+        let display = document.getElementById('timer-display');
+        let btnDone = document.getElementById('btn-done');
+        let btnSkip = document.getElementById('btn-skip');
+
+        display.innerText = timeLeft;
+
+        if (phase === 'prep') {
+            phaseTitle.innerText = "آماده‌سازی...";
+            btnDone.classList.add('hidden');
+            btnSkip.classList.remove('hidden');
+            runClock();
+        } else if (phase === 'work') {
+            phaseTitle.innerText = "🔥 در حال اجرا";
+            let ex = currentList[currentIndex];
+            if (ex.type === 'reps') {
+                display.innerText = "بدون تایمر";
+                btnDone.classList.remove('hidden');
+                btnSkip.classList.add('hidden');
+            } else {
+                btnDone.classList.add('hidden');
+                btnSkip.classList.add('hidden');
+                runClock();
+            }
+        } else if (phase === 'rest') {
+            phaseTitle.innerText = "استراحت ☕";
+            btnDone.classList.add('hidden');
+            btnSkip.classList.remove('hidden');
+            runClock();
         }
     }
 
-    function goHome() { clearInterval(timerInterval); showScreen('home'); }
-    function openWalkModal() { document.getElementById('modal-walk').classList.remove('hidden'); }
-    function closeWalkModal() { document.getElementById('modal-walk').classList.add('hidden'); }
-    
-    function recordActivity(title, color, icon) {
-        closeWalkModal();
-        let btn = document.getElementById('walk-btn');
-        btn.innerHTML = `<div class="menu-icon">${icon}</div><div>۴. ${title} (ثبت شد ✔️)</div>`;
-        btn.style.background = color; btn.style.color = 'white'; btn.style.borderColor = color;
-        markTodayAsDone();
+    function runClock() {
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer-display').innerText = timeLeft;
+            if (timeLeft <= 0) nextStep();
+        }, 1000);
     }
 
-    function unlockAudio() {
-        try {
-            let muteBtn = document.getElementById('set-mute');
-            if(muteBtn && muteBtn.checked) return;
-            if (!audioCtx) {
-                let AContext = window.AudioContext || window.webkitAudioContext;
-                if(AContext) audioCtx = new AContext();
-            }
-            if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
-        } catch(e) {}
+    function nextStep() {
+        if (phase === 'prep') {
+            let ex = currentList[currentIndex];
+            startPhase('work', ex.time || 0);
+        } else if (phase === 'work') {
+            startPhase('rest', 20);
+        } else if (phase === 'rest') {
+            currentIndex++;
+            loadExercise();
+        }
     }
-
-    function playTone(freq, type, duration) {
-        try {
-            let muteBtn = document.getElementById('set-mute');
-            if(!audioCtx || (muteBtn && muteBtn.checked)) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-            osc.stop(audioCtx.currentTime + duration);
-        } catch(e) {}
-    }
-
-    function startRoutine(type) {
-        unlockAudio();
-        if(type === 'spine') currentRoutin
+</script>
+</body>
+</html>
