@@ -24,7 +24,6 @@
 
         button { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
         
-        /* حالت تاریک ملایم و خوانا بدون تضاد زننده */
         body.dark-mode button { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
         body.dark-mode button.legs { background: #3d2d14; border-color: #5c431d; color: #f39c12; }
         body.dark-mode button.cardio { background: #3d1a1a; border-color: #5c2626; color: #e74c3c; }
@@ -37,13 +36,11 @@
         button.outline { background: transparent; color: var(--text-sec); border: 2px solid var(--border); box-shadow: none; }
         body.dark-mode button.outline { color: #a0a0a0; border-color: #444; }
 
-        /* تقویم هفتگی با نقطه‌های رنگی تفکیک شده */
-        .week-grid { display: flex; justify-content: space-between; gap: 4px; margin-top: 10px; }
-        .day-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+        /* تقویم هفتگی تک‌ردیفه استاندارد و پایدار */
+        .week-grid { display: flex; justify-content: space-between; gap: 5px; margin-top: 10px; }
+        .day-col { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
         .day-name { font-size: 0.8rem; color: var(--text-sec); font-weight: bold; }
-        .day-box { width: 100%; height: 48px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); gap: 3px; padding: 2px; }
-        .dots-container { display: flex; gap: 3px; justify-content: center; align-items: center; min-height: 10px; }
-        .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+        .day-circle { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; background: var(--card-bg); color: var(--text-sec); }
         
         .timer { font-size: 4.5rem; font-weight: bold; color: var(--success); margin: 15px 0; font-family: monospace;}
         .reps-display { font-size: 4rem; font-weight: bold; color: var(--primary); margin: 15px 0; }
@@ -70,17 +67,17 @@
         <div style="width: 60px;"></div>
     </div>
 
-    <!-- تقویم هفتگی پیشرفته -->
+    <!-- تقویم هفتگی استاندارد -->
     <div class="card">
         <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 5px;">📊 وضعیت تمرینات این هفته</div>
         <div class="week-grid">
-            <div class="day-col"><span class="day-name">ش</span><div class="day-box"><span style="font-size:0.7rem">ش</span><div class="dots-container" id="dots-0"></div></div></div>
-            <div class="day-col"><span class="day-name">ی</span><div class="day-box"><span style="font-size:0.7rem">ی</span><div class="dots-container" id="dots-1"></div></div></div>
-            <div class="day-col"><span class="day-name">د</span><div class="day-box"><span style="font-size:0.7rem">د</span><div class="dots-container" id="dots-2"></div></div></div>
-            <div class="day-col"><span class="day-name">س</span><div class="day-box"><span style="font-size:0.7rem">س</span><div class="dots-container" id="dots-3"></div></div></div>
-            <div class="day-col"><span class="day-name">چ</span><div class="day-box"><span style="font-size:0.7rem">چ</span><div class="dots-container" id="dots-4"></div></div></div>
-            <div class="day-col"><span class="day-name">پ</span><div class="day-box"><span style="font-size:0.7rem">پ</span><div class="dots-container" id="dots-5"></div></div></div>
-            <div class="day-col"><span class="day-name">ج</span><div class="day-box"><span style="font-size:0.7rem">ج</span><div class="dots-container" id="dots-6"></div></div></div>
+            <div class="day-col"><span class="day-name">ش</span><div class="day-circle" id="day-0">ش</div></div>
+            <div class="day-col"><span class="day-name">ی</span><div class="day-circle" id="day-1">ی</div></div>
+            <div class="day-col"><span class="day-name">د</span><div class="day-circle" id="day-2">د</div></div>
+            <div class="day-col"><span class="day-name">س</span><div class="day-circle" id="day-3">س</div></div>
+            <div class="day-col"><span class="day-name">چ</span><div class="day-circle" id="day-4">چ</div></div>
+            <div class="day-col"><span class="day-name">پ</span><div class="day-circle" id="day-5">پ</div></div>
+            <div class="day-col"><span class="day-name">ج</span><div class="day-circle" id="day-6">ج</div></div>
         </div>
     </div>
 
@@ -204,28 +201,31 @@
         } catch(e) {}
     }
 
-    const dotColors = {
-        spine: '#2980b9', 
-        legs: '#f39c12',  
-        cardio: '#e74c3c',
-        walk: '#27ae60'   
+    const dayIcons = {
+        spine: '🧘‍♂️',
+        legs: '🦵',
+        cardio: '🔥',
+        walk: '⛰️'
     };
+
+    const dayNamesList = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
     function updateCalendarUI() {
         try {
             for(let i=0; i<=6; i++) {
                 let data = safeGet('day_' + i);
-                let dotsContainer = document.getElementById('dots-' + i);
-                if(dotsContainer) {
-                    dotsContainer.innerHTML = '';
+                let el = document.getElementById('day-' + i);
+                if(el) {
                     if(data) {
-                        let types = data.split(',').filter(x => x);
-                        types.forEach(t => {
-                            let dot = document.createElement('span');
-                            dot.className = 'dot';
-                            dot.style.backgroundColor = dotColors[t] || '#95a5a6';
-                            dotsContainer.appendChild(dot);
-                        });
+                        let lastType = data.split(',').filter(x => x).pop();
+                        el.innerText = dayIcons[lastType] || '✔️';
+                        el.style.borderColor = 'var(--success)';
+                        el.style.color = 'var(--success)';
+                    } else {
+                        el.innerText = dayNamesList[i];
+                        el.style.borderColor = 'var(--border)';
+                        el.style.color = 'var(--text-sec)';
+                        el.style.background = 'var(--card-bg)';
                     }
                 }
             }
@@ -236,10 +236,7 @@
         try {
             let dayIdx = new Date().getDay();
             let targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
-            let existingData = safeGet('day_' + targetDay) || "";
-            if(!existingData.includes(type)) {
-                safeSet('day_' + targetDay, existingData + type + ",");
-            }
+            safeSet('day_' + targetDay, type);
             updateCalendarUI();
         } catch(e) {}
     }
@@ -253,7 +250,7 @@
         ],
         legs: [
             { title: "اسکات روی صندلی", en: "Box Squat", desc: "نشستن کنترل‌شده روی لبه صندلی.", type: "reps", val: "۱۵", sets: 3 },
-            { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "زانوی عقب نزدیک زمین.", type: "reps", val: "10", sets: 3, bilateral: true }
+            { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "زانوی عقب نزدیک زمین.", type: "reps", val: "۱۰", sets: 3, bilateral: true }
         ],
         cardio: [
             { title: "درجا زدن ایستاده", en: "Standing March", desc: "سینه صاف، زانوها بالا.", type: "time", time: 40, sets: 1, customBadge: "راند کاردیو" },
@@ -403,4 +400,23 @@
         }, 1000);
     }
 
-    func
+    function nextStep() {
+        clearInterval(timer);
+        let ex = activeRoutine[exIndex];
+        let prepInput = document.getElementById('inp-prep');
+        let restInput = document.getElementById('inp-rest');
+        let prepVal = prepInput ? (parseInt(prepInput.value) || 5) : 5;
+        let restVal = restInput ? (parseInt(restInput.value) || 20) : 20;
+
+        if (phase === 'prep') {
+            startPhase('work', ex.time || 0);
+        } else if (phase === 'work') {
+            startPhase('rest', restVal);
+        } else if (phase === 'rest') {
+            if (ex.bilateral && currentSide === 'left') {
+                currentSide = 'right';
+                startPhase('prep', prepVal);
+            } else {
+                if (ex.bilateral) currentSide = 'left';
+                
+    
