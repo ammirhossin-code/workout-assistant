@@ -22,7 +22,7 @@
         .header-bar { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .header-bar h2 { font-size: 1.15rem; margin: 0; flex: 1; text-align: center; color: var(--primary); font-weight: bold; }
         .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 0.95rem; padding: 8px 10px !important; margin: 0 !important; border-radius: 8px; cursor: pointer; color: var(--text-main); width: auto !important; flex-shrink: 0; }
-        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #27ae60; flex-shrink: 0; }
+        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #2980b9; flex-shrink: 0; }
 
         .action-btn { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
         body.dark-mode .action-btn { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
@@ -66,9 +66,9 @@
 <!-- صفحه اصلی -->
 <div id="home-screen">
     <div class="header-bar">
-        <button class="icon-btn" id="btn-settings-open">⚙️ تنظیمات</button>
+        <button class="icon-btn" onclick="openSettings()">⚙️ تنظیمات</button>
         <h2>دستیار تمرین ساسان</h2>
-        <div class="version-tag">Ver 8.0</div>
+        <div class="version-tag">Ver 9.0</div>
     </div>
 
     <!-- تقویم هفتگی -->
@@ -86,35 +86,35 @@
     </div>
 
     <div class="card">
-        <button class="action-btn" id="btn-work-spine"><span>🧘‍♂️</span> ۱. روتین کمر و عضله‌سازی</button>
-        <button class="action-btn legs" id="btn-work-legs"><span>🦵</span> ۲. تمرینات پا (۳ روز در هفته)</button>
-        <button class="action-btn cardio" id="btn-work-cardio"><span>🔥</span> ۳. کاردیو چربی‌سوزی (مداری)</button>
-        <button class="action-btn walk" id="btn-walk-open"><span>🚶‍♂️</span> ۴. ثبت پیاده‌روی / کوه</button>
+        <button class="action-btn" onclick="startWorkout('spine')"><span>🧘‍♂️</span> ۱. روتین کمر و عضله‌سازی</button>
+        <button class="action-btn legs" onclick="startWorkout('legs')"><span>🦵</span> ۲. تمرینات پا (۳ روز در هفته)</button>
+        <button class="action-btn cardio" onclick="startWorkout('cardio')"><span>🔥</span> ۳. کاردیو چربی‌سوزی (مداری)</button>
+        <button class="action-btn walk" onclick="openWalkModal()" id="btn-walk-open"><span>🚶‍♂️</span> ۴. ثبت پیاده‌روی / کوه</button>
     </div>
 </div>
 
 <!-- مودال پیاده‌روی -->
 <div id="modal-walk" class="card hidden" style="position: fixed; top: 20%; left: 5%; right: 5%; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
     <h3 style="font-size: 1.3rem;">انتخاب فعالیت امروز 🎯</h3>
-    <button class="action-btn" style="background: var(--success);" id="btn-walk-5000"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
-    <button class="action-btn" style="background: var(--success);" id="btn-walk-kuh"><span>⛰️</span> هایکینگ کوه صفه</button>
-    <button class="outline-btn" id="btn-walk-close">انصراف</button>
+    <button class="action-btn" style="background: var(--success);" onclick="recordActivity('تکمیل ۵۰۰۰ قدم', '🚶‍♂️', 'walk')"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
+    <button class="action-btn" style="background: var(--success);" onclick="recordActivity('کوه صفه', '⛰️', 'walk')"><span>⛰️</span> هایکینگ کوه صفه</button>
+    <button class="outline-btn" onclick="closeWalkModal()">انصراف</button>
 </div>
 
 <!-- تنظیمات -->
 <div id="settings-screen" class="hidden">
     <div class="header-bar">
         <h2 style="font-size: 1.3rem; margin:0; text-align: right;">تنظیمات برنامه</h2>
-        <div class="version-tag">Ver 8.0</div>
+        <div class="version-tag">Ver 9.0</div>
     </div>
     <div class="card">
         <div class="settings-row">
             <span>حالت شب (تاریک ملایم) 🌙</span>
-            <input type="checkbox" id="chk-dark">
+            <input type="checkbox" id="chk-dark" onchange="toggleDark()">
         </div>
         <div class="settings-row">
             <span>فعال بودن صدا 🔊</span>
-            <input type="checkbox" id="chk-sound" checked>
+            <input type="checkbox" id="chk-sound" onchange="toggleSound()" checked>
         </div>
         <div class="settings-row">
             <span>زمان آماده‌سازی (ثانیه) ⏱️</span>
@@ -125,7 +125,7 @@
             <input type="number" id="inp-rest" value="20">
         </div>
     </div>
-    <button class="action-btn" id="btn-settings-close">ذخیره و بازگشت 🏠</button>
+    <button class="action-btn" onclick="closeSettings()">ذخیره و بازگشت 🏠</button>
 </div>
 
 <!-- صفحه تمرین -->
@@ -146,17 +146,14 @@
         <h4 id="phase-title" style="font-size: 1.3rem; color: var(--text-sec); margin: 5px 0;">آماده‌سازی</h4>
         <div id="timer-display" class="timer">5</div>
         
-        <button id="btn-done" class="action-btn hidden" style="background: var(--success); width:100%;">پایان فاز / انجام شد ✔️</button>
-        <button id="btn-skip" class="outline-btn">رد کردن سریع ⏭️</button>
+        <button id="btn-done" class="action-btn hidden" style="background: var(--success); width:100%;" onclick="nextStep()">پایان فاز / انجام شد ✔️</button>
+        <button id="btn-skip" class="outline-btn" onclick="nextStep()">رد کردن سریع ⏭️</button>
     </div>
     
-    <button class="alt-btn" id="btn-home">توقف و بازگشت به منو 🏠</button>
+    <button class="alt-btn" onclick="goHome()">توقف و بازگشت به منو 🏠</button>
 </div>
 
 <script>
-    // سیستم خطایاب فوری (بدون نیاز به لود کامل صفحه)
-    window.onerror = function(msg, url, line) { alert("خطا: " + msg + "\nخط: " + line); return true; };
-
     function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
     function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
 
@@ -169,34 +166,34 @@
                 { title: "کتاب باز", en: "Open Book", desc: "خوابیده به پهلو، باز کردن دست بالایی به سمت عقب با چرخش سینه.", type: "reps", val: "۱۰", sets: 2, bilateral: true },
                 { title: "کرانچ اصلاح شده مک‌گیل", en: "McGill Modified Curl-up", desc: "یک پا خم، دست زیر کمر، بالا آوردن سر و شانه ۵ سانت (مکث ۵ ثانیه در بالا).", type: "reps", val: "۱۵", sets: 3, bilateral: false },
                 { title: "پلانک جانبی", en: "Side Plank", desc: "روی آرنج و لبه پا، بدن کاملاً در یک خط صاف.", type: "time", time: 30, sets: 3, bilateral: true },
-                { title: "سگ پرنده", en: "Bird Dog", desc: "چهار دست و پا، دست و پای مخالف کاملاً صاف و در امتداد بدن (بدون قوس کمر، مکث ۳ ثانیه).", type: "reps", val: "۱۰", sets: 3, bilateral: true },
-                { title: "پل باسن آرام", en: "Slow Glute Bridge", desc: "بالا آوردن باسن بدون قوس دادن به کمر (مکث ۲ ثانیه در بالا).", type: "reps", val: "۱۰", sets: 3, bilateral: false },
-                { title: "بالا آوردن پا از پهلو (قیچی)", en: "Side-Lying Hip Abduction", desc: "خوابیده به پهلو، بالا آوردن پای رویی با کنترل کامل.", type: "reps", val: "۳۰", sets: 3, bilateral: true },
-                { title: "کشش همسترینگ با کش", en: "Hamstring Stretch with Band", desc: "خوابیده، یک پا صاف روی زمین، پای دیگر عمود با کمک کش.", type: "time", time: 30, sets: 3, bilateral: true },
-                { title: "چرخش دمبل دور سر", en: "Dumbbell Halo", desc: "با دمبل ۱.۵ کیلویی، شکم کاملا منقبض (۱۵ دور چپ، ۱۵ دور راست).", type: "reps", val: "۳۰", sets: 3, bilateral: false },
-                { title: "پرس سینه روی زمین با دمبل", en: "Floor Press", desc: "خوابیده به پشت، پایین آوردن دمبل‌ها تا برخورد آرنج به زمین (فاز منفی ۳ ثانیه).", type: "reps", val: "۱۲", sets: 3, bilateral: false },
-                { title: "پشت بازو خوابیده روی زمین", en: "Lying Triceps Extension", desc: "خوابیده به پشت، حرکت دادن دمبل سبک از کنار گوش به سمت بالا.", type: "reps", val: "۲۰", sets: 3, bilateral: false },
-                { title: "عقب کشیدن چانه", en: "Chin Tuck", desc: "بدون بالا بردن سر، چانه را مستقیماً به سمت عقب (غبغب) بکشید (مکث ۳ ثانیه).", type: "reps", val: "۱۵", sets: 3, bilateral: false },
-                { title: "کشش دست‌ها با کش", en: "Band Pull-Apart", desc: "ایستاده، کش روبروی سینه، با آرنج صاف باز کنید تا به سینه برسد.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
-                { title: "آویزان شدن از بارفیکس", en: "Dead Hang", desc: "آویزان شدن کاملاً بی‌حرکت جهت باز شدن فواصل مهره‌ها (بدون پرش).", type: "time", time: 60, sets: 4, bilateral: false }
+                { title: "سگ پرنده", en: "Bird Dog", desc: "چهار دست و پا، دست و پای مخالف کاملاً صاف و در امتداد بدن.", type: "reps", val: "۱۰", sets: 3, bilateral: true },
+                { title: "پل باسن آرام", en: "Slow Glute Bridge", desc: "بالا آوردن باسن بدون قوس دادن به کمر.", type: "reps", val: "۱۰", sets: 3, bilateral: false },
+                { title: "بالا آوردن پا از پهلو", en: "Side-Lying Hip Abduction", desc: "خوابیده به پهلو، بالا آوردن پای رویی با کنترل کامل.", type: "reps", val: "۳۰", sets: 3, bilateral: true },
+                { title: "کشش همسترینگ با کش", en: "Hamstring Stretch with Band", desc: "خوابیده، یک پا صاف، پای دیگر عمود با کمک کش.", type: "time", time: 30, sets: 3, bilateral: true },
+                { title: "چرخش دمبل دور سر", en: "Dumbbell Halo", desc: "با دمبل ۱.۵ کیلویی، شکم منقبض.", type: "reps", val: "۳۰", sets: 3, bilateral: false },
+                { title: "پرس سینه روی زمین", en: "Floor Press", desc: "خوابیده، پایین آوردن دمبل‌ها تا برخورد آرنج به زمین.", type: "reps", val: "۱۲", sets: 3, bilateral: false },
+                { title: "پشت بازو خوابیده", en: "Lying Triceps Extension", desc: "حرکت دادن دمبل از کنار گوش به سمت بالا.", type: "reps", val: "۲۰", sets: 3, bilateral: false },
+                { title: "عقب کشیدن چانه", en: "Chin Tuck", desc: "بدون بالا بردن سر، چانه را به سمت عقب بکشید.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
+                { title: "کشش دست‌ها با کش", en: "Band Pull-Apart", desc: "ایستاده، باز کردن کش تا رسیدن به سینه.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
+                { title: "آویزان شدن از بارفیکس", en: "Dead Hang", desc: "آویزان شدن کاملاً بی‌حرکت.", type: "time", time: 60, sets: 4, bilateral: false }
             ]
         },
         legs: {
             isCircuit: false,
             exercises: [
-                { title: "اسکات روی صندلی", en: "Box Squat", desc: "با شکم منقبض، به آرامی روی صندلی بنشینید و با فشار پاشنه‌ها بلند شوید.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
-                { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم به جلو، زانوی عقب به زمین نزدیک شود (زانوی جلو از پنجه رد نشود).", type: "reps", val: "۱۰", sets: 3, bilateral: true },
-                { title: "ساق پا ایستاده روی آجر", en: "Calf Raise on Block", desc: "پنجه‌ها روی آجر، پاشنه آزاد در هوا. پاشنه‌ها را بالا بکشید (مکث ۲ ثانیه).", type: "reps", val: "۲۰", sets: 3, bilateral: false }
+                { title: "اسکات روی صندلی", en: "Box Squat", desc: "به آرامی روی صندلی بنشینید و بلند شوید.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
+                { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم به جلو، زانوی عقب به زمین نزدیک شود.", type: "reps", val: "۱۰", sets: 3, bilateral: true },
+                { title: "ساق پا ایستاده روی آجر", en: "Calf Raise on Block", desc: "پاشنه‌ها را بالا بکشید و مکث کنید.", type: "reps", val: "۲۰", sets: 3, bilateral: false }
             ]
         },
         cardio: {
             isCircuit: true,
             sets: 4, 
             exercises: [
-                { title: "درجا زدن ایستاده با دست", en: "Standing March with Arm Swings", desc: "سینه صاف، زانوها ۹۰ درجه بالا، تاب دادن هماهنگ دست‌ها.", type: "time", time: 40, bilateral: false },
+                { title: "درجا زدن ایستاده", en: "Standing March", desc: "زانوها بالا، تاب دادن هماهنگ دست‌ها.", type: "time", time: 40, bilateral: false },
                 { title: "پروانه بدون پرش", en: "Step-Jacks", desc: "پای راست به راست و دست‌ها بالای سر، سپس بازگشت و پای چپ.", type: "time", time: 40, bilateral: false },
-                { title: "سایه زنی", en: "Shadow Boxing / Straight Punches", desc: "ایستاده، شکم منقبض، به نوبت با دست راست و چپ رو به جلو مشت بزنید.", type: "time", time: 40, bilateral: false },
-                { title: "لگد به عقب ایستاده", en: "Standing Glute Kickbacks", desc: "یک پا را صاف به عقب هل دهید تا باسن منقبض شود (کمر قوس برندارد).", type: "time", time: 40, bilateral: false }
+                { title: "سایه زنی", en: "Shadow Boxing", desc: "مشت زدن رو به جلو به نوبت با دو دست.", type: "time", time: 40, bilateral: false },
+                { title: "لگد به عقب ایستاده", en: "Glute Kickbacks", desc: "هل دادن پا به عقب برای انقباض باسن.", type: "time", time: 40, bilateral: false }
             ]
         }
     };
@@ -319,4 +316,13 @@
     }
 
     function goHome() {
-        if(stepTimer) 
+        if(stepTimer) clearInterval(stepTimer);
+        if(globalTimerInterval) clearInterval(globalTimerInterval);
+        document.getElementById('workout-screen').classList.add('hidden');
+        document.getElementById('settings-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+        updateCalendarUI();
+    }
+
+    function updateExUI() {
+        va
