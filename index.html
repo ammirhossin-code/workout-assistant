@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- جلوگیری از کش شدن نسخه قبلی -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>دستیار تمرین ساسان</title>
     <style>
         :root {
@@ -17,26 +21,30 @@
         body { font-family: Tahoma, Arial, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; text-align: center; transition: background 0.3s, color 0.3s; }
         .hidden { display: none !important; }
         .card { background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--border); }
-        h2 { color: var(--primary); font-size: 1.4rem; margin: 10px 0; font-weight: bold; }
         
-        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.1rem; padding: 8px 12px; border-radius: 10px; cursor: pointer; color: var(--text-main); }
-        .version-tag { font-size: 0.9rem; font-weight: bold; color: white; padding: 5px 10px; border-radius: 8px; background: #27ae60; }
+        /* اصلاح کامل هدر (رفع مشکل اسکرین‌شات) */
+        .header-bar { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .header-bar h2 { font-size: 1.15rem; margin: 0; flex: 1; text-align: center; color: var(--primary); font-weight: bold; }
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 0.95rem; padding: 8px 10px !important; margin: 0 !important; border-radius: 8px; cursor: pointer; color: var(--text-main); width: auto !important; flex-shrink: 0; }
+        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #27ae60; flex-shrink: 0; }
 
-        button { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        /* استایل اختصاصی دکمه‌های اصلی تمرین */
+        .action-btn { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        body.dark-mode .action-btn { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
+        body.dark-mode .action-btn.legs { background: #3d2d14; border-color: #5c431d; color: #f39c12; }
+        body.dark-mode .action-btn.cardio { background: #3d1a1a; border-color: #5c2626; color: #e74c3c; }
+        body.dark-mode .action-btn.walk { background: #143d22; border-color: #1e5c33; color: #2ecc71; }
         
-        body.dark-mode button { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
-        body.dark-mode button.legs { background: #3d2d14; border-color: #5c431d; color: #f39c12; }
-        body.dark-mode button.cardio { background: #3d1a1a; border-color: #5c2626; color: #e74c3c; }
-        body.dark-mode button.walk { background: #143d22; border-color: #1e5c33; color: #2ecc71; }
+        .action-btn.legs { background: #f39c12; }
+        .action-btn.cardio { background: #e74c3c; }
+        .action-btn.walk { background: var(--card-bg); color: var(--success); border: 2px solid var(--success); }
         
-        button.legs { background: #f39c12; }
-        button.cardio { background: #e74c3c; }
-        button.walk { background: var(--card-bg); color: var(--success); border: 2px solid var(--success); }
-        button.alt { background: var(--text-sec); padding: 12px; margin-top: 15px; }
-        button.outline { background: transparent; color: var(--text-sec); border: 2px solid var(--border); box-shadow: none; }
-        body.dark-mode button.outline { color: #a0a0a0; border-color: #444; }
+        /* استایل دکمه‌های فرعی */
+        .alt-btn { width: 100%; background: var(--text-sec); color: white; padding: 12px; margin-top: 15px; border-radius: 10px; border: none; font-size: 1rem; cursor: pointer; font-weight: bold;}
+        .outline-btn { width: 100%; background: transparent; color: var(--text-sec); border: 2px solid var(--border); padding: 12px; border-radius: 10px; font-size: 1rem; margin-top: 5px; cursor: pointer; font-weight: bold;}
+        body.dark-mode .outline-btn { color: #a0a0a0; border-color: #444; }
 
+        /* تقویم و سایر استایل‌ها */
         .week-grid { display: flex; justify-content: space-between; gap: 5px; margin-top: 10px; }
         .day-col { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
         .day-name { font-size: 0.8rem; color: var(--text-sec); font-weight: bold; }
@@ -67,7 +75,7 @@
     <div class="header-bar">
         <button class="icon-btn" id="btn-settings-open">⚙️ تنظیمات</button>
         <h2>دستیار تمرین ساسان</h2>
-        <div class="version-tag">Ver 6.0</div>
+        <div class="version-tag">Ver 7.0</div>
     </div>
 
     <!-- تقویم هفتگی -->
@@ -85,26 +93,26 @@
     </div>
 
     <div class="card">
-        <button data-workout="spine"><span>🧘‍♂️</span> ۱. روتین کمر و عضله‌سازی</button>
-        <button class="legs" data-workout="legs"><span>🦵</span> ۲. تمرینات پا (۳ روز در هفته)</button>
-        <button class="cardio" data-workout="cardio"><span>🔥</span> ۳. کاردیو چربی‌سوزی (مداری)</button>
-        <button class="walk" id="btn-walk-open"><span>🚶‍♂️</span> ۴. ثبت پیاده‌روی / کوه</button>
+        <button class="action-btn" id="btn-work-spine"><span>🧘‍♂️</span> ۱. روتین کمر و عضله‌سازی</button>
+        <button class="action-btn legs" id="btn-work-legs"><span>🦵</span> ۲. تمرینات پا (۳ روز در هفته)</button>
+        <button class="action-btn cardio" id="btn-work-cardio"><span>🔥</span> ۳. کاردیو چربی‌سوزی (مداری)</button>
+        <button class="action-btn walk" id="btn-walk-open"><span>🚶‍♂️</span> ۴. ثبت پیاده‌روی / کوه</button>
     </div>
 </div>
 
 <!-- مودال پیاده‌روی -->
 <div id="modal-walk" class="card hidden" style="position: fixed; top: 20%; left: 5%; right: 5%; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
     <h3 style="font-size: 1.3rem;">انتخاب فعالیت امروز 🎯</h3>
-    <button style="background: var(--success); color: white;" id="btn-walk-5000"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
-    <button style="background: var(--success); color: white;" id="btn-walk-kuh"><span>⛰️</span> هایکینگ کوه صفه</button>
-    <button class="outline" id="btn-walk-close">انصراف</button>
+    <button class="action-btn" style="background: var(--success);" id="btn-walk-5000"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
+    <button class="action-btn" style="background: var(--success);" id="btn-walk-kuh"><span>⛰️</span> هایکینگ کوه صفه</button>
+    <button class="outline-btn" id="btn-walk-close">انصراف</button>
 </div>
 
 <!-- تنظیمات -->
 <div id="settings-screen" class="hidden">
     <div class="header-bar">
-        <h2 style="font-size: 1.5rem; margin:0;">تنظیمات برنامه</h2>
-        <div class="version-tag">Ver 6.0</div>
+        <h2 style="font-size: 1.3rem; margin:0; text-align: right;">تنظیمات برنامه</h2>
+        <div class="version-tag">Ver 7.0</div>
     </div>
     <div class="card">
         <div class="settings-row">
@@ -124,13 +132,13 @@
             <input type="number" id="inp-rest" value="20">
         </div>
     </div>
-    <button id="btn-settings-close">ذخیره و بازگشت 🏠</button>
+    <button class="action-btn" id="btn-settings-close">ذخیره و بازگشت 🏠</button>
 </div>
 
 <!-- صفحه تمرین -->
 <div id="workout-screen" class="hidden">
     <div class="workout-top-bar">
-        <span style="font-size: 0.95rem; color: var(--text-sec);">⏱️ زمان سپری شده:</span>
+        <span style="font-size: 0.95rem; color: var(--text-sec);">⏱️ زمان کل:</span>
         <span id="global-timer">00:00</span>
     </div>
 
@@ -145,14 +153,20 @@
         <h4 id="phase-title" style="font-size: 1.3rem; color: var(--text-sec); margin: 5px 0;">آماده‌سازی</h4>
         <div id="timer-display" class="timer">5</div>
         
-        <button id="btn-done" class="hidden" style="background: var(--success); color: white;">پایان فاز / انجام شد ✔️</button>
-        <button id="btn-skip" class="outline">رد کردن سریع ⏭️</button>
+        <button id="btn-done" class="action-btn hidden" style="background: var(--success); width:100%;">پایان فاز / انجام شد ✔️</button>
+        <button id="btn-skip" class="outline-btn">رد کردن سریع ⏭️</button>
     </div>
     
-    <button class="alt" id="btn-home">توقف و بازگشت به منو 🏠</button>
+    <button class="alt-btn" id="btn-home">توقف و بازگشت به منو 🏠</button>
 </div>
 
 <script>
+    // سیستم خطایاب سراسری برای جلوگیری از صفحه سفید یا دکمه‌های خراب
+    window.onerror = function(message, source, lineno, colno, error) {
+        alert("خطای سیستم (لطفا اسکرین‌شات بگیرید):\n" + message + "\nخط: " + lineno);
+        return true; 
+    };
+
     // --- Safe Storage Helpers ---
     function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
     function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
@@ -207,12 +221,11 @@
     var phase = 'prep'; 
     var stepTimer = null; 
     var timeLeft = 0;
-    
     var globalSeconds = 0;
     var globalTimerInterval = null;
+    var audioCtx = null;
 
     // --- Audio System ---
-    var audioCtx = null;
     function playBeep(freq, duration, vol) {
         if(safeGet('sound') === '0') return;
         try {
@@ -240,37 +253,33 @@
     var dayNamesList = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
     function updateCalendarUI() {
-        try {
-            for(var i=0; i<=6; i++) {
-                var data = safeGet('day_' + i);
-                var el = document.getElementById('day-' + i);
-                if(el) {
-                    if(data) {
-                        var arr = data.split(',');
-                        var lastType = "";
-                        for(var j=0; j<arr.length; j++) { if(arr[j]) lastType = arr[j]; }
-                        el.innerText = dayIcons[lastType] || '✔️';
-                        el.style.borderColor = 'var(--success)'; el.style.color = 'var(--success)';
-                    } else {
-                        el.innerText = dayNamesList[i];
-                        el.style.borderColor = 'var(--border)'; el.style.color = 'var(--text-sec)';
-                        el.style.background = 'var(--card-bg)';
-                    }
+        for(var i=0; i<=6; i++) {
+            var data = safeGet('day_' + i);
+            var el = document.getElementById('day-' + i);
+            if(el) {
+                if(data) {
+                    var arr = data.split(',');
+                    var lastType = "";
+                    for(var j=0; j<arr.length; j++) { if(arr[j]) lastType = arr[j]; }
+                    el.innerText = dayIcons[lastType] || '✔️';
+                    el.style.borderColor = 'var(--success)'; el.style.color = 'var(--success)';
+                } else {
+                    el.innerText = dayNamesList[i];
+                    el.style.borderColor = 'var(--border)'; el.style.color = 'var(--text-sec)';
+                    el.style.background = 'var(--card-bg)';
                 }
             }
-        } catch(e) {}
+        }
     }
 
     function markTodayDone(type) {
-        try {
-            var dayIdx = new Date().getDay();
-            var targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
-            safeSet('day_' + targetDay, type);
-            updateCalendarUI();
-        } catch(e) {}
+        var dayIdx = new Date().getDay();
+        var targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
+        safeSet('day_' + targetDay, type);
+        updateCalendarUI();
     }
 
-    // --- Navigation & UI Handlers ---
+    // --- Core Logic ---
     function openSettings() {
         document.getElementById('home-screen').classList.add('hidden');
         document.getElementById('settings-screen').classList.remove('hidden');
@@ -294,50 +303,25 @@
         if(chk && chk.checked) { document.body.classList.add('dark-mode'); safeSet('dark', '1'); } 
         else { document.body.classList.remove('dark-mode'); safeSet('dark', '0'); }
     }
-    
     function toggleSound() {
         var sChk = document.getElementById('chk-sound');
         if(sChk && sChk.checked) safeSet('sound', '1'); else safeSet('sound', '0');
     }
 
     function startWorkout(type) {
-        try {
-            playBeep(400, 0.1, 0.01); 
-            currentWorkoutType = type;
-            exIndex = 0; 
-            currentSet = 1; 
-            
-            var routine = routines[type];
-            currentSide = routine.exercises[0].bilateral ? 'left' : 'none';
-            
-            document.getElementById('home-screen').classList.add('hidden');
-            document.getElementById('workout-screen').classList.remove('hidden');
-            
-            globalSeconds = 0;
-            if(globalTimerInterval) clearInterval(globalTimerInterval);
-            document.getElementById('global-timer').innerText = "00:00";
-            
-            globalTimerInterval = setInterval(function() {
-                globalSeconds++;
-                var m = Math.floor(globalSeconds / 60).toString();
-                if(m.length < 2) m = '0' + m;
-                var s = (globalSeconds % 60).toString();
-                if(s.length < 2) s = '0' + s;
-                document.getElementById('global-timer').innerText = m + ":" + s;
-            }, 1000);
-
-            var prepInp = document.getElementById('inp-prep');
-            var prepVal = prepInp ? parseInt(prepInp.value) : 5;
-            if(isNaN(prepVal)) prepVal = 5;
-            
-            startPhase('prep', prepVal);
-        } catch(e) {
-            alert("خطا در شروع تمرین: " + e.message);
-        }
-    }
-
-    function goHome() {
-        if(stepTimer) clearInterval(stepTimer);
+        playBeep(400, 0.1, 0.01); 
+        currentWorkoutType = type;
+        exIndex = 0; 
+        currentSet = 1; 
+        
+        var routine = routines[type];
+        currentSide = routine.exercises[0].bilateral ? 'left' : 'none';
+        
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('workout-screen').classList.remove('hidden');
+        
+        globalSeconds = 0;
         if(globalTimerInterval) clearInterval(globalTimerInterval);
-        document.getElementById('workout-screen').classList.add('hidden');
-        document.getElemen
+        document.getElementById('global-timer').innerText = "00:00";
+        
+       
