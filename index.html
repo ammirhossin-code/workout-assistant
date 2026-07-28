@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>دستیار تمرین ساسان</title>
+    
+    <script>
+        window.onerror = function(msg, url, line) {
+            alert("🚨 خطای سیستم کشف شد!\n\nعلت: " + msg + "\nخط: " + line);
+            return true; 
+        };
+    </script>
+
     <style>
         :root {
             --bg-color: #f4f7f6; --card-bg: #ffffff; --text-main: #2c3e50; --text-sec: #7f8c8d;
@@ -21,8 +29,8 @@
         
         .header-bar { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .header-bar h2 { font-size: 1.15rem; margin: 0; flex: 1; text-align: center; color: var(--primary); font-weight: bold; }
-        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 0.95rem; padding: 8px 10px !important; margin: 0 !important; border-radius: 8px; cursor: pointer; color: var(--text-main); width: auto !important; flex-shrink: 0; }
-        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #2980b9; flex-shrink: 0; }
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.2rem; padding: 8px 12px !important; margin: 0 !important; border-radius: 8px; cursor: pointer; color: var(--text-main); width: auto !important; flex-shrink: 0; display:flex; align-items:center; justify-content:center;}
+        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #8e44ad; flex-shrink: 0; }
 
         .action-btn { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
         body.dark-mode .action-btn { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
@@ -54,7 +62,8 @@
         .en-subtitle { font-size: 0.95rem; color: var(--text-sec); margin-bottom: 10px; direction: ltr; font-weight: bold; }
 
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 1rem; font-weight: bold; }
-        .settings-row input[type="number"] { width: 55px; padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; }
+        .settings-row input[type="number"], .settings-row input[type="time"] { padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; font-family:inherit;}
+        .settings-row input[type="number"] { width: 55px; }
         .settings-row input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; }
 
         .workout-top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--card-bg); border-radius: 10px; margin-bottom: 15px; border: 1px solid var(--border); }
@@ -66,9 +75,9 @@
 <!-- صفحه اصلی -->
 <div id="home-screen">
     <div class="header-bar">
-        <button class="icon-btn" onclick="openSettings()">⚙️ تنظیمات</button>
+        <button class="icon-btn" onclick="openSettings()" title="تنظیمات">⚙️</button>
         <h2>دستیار تمرین ساسان</h2>
-        <div class="version-tag">Ver 9.0</div>
+        <div class="version-tag">Ver 11.0</div>
     </div>
 
     <!-- تقویم هفتگی -->
@@ -105,11 +114,11 @@
 <div id="settings-screen" class="hidden">
     <div class="header-bar">
         <h2 style="font-size: 1.3rem; margin:0; text-align: right;">تنظیمات برنامه</h2>
-        <div class="version-tag">Ver 9.0</div>
+        <div class="version-tag">Ver 11.0</div>
     </div>
     <div class="card">
         <div class="settings-row">
-            <span>حالت شب (تاریک ملایم) 🌙</span>
+            <span>حالت شب (تاریک) 🌙</span>
             <input type="checkbox" id="chk-dark" onchange="toggleDark()">
         </div>
         <div class="settings-row">
@@ -117,15 +126,22 @@
             <input type="checkbox" id="chk-sound" onchange="toggleSound()" checked>
         </div>
         <div class="settings-row">
-            <span>زمان آماده‌سازی (ثانیه) ⏱️</span>
+            <span>آماده‌سازی (ثانیه) ⏱️</span>
             <input type="number" id="inp-prep" value="5">
         </div>
         <div class="settings-row">
-            <span>زمان استراحت (ثانیه) ☕</span>
+            <span>استراحت (ثانیه) ☕</span>
             <input type="number" id="inp-rest" value="20">
         </div>
     </div>
-    <button class="action-btn" onclick="closeSettings()">ذخیره و بازگشت 🏠</button>
+    
+    <div class="card">
+        <h4 style="margin-top:0; color:var(--primary);">یادآور روزانه تمرین ⏰</h4>
+        <p style="font-size:0.85rem; color:var(--text-sec); text-align:justify;">از آنجا که این یک برنامه تحت وب است، برای دریافت هشدار دقیق روی گوشی، آن را مستقیماً به تقویم متصل کنید:</p>
+        <button class="action-btn" style="background:#4285F4; margin-bottom:0;" onclick="setCalendarReminder()">📅 ثبت در تقویم گوشی</button>
+    </div>
+
+    <button class="alt-btn" onclick="closeSettings()">بازگشت به صفحه اصلی 🏠</button>
 </div>
 
 <!-- صفحه تمرین -->
@@ -151,11 +167,23 @@
     </div>
     
     <button class="alt-btn" onclick="goHome()">توقف و بازگشت به منو 🏠</button>
-</div>
-
+                                                                                                                       </div>
+                                                                            <!-- کدهای اصلی برنامه -->
 <script>
-    function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
-    function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
+    function safeGet(key) {
+        try { if (window && window.localStorage) return window.localStorage.getItem(key); }
+        catch(e) { return null; }
+        return null;
+    }
+    function safeSet(key, val) {
+        try { if (window && window.localStorage) window.localStorage.setItem(key, val); }
+        catch(e) {}
+    }
+
+    function setCalendarReminder() {
+        var url = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=ورزش+با+دستیار+ساسان&details=زمان+انجام+روتین+ورزشی+فرا+رسیده+است.&recur=RRULE:FREQ=DAILY";
+        window.open(url, '_blank');
+    }
 
     var routines = {
         spine: {
@@ -198,16 +226,9 @@
         }
     };
 
-    var currentWorkoutType = '';
-    var exIndex = 0; 
-    var currentSet = 1; 
-    var currentSide = 'none'; 
-    var phase = 'prep'; 
-    var stepTimer = null; 
-    var timeLeft = 0;
-    var globalSeconds = 0;
-    var globalTimerInterval = null;
-    var audioCtx = null;
+    var currentWorkoutType = ''; var exIndex = 0; var currentSet = 1; 
+    var currentSide = 'none'; var phase = 'prep'; var stepTimer = null; 
+    var timeLeft = 0; var globalSeconds = 0; var globalTimerInterval = null; var audioCtx = null;
 
     function playBeep(freq, duration, vol) {
         if(safeGet('sound') === '0') return;
@@ -217,15 +238,11 @@
                 if(AudioContext) audioCtx = new AudioContext();
             }
             if(audioCtx && audioCtx.state !== 'closed') {
-                var osc = audioCtx.createOscillator(); 
-                var gainNode = audioCtx.createGain();
-                osc.type = "sine"; 
-                osc.frequency.setValueAtTime(freq || 600, audioCtx.currentTime);
+                var osc = audioCtx.createOscillator(); var gainNode = audioCtx.createGain();
+                osc.type = "sine"; osc.frequency.setValueAtTime(freq || 600, audioCtx.currentTime);
                 gainNode.gain.setValueAtTime(vol || 0.08, audioCtx.currentTime);
-                osc.connect(gainNode); 
-                gainNode.connect(audioCtx.destination);
-                osc.start(); 
-                osc.stop(audioCtx.currentTime + (duration || 0.2));
+                osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + (duration || 0.2));
             }
         } catch(e) {}
     }
@@ -236,12 +253,10 @@
 
     function updateCalendarUI() {
         for(var i=0; i<=6; i++) {
-            var data = safeGet('day_' + i);
-            var el = document.getElementById('day-' + i);
+            var data = safeGet('day_' + i); var el = document.getElementById('day-' + i);
             if(el) {
                 if(data) {
-                    var arr = data.split(',');
-                    var lastType = "";
+                    var arr = data.split(','); var lastType = "";
                     for(var j=0; j<arr.length; j++) { if(arr[j]) lastType = arr[j]; }
                     el.innerText = dayIcons[lastType] || '✔️';
                     el.style.borderColor = 'var(--success)'; el.style.color = 'var(--success)';
@@ -255,10 +270,8 @@
     }
 
     function markTodayDone(type) {
-        var dayIdx = new Date().getDay();
-        var targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
-        safeSet('day_' + targetDay, type);
-        updateCalendarUI();
+        var dayIdx = new Date().getDay(); var targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
+        safeSet('day_' + targetDay, type); updateCalendarUI();
     }
 
     function openSettings() { document.getElementById('home-screen').classList.add('hidden'); document.getElementById('settings-screen').classList.remove('hidden'); }
@@ -267,8 +280,7 @@
     function closeWalkModal() { document.getElementById('modal-walk').classList.add('hidden'); }
 
     function recordActivity(title, icon, type) {
-        closeWalkModal();
-        var btn = document.getElementById('btn-walk-open');
+        closeWalkModal(); var btn = document.getElementById('btn-walk-open');
         if(btn) btn.innerHTML = '<span>' + icon + '</span> ۴. ' + title + ' (ثبت شد ✔️)';
         markTodayDone(type);
     }
@@ -284,40 +296,26 @@
     }
 
     function startWorkout(type) {
-        playBeep(400, 0.1, 0.01); 
-        currentWorkoutType = type;
-        exIndex = 0; 
-        currentSet = 1; 
+        playBeep(400, 0.1, 0.01); currentWorkoutType = type; exIndex = 0; currentSet = 1; 
+        var routine = routines[type]; currentSide = routine.exercises[0].bilateral ? 'left' : 'none';
+        document.getElementById('home-screen').classList.add('hidden'); document.getElementById('workout-screen').classList.remove('hidden');
         
-        var routine = routines[type];
-        currentSide = routine.exercises[0].bilateral ? 'left' : 'none';
-        
-        document.getElementById('home-screen').classList.add('hidden');
-        document.getElementById('workout-screen').classList.remove('hidden');
-        
-        globalSeconds = 0;
-        if(globalTimerInterval) clearInterval(globalTimerInterval);
+        globalSeconds = 0; if(globalTimerInterval) clearInterval(globalTimerInterval);
         document.getElementById('global-timer').innerText = "00:00";
-        
         globalTimerInterval = setInterval(function() {
             globalSeconds++;
-            var m = Math.floor(globalSeconds / 60).toString();
-            if(m.length < 2) m = '0' + m;
-            var s = (globalSeconds % 60).toString();
-            if(s.length < 2) s = '0' + s;
+            var m = Math.floor(globalSeconds / 60).toString(); if(m.length < 2) m = '0' + m;
+            var s = (globalSeconds % 60).toString(); if(s.length < 2) s = '0' + s;
             document.getElementById('global-timer').innerText = m + ":" + s;
         }, 1000);
 
         var prepInp = document.getElementById('inp-prep');
-        var prepVal = prepInp ? parseInt(prepInp.value) : 5;
-        if(isNaN(prepVal)) prepVal = 5;
-        
+        var prepVal = prepInp ? parseInt(prepInp.value) : 5; if(isNaN(prepVal)) prepVal = 5;
         startPhase('prep', prepVal);
     }
 
     function goHome() {
-        if(stepTimer) clearInterval(stepTimer);
-        if(globalTimerInterval) clearInterval(globalTimerInterval);
+        if(stepTimer) clearInterval(stepTimer); if(globalTimerInterval) clearInterval(globalTimerInterval);
         document.getElementById('workout-screen').classList.add('hidden');
         document.getElementById('settings-screen').classList.add('hidden');
         document.getElementById('home-screen').classList.remove('hidden');
@@ -325,4 +323,103 @@
     }
 
     function updateExUI() {
-        va
+        var routine = routines[currentWorkoutType];
+        if(exIndex >= routine.exercises.length) return;
+        var ex = routine.exercises[exIndex];
+
+        document.getElementById('ex-title').innerText = ex.title;
+        document.getElementById('ex-en').innerText = ex.en;
+        document.getElementById('ex-desc').innerText = ex.desc;
+        
+        var totalSets = routine.isCircuit ? routine.sets : ex.sets;
+        var setLabel = routine.isCircuit ? "راند" : "ست";
+        document.getElementById('badge-info').innerText = setLabel + " " + currentSet + " از " + totalSets;
+
+        var sideBadge = document.getElementById('badge-side');
+        if (ex.bilateral && currentSide !== 'none') {
+            sideBadge.classList.remove('hidden');
+            sideBadge.innerText = currentSide === 'left' ? "سمت چپ ⬅️" : "سمت راست ➡️";
+        } else { sideBadge.classList.add('hidden'); }
+    }
+
+    function startPhase(newPhase, time) {
+        if(stepTimer) clearInterval(stepTimer);
+        phase = newPhase; timeLeft = time; updateExUI(); 
+        var phaseTitle = document.getElementById('phase-title'); var display = document.getElementById('timer-display'); var btnDone = document.getElementById('btn-done');
+
+        if (phase === 'prep') {
+            phaseTitle.innerText = "آماده‌سازی برای این حرکت...";
+            display.className = "timer"; display.style.color = "var(--warning)";
+            display.innerText = timeLeft; btnDone.classList.add('hidden');
+            runClock(); playBeep(500, 0.1, 0.05);
+        } 
+        else if (phase === 'work') {
+            var ex = routines[currentWorkoutType].exercises[exIndex];
+            phaseTitle.innerText = "🔥 در حال اجرا";
+            if (ex.type === 'reps') {
+                display.className = "reps-display"; display.innerText = ex.val + " تکرار"; btnDone.classList.remove('hidden');
+            } else {
+                display.className = "timer"; display.style.color = "var(--success)";
+                display.innerText = timeLeft; btnDone.classList.add('hidden'); runClock();
+            }
+            playBeep(800, 0.3, 0.05);
+        } 
+        else if (phase === 'rest') {
+            phaseTitle.innerText = "استراحت ☕"; display.className = "timer"; display.style.color = "var(--danger)";
+            display.innerText = timeLeft; btnDone.classList.add('hidden');
+            runClock(); playBeep(400, 0.2, 0.05);
+        }
+    }
+
+    function runClock() {
+        stepTimer = setInterval(function() {
+            timeLeft--; document.getElementById('timer-display').innerText = timeLeft; playTick(); 
+            if(timeLeft <= 3 && timeLeft > 0) playBeep(900, 0.15, 0.05); 
+            if (timeLeft <= 0) { clearInterval(stepTimer); nextStep(); }
+        }, 1000);
+    }
+
+    function nextStep() {
+        if(stepTimer) clearInterval(stepTimer);
+        var routine = routines[currentWorkoutType]; var ex = routine.exercises[exIndex];
+        var prepInp = document.getElementById('inp-prep'); var prepVal = prepInp ? parseInt(prepInp.value) : 5; if(isNaN(prepVal)) prepVal = 5;
+        var restInp = document.getElementById('inp-rest'); var restVal = restInp ? parseInt(restInp.value) : 20; if(isNaN(restVal)) restVal = 20;
+
+        if (phase === 'prep') { startPhase('work', ex.type === 'time' ? (ex.time || 30) : 0); } 
+        else if (phase === 'work') {
+            var isLastEx = (exIndex === routine.exercises.length - 1);
+            var isLastSet = (currentSet === (routine.isCircuit ? routine.sets : ex.sets));
+            var isLastSide = (!ex.bilateral || currentSide === 'right' || currentSide === 'none');
+            
+            if (isLastEx && isLastSet && isLastSide) {
+                markTodayDone(currentWorkoutType); playBeep(1000, 0.5, 0.1);
+                setTimeout(function() { alert("🏆 عالی بود! تمرین امروز با موفقیت تمام شد."); goHome(); }, 500);
+            } else { startPhase('rest', restVal); }
+        } 
+        else if (phase === 'rest') {
+            if (routine.isCircuit) {
+                exIndex++; if (exIndex >= routine.exercises.length) { exIndex = 0; currentSet++; }
+                startPhase('prep', prepVal);
+            } 
+            else {
+                if (ex.bilateral && currentSide === 'left') { currentSide = 'right'; startPhase('prep', prepVal); } 
+                else {
+                    if (currentSet < ex.sets) { currentSet++; currentSide = ex.bilateral ? 'left' : 'none'; startPhase('prep', prepVal); } 
+                    else {
+                        exIndex++; currentSet = 1; var nextEx = routine.exercises[exIndex];
+                        currentSide = nextEx.bilateral ? 'left' : 'none'; startPhase('prep', prepVal);
+                    }
+                }
+            }
+        }
+    }
+
+    try {
+        if(safeGet('dark') === '1') { document.body.classList.add('dark-mode'); var chk = document.getElementById('chk-dark'); if(chk) chk.checked = true; }
+        if(safeGet('sound') === '0') { var sChk = document.getElementById('chk-sound'); if(sChk) sChk.checked = false; }
+        updateCalendarUI();
+    } catch(err) {}
+</script>
+</body>
+</html>
+
