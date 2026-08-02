@@ -6,13 +6,6 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>دستیار تمرین ساسان</title>
     
-    <script>
-        window.onerror = function(msg, url, line) {
-            alert("🚨 خطای سیستم کشف شد!\n\nعلت: " + msg + "\nخط: " + line);
-            return true; 
-        };
-    </script>
-
     <style>
         :root {
             --bg-color: #f4f7f6; --card-bg: #ffffff; --text-main: #2c3e50; --text-sec: #7f8c8d;
@@ -27,10 +20,10 @@
         .hidden { display: none !important; }
         .card { background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--border); }
         
-        .header-bar { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .header-bar { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); gap:10px; }
         .header-bar h2 { font-size: 1.15rem; margin: 0; flex: 1; text-align: center; color: var(--primary); font-weight: bold; }
-        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.2rem; padding: 8px 12px !important; margin: 0 !important; border-radius: 8px; cursor: pointer; color: var(--text-main); width: auto !important; flex-shrink: 0; display:flex; align-items:center; justify-content:center;}
-        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #8e44ad; flex-shrink: 0; }
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.2rem; padding: 8px 12px; margin: 0; border-radius: 8px; cursor: pointer; color: var(--text-main); flex-shrink: 0; display:flex; align-items:center; justify-content:center;}
+        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #8e44ad; }
 
         .action-btn { background: var(--primary); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
         body.dark-mode .action-btn { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
@@ -41,16 +34,10 @@
         .action-btn.legs { background: #f39c12; }
         .action-btn.cardio { background: #e74c3c; }
         .action-btn.walk { background: var(--card-bg); color: var(--success); border: 2px solid var(--success); }
-        
         .alt-btn { width: 100%; background: var(--text-sec); color: white; padding: 12px; margin-top: 15px; border-radius: 10px; border: none; font-size: 1rem; cursor: pointer; font-weight: bold;}
         .outline-btn { width: 100%; background: transparent; color: var(--text-sec); border: 2px solid var(--border); padding: 12px; border-radius: 10px; font-size: 1rem; margin-top: 5px; cursor: pointer; font-weight: bold;}
         body.dark-mode .outline-btn { color: #a0a0a0; border-color: #444; }
 
-        .week-grid { display: flex; justify-content: space-between; gap: 5px; margin-top: 10px; }
-        .day-col { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
-        .day-name { font-size: 0.8rem; color: var(--text-sec); font-weight: bold; }
-        .day-circle { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; background: var(--card-bg); color: var(--text-sec); }
-        
         .timer { font-size: 4.5rem; font-weight: bold; color: var(--success); margin: 15px 0; font-family: monospace;}
         .reps-display { font-size: 3.5rem; font-weight: bold; color: var(--primary); margin: 15px 0; }
         .instruction { font-size: 1.1rem; line-height: 1.6; padding: 12px; background: var(--bg-color); border-radius: 10px; border: 1px solid var(--border); text-align: justify; }
@@ -58,16 +45,24 @@
         
         .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 6px 15px; border-radius: 15px; font-size: 1rem; font-weight: bold; margin-bottom: 5px; }
         body.dark-mode .badge { background: #1b365d; color: #61b0ff; }
-        
         .en-subtitle { font-size: 0.95rem; color: var(--text-sec); margin-bottom: 10px; direction: ltr; font-weight: bold; }
 
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 1rem; font-weight: bold; }
-        .settings-row input[type="number"], .settings-row input[type="time"] { padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; font-family:inherit;}
-        .settings-row input[type="number"] { width: 55px; }
+        .settings-row input[type="number"] { padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; width: 55px;}
         .settings-row input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; }
 
         .workout-top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--card-bg); border-radius: 10px; margin-bottom: 15px; border: 1px solid var(--border); }
         .workout-top-bar span { font-weight: bold; font-size: 1.1rem; color: var(--primary); }
+
+        /* استایل‌های ویرایشگر */
+        .edit-group { text-align: right; margin-bottom: 15px; background: var(--bg-color); padding: 10px; border-radius: 10px; border: 1px solid var(--border); }
+        body.dark-mode .edit-group { background: #121212; }
+        .edit-item { background: var(--card-bg); padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:8px;}
+        .edit-controls { display:flex; justify-content: space-between; font-size:0.9rem; align-items:center;}
+        .ctrl-btn { background: var(--border); border: none; padding: 4px 10px; font-weight: bold; border-radius: 4px; color: var(--text-main); font-size: 1.1rem; }
+        body.dark-mode .ctrl-btn { background: #333; color: white; }
+        
+        #resume-banner { background: var(--warning); color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
     </style>
 </head>
 <body>
@@ -75,31 +70,25 @@
 <!-- صفحه اصلی -->
 <div id="home-screen">
     <div class="header-bar">
-        <button class="icon-btn" onclick="openSettings()" title="تنظیمات">⚙️</button>
-        <h2>دستیار تمرین ساسان</h2>
-        <div class="version-tag">Ver 11.0</div>
+        <button class="icon-btn" onclick="openScreen('settings-screen')" title="تنظیمات">⚙️</button>
+        <button class="icon-btn" onclick="openScreen('edit-screen')" title="مدیریت حرکات">📋</button>
+        <h2>دستیار تمرین</h2>
+        <div class="version-tag">V 12.0</div>
     </div>
 
-    <!-- تقویم هفتگی -->
-    <div class="card">
-        <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 5px;">📊 تقویم تمرینات این هفته</div>
-        <div class="week-grid">
-            <div class="day-col"><span class="day-name">ش</span><div class="day-circle" id="day-0">ش</div></div>
-            <div class="day-col"><span class="day-name">ی</span><div class="day-circle" id="day-1">ی</div></div>
-            <div class="day-col"><span class="day-name">د</span><div class="day-circle" id="day-2">د</div></div>
-            <div class="day-col"><span class="day-name">س</span><div class="day-circle" id="day-3">س</div></div>
-            <div class="day-col"><span class="day-name">چ</span><div class="day-circle" id="day-4">چ</div></div>
-            <div class="day-col"><span class="day-name">پ</span><div class="day-circle" id="day-5">پ</div></div>
-            <div class="day-col"><span class="day-name">ج</span><div class="day-circle" id="day-6">ج</div></div>
-        </div>
+    <div id="resume-banner" class="hidden" onclick="resumeWorkout()">
+        <span>⚠️ تمرین ناتمام داری! (ادامه)</span>
+        <span style="font-size: 1.5rem;">▶️</span>
     </div>
 
     <div class="card">
         <button class="action-btn" onclick="startWorkout('spine')"><span>🧘‍♂️</span> ۱. روتین کمر و عضله‌سازی</button>
-        <button class="action-btn legs" onclick="startWorkout('legs')"><span>🦵</span> ۲. تمرینات پا (۳ روز در هفته)</button>
-        <button class="action-btn cardio" onclick="startWorkout('cardio')"><span>🔥</span> ۳. کاردیو چربی‌سوزی (مداری)</button>
+        <button class="action-btn legs" onclick="startWorkout('legs')"><span>🦵</span> ۲. تمرینات پا (با جیم‌بال)</button>
+        <button class="action-btn cardio" onclick="startWorkout('cardio')"><span>🔥</span> ۳. کاردیو چربی‌سوزی</button>
         <button class="action-btn walk" onclick="openWalkModal()" id="btn-walk-open"><span>🚶‍♂️</span> ۴. ثبت پیاده‌روی / کوه</button>
     </div>
+
+    <button class="outline-btn" style="border-color: var(--primary); color: var(--primary);" onclick="showHistory()">📅 تاریخچه تمرینات انجام شده</button>
 </div>
 
 <!-- مودال پیاده‌روی -->
@@ -107,41 +96,42 @@
     <h3 style="font-size: 1.3rem;">انتخاب فعالیت امروز 🎯</h3>
     <button class="action-btn" style="background: var(--success);" onclick="recordActivity('تکمیل ۵۰۰۰ قدم', '🚶‍♂️', 'walk')"><span>🚶‍♂️</span> ۵۰۰۰ قدم پیاده‌روی</button>
     <button class="action-btn" style="background: var(--success);" onclick="recordActivity('کوه صفه', '⛰️', 'walk')"><span>⛰️</span> هایکینگ کوه صفه</button>
-    <button class="outline-btn" onclick="closeWalkModal()">انصراف</button>
+    <button class="outline-btn" onclick="closeScreen('modal-walk')">انصراف</button>
+</div>
+
+<!-- تاریخچه -->
+<div id="history-modal" class="card hidden" style="position: fixed; top: 10%; left: 5%; right: 5%; bottom:10%; z-index: 60; overflow-y:auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    <h3 style="color: var(--primary);">📅 آخرین تمرینات</h3>
+    <div id="history-content" style="text-align: right; line-height: 2; font-size: 0.95rem;"></div>
+    <button class="alt-btn" style="position: sticky; bottom: 0;" onclick="closeScreen('history-modal')">بستن</button>
 </div>
 
 <!-- تنظیمات -->
 <div id="settings-screen" class="hidden">
     <div class="header-bar">
         <h2 style="font-size: 1.3rem; margin:0; text-align: right;">تنظیمات برنامه</h2>
-        <div class="version-tag">Ver 11.0</div>
     </div>
     <div class="card">
-        <div class="settings-row">
-            <span>حالت شب (تاریک) 🌙</span>
-            <input type="checkbox" id="chk-dark" onchange="toggleDark()">
-        </div>
-        <div class="settings-row">
-            <span>فعال بودن صدا 🔊</span>
-            <input type="checkbox" id="chk-sound" onchange="toggleSound()" checked>
-        </div>
-        <div class="settings-row">
-            <span>آماده‌سازی (ثانیه) ⏱️</span>
-            <input type="number" id="inp-prep" value="5">
-        </div>
-        <div class="settings-row">
-            <span>استراحت (ثانیه) ☕</span>
-            <input type="number" id="inp-rest" value="20">
-        </div>
+        <div class="settings-row"><span>حالت شب (تاریک) 🌙</span><input type="checkbox" id="chk-dark" onchange="toggleDark()"></div>
+        <div class="settings-row"><span>فعال بودن صدا 🔊</span><input type="checkbox" id="chk-sound" onchange="toggleSound()" checked></div>
+        <div class="settings-row"><span>آماده‌سازی بین حرکات ⏱️</span><input type="number" id="inp-prep" value="20"></div>
+        <div class="settings-row"><span>استراحت بین ست‌ها ☕</span><input type="number" id="inp-rest" value="20"></div>
     </div>
-    
     <div class="card">
-        <h4 style="margin-top:0; color:var(--primary);">یادآور روزانه تمرین ⏰</h4>
-        <p style="font-size:0.85rem; color:var(--text-sec); text-align:justify;">از آنجا که این یک برنامه تحت وب است، برای دریافت هشدار دقیق روی گوشی، آن را مستقیماً به تقویم متصل کنید:</p>
-        <button class="action-btn" style="background:#4285F4; margin-bottom:0;" onclick="setCalendarReminder()">📅 ثبت در تقویم گوشی</button>
+        <h4 style="margin-top:0; color:var(--primary);">یادآور تقویم ⏰</h4>
+        <button class="action-btn" style="background:#4285F4; margin-bottom:0;" onclick="window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=ورزش+با+دستیار+ساسان&details=زمان+تمرین+فرا+رسید.&recur=RRULE:FREQ=DAILY', '_blank')">📅 ثبت در تقویم گوشی</button>
     </div>
+    <button class="alt-btn" onclick="closeScreen('settings-screen')">بازگشت به منو 🏠</button>
+</div>
 
-    <button class="alt-btn" onclick="closeSettings()">بازگشت به صفحه اصلی 🏠</button>
+<!-- مدیریت حرکات -->
+<div id="edit-screen" class="hidden" style="height: 100vh; display: flex; flex-direction: column;">
+    <div class="header-bar" style="padding-top:15px;">
+        <h2 style="font-size: 1.2rem; margin:0; text-align: right; color:var(--primary);">📋 مدیریت حرکات و ست‌ها</h2>
+    </div>
+    <div style="font-size:0.85rem; color:var(--text-sec); margin-bottom:10px;">تیک هر تمرین را بردارید، در روتین امروز نمایش داده نمیشود.</div>
+    <div id="edit-container" style="flex: 1; overflow-y: auto; padding-bottom: 20px;"></div>
+    <button class="action-btn" style="background:var(--success); border-radius:0; margin:0; padding:15px;" onclick="saveEdits()">💾 ذخیره و بازگشت</button>
 </div>
 
 <!-- صفحه تمرین -->
@@ -161,212 +151,273 @@
     <div class="card" style="margin-top: 15px;">
         <h4 id="phase-title" style="font-size: 1.3rem; color: var(--text-sec); margin: 5px 0;">آماده‌سازی</h4>
         <div id="timer-display" class="timer">5</div>
-        
-        <button id="btn-done" class="action-btn hidden" style="background: var(--success); width:100%;" onclick="nextStep()">پایان فاز / انجام شد ✔️</button>
+        <button id="btn-done" class="action-btn hidden" style="background: var(--success); width:100%;" onclick="nextStep()">پایان ست / انجام شد ✔️</button>
         <button id="btn-skip" class="outline-btn" onclick="nextStep()">رد کردن سریع ⏭️</button>
     </div>
     
-    <button class="alt-btn" onclick="goHome()">توقف و بازگشت به منو 🏠</button>
-                                                                                                                       </div>
-                                                                            <!-- کدهای اصلی برنامه -->
+    <button class="alt-btn" style="background: var(--warning);" onclick="pauseAndGoHome()">توقف موقت و بازگشت 🏠</button>
+    <button class="outline-btn" style="border-color:var(--danger); color:var(--danger); margin-top:10px;" onclick="abortWorkout()">انصراف کامل از تمرین امروز ❌</button>
+</div>
+
 <script>
-    function safeGet(key) {
-        try { if (window && window.localStorage) return window.localStorage.getItem(key); }
-        catch(e) { return null; }
-        return null;
-    }
-    function safeSet(key, val) {
-        try { if (window && window.localStorage) window.localStorage.setItem(key, val); }
-        catch(e) {}
-    }
+    function safeGet(k) { try { return window.localStorage ? window.localStorage.getItem(k) : null; } catch(e){ return null; } }
+    function safeSet(k, v) { try { if(window.localStorage) window.localStorage.setItem(k, v); } catch(e){} }
 
-    function setCalendarReminder() {
-        var url = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=ورزش+با+دستیار+ساسان&details=زمان+انجام+روتین+ورزشی+فرا+رسیده+است.&recur=RRULE:FREQ=DAILY";
-        window.open(url, '_blank');
-    }
-
-    var routines = {
+    var defaultRoutines = {
         spine: {
-            isCircuit: false,
+            title: 'روتین کمر و روزانه', isCircuit: false,
             exercises: [
-                { title: "چرخش لگن روی زمین", en: "Pelvic Tilt", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین.", type: "reps", val: "۱۲", sets: 3, bilateral: false },
-                { title: "گربه-گاو آرام", en: "Slow Cat-Cow", desc: "چهار دست و پا. تمرکز فقط روی حرکت مهره‌های میانی و بالایی پشت.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
-                { title: "کتاب باز", en: "Open Book", desc: "خوابیده به پهلو، باز کردن دست بالایی به سمت عقب با چرخش سینه.", type: "reps", val: "۱۰", sets: 2, bilateral: true },
-                { title: "کرانچ اصلاح شده مک‌گیل", en: "McGill Modified Curl-up", desc: "یک پا خم، دست زیر کمر، بالا آوردن سر و شانه ۵ سانت (مکث ۵ ثانیه در بالا).", type: "reps", val: "۱۵", sets: 3, bilateral: false },
+                { title: "چرخش لگن روی زمین", en: "Pelvic Tilt", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین.", type: "reps", val: 12, sets: 3, bilateral: false },
+                { title: "گربه-گاو آرام", en: "Slow Cat-Cow", desc: "چهار دست و پا. تمرکز فقط روی مهره‌های بالایی پشت.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { title: "کتاب باز", en: "Open Book", desc: "خوابیده به پهلو، باز کردن دست بالایی به عقب.", type: "reps", val: 10, sets: 2, bilateral: true },
+                { title: "کرانچ اصلاح شده", en: "McGill Curl-up", desc: "یک پا خم، دست زیر کمر، بالا آوردن سر ۵ سانت.", type: "reps", val: 15, sets: 3, bilateral: false },
                 { title: "پلانک جانبی", en: "Side Plank", desc: "روی آرنج و لبه پا، بدن کاملاً در یک خط صاف.", type: "time", time: 30, sets: 3, bilateral: true },
-                { title: "سگ پرنده", en: "Bird Dog", desc: "چهار دست و پا، دست و پای مخالف کاملاً صاف و در امتداد بدن.", type: "reps", val: "۱۰", sets: 3, bilateral: true },
-                { title: "پل باسن آرام", en: "Slow Glute Bridge", desc: "بالا آوردن باسن بدون قوس دادن به کمر.", type: "reps", val: "۱۰", sets: 3, bilateral: false },
-                { title: "بالا آوردن پا از پهلو", en: "Side-Lying Hip Abduction", desc: "خوابیده به پهلو، بالا آوردن پای رویی با کنترل کامل.", type: "reps", val: "۳۰", sets: 3, bilateral: true },
-                { title: "کشش همسترینگ با کش", en: "Hamstring Stretch with Band", desc: "خوابیده، یک پا صاف، پای دیگر عمود با کمک کش.", type: "time", time: 30, sets: 3, bilateral: true },
-                { title: "چرخش دمبل دور سر", en: "Dumbbell Halo", desc: "با دمبل ۱.۵ کیلویی، شکم منقبض.", type: "reps", val: "۳۰", sets: 3, bilateral: false },
-                { title: "پرس سینه روی زمین", en: "Floor Press", desc: "خوابیده، پایین آوردن دمبل‌ها تا برخورد آرنج به زمین.", type: "reps", val: "۱۲", sets: 3, bilateral: false },
-                { title: "پشت بازو خوابیده", en: "Lying Triceps Extension", desc: "حرکت دادن دمبل از کنار گوش به سمت بالا.", type: "reps", val: "۲۰", sets: 3, bilateral: false },
-                { title: "عقب کشیدن چانه", en: "Chin Tuck", desc: "بدون بالا بردن سر، چانه را به سمت عقب بکشید.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
-                { title: "کشش دست‌ها با کش", en: "Band Pull-Apart", desc: "ایستاده، باز کردن کش تا رسیدن به سینه.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
+                { title: "پلانک ساعد با جیم‌بال", en: "Swiss Ball Plank", desc: "ساعدها روی توپ جیم‌بال، بدن صاف در حالت پلانک (درگیری دوبرابری عمق شکم).", type: "time", time: 30, sets: 3, bilateral: false },
+                { title: "سگ پرنده", en: "Bird Dog", desc: "چهار دست و پا، دست و پای مخالف کاملاً صاف.", type: "reps", val: 10, sets: 3, bilateral: true },
+                { title: "پل باسن آرام", en: "Slow Glute Bridge", desc: "بالا آوردن باسن بدون قوس دادن به کمر.", type: "reps", val: 10, sets: 3, bilateral: false },
+                { title: "چرخش لگن روی جیم‌بال", en: "Pelvic Tilt & Circles", desc: "نشسته روی توپ، حرکت لگن به جلو/عقب و چرخشی (مانند روغن‌کاری مفاصل).", type: "reps", val: 20, sets: 3, bilateral: false },
+                { title: "بالا آوردن پا از پهلو", en: "Side Hip Abduction", desc: "خوابیده به پهلو، بالا آوردن پای رویی.", type: "reps", val: 30, sets: 3, bilateral: true },
+                { title: "کشش همسترینگ با کش", en: "Band Hamstring", desc: "خوابیده، یک پا صاف، پای دیگر عمود.", type: "time", time: 30, sets: 3, bilateral: true },
+                { title: "چرخش دمبل دور سر", en: "Dumbbell Halo", desc: "دمبل ۱.۵ کیلویی، شکم منقبض.", type: "reps", val: 30, sets: 3, bilateral: false },
+                { title: "پرس سینه روی زمین", en: "Floor Press", desc: "خوابیده، پایین آوردن تا برخورد آرنج به زمین.", type: "reps", val: 12, sets: 3, bilateral: false },
+                { title: "پشت بازو خوابیده", en: "Lying Triceps", desc: "حرکت دمبل از کنار گوش به بالا.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { title: "عقب کشیدن چانه", en: "Chin Tuck", desc: "بدون بالا بردن سر، چانه را به عقب بکشید.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { title: "کشش دست‌ها با کش", en: "Band Pull-Apart", desc: "ایستاده، باز کردن کش تا رسیدن به سینه.", type: "reps", val: 15, sets: 3, bilateral: false },
                 { title: "آویزان شدن از بارفیکس", en: "Dead Hang", desc: "آویزان شدن کاملاً بی‌حرکت.", type: "time", time: 60, sets: 4, bilateral: false }
             ]
         },
         legs: {
-            isCircuit: false,
+            title: 'تمرینات پا', isCircuit: false,
             exercises: [
-                { title: "اسکات روی صندلی", en: "Box Squat", desc: "به آرامی روی صندلی بنشینید و بلند شوید.", type: "reps", val: "۱۵", sets: 3, bilateral: false },
-                { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم به جلو، زانوی عقب به زمین نزدیک شود.", type: "reps", val: "۱۰", sets: 3, bilateral: true },
-                { title: "ساق پا ایستاده روی آجر", en: "Calf Raise on Block", desc: "پاشنه‌ها را بالا بکشید و مکث کنید.", type: "reps", val: "۲۰", sets: 3, bilateral: false }
+                { title: "اسکات روی صندلی", en: "Box Squat", desc: "به آرامی روی صندلی بنشینید و بلند شوید.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { title: "اسکات دیواری با جیم‌بال", en: "Swiss Ball Wall Squat", desc: "توپ پشت کمر روی دیوار. سر خوردن به پایین تا زاویه ۹۰ درجه زانو (محافظت کامل از کمر).", type: "reps", val: 12, sets: 3, bilateral: false },
+                { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم به جلو، زانوی عقب به زمین نزدیک شود.", type: "reps", val: 10, sets: 3, bilateral: true },
+                { title: "پشت پا و پل با جیم‌بال", en: "Swiss Ball Hamstring Curl", desc: "پاشنه‌ها روی توپ، باسن بالا. کشیدن توپ به سمت باسن با خم کردن زانو.", type: "reps", val: 10, sets: 3, bilateral: false },
+                { title: "ساق پا ایستاده روی آجر", en: "Calf Raise", desc: "پاشنه‌ها را بالا بکشید و مکث کنید.", type: "reps", val: 20, sets: 3, bilateral: false }
             ]
         },
         cardio: {
-            isCircuit: true,
-            sets: 4, 
+            title: 'کاردیو مداری', isCircuit: true, sets: 4, 
             exercises: [
                 { title: "درجا زدن ایستاده", en: "Standing March", desc: "زانوها بالا، تاب دادن هماهنگ دست‌ها.", type: "time", time: 40, bilateral: false },
-                { title: "پروانه بدون پرش", en: "Step-Jacks", desc: "پای راست به راست و دست‌ها بالای سر، سپس بازگشت و پای چپ.", type: "time", time: 40, bilateral: false },
-                { title: "سایه زنی", en: "Shadow Boxing", desc: "مشت زدن رو به جلو به نوبت با دو دست.", type: "time", time: 40, bilateral: false },
+                { title: "پروانه بدون پرش", en: "Step-Jacks", desc: "پای راست به راست و دست‌ها بالا، سپس چپ.", type: "time", time: 40, bilateral: false },
+                { title: "سایه زنی", en: "Shadow Boxing", desc: "مشت زدن رو به جلو به نوبت.", type: "time", time: 40, bilateral: false },
                 { title: "لگد به عقب ایستاده", en: "Glute Kickbacks", desc: "هل دادن پا به عقب برای انقباض باسن.", type: "time", time: 40, bilateral: false }
             ]
         }
     };
 
-    var currentWorkoutType = ''; var exIndex = 0; var currentSet = 1; 
-    var currentSide = 'none'; var phase = 'prep'; var stepTimer = null; 
-    var timeLeft = 0; var globalSeconds = 0; var globalTimerInterval = null; var audioCtx = null;
+    var routines = JSON.parse(JSON.stringify(defaultRoutines));
+    var activeExs = [];
+    var curType = ''; var exIndex = 0; var currentSet = 1; var currentSide = 'none'; 
+    var phase = 'prep'; var stepTimer = null; var timeLeft = 0; var gSecs = 0; var gTimer = null; var audioCtx = null;
 
-    function playBeep(freq, duration, vol) {
-        if(safeGet('sound') === '0') return;
+    function playBeep(f, d, v) {
+        if(safeGet('sound')==='0') return;
         try {
-            if (!audioCtx) {
-                var AudioContext = window.AudioContext || window.webkitAudioContext;
-                if(AudioContext) audioCtx = new AudioContext();
-            }
-            if(audioCtx && audioCtx.state !== 'closed') {
-                var osc = audioCtx.createOscillator(); var gainNode = audioCtx.createGain();
-                osc.type = "sine"; osc.frequency.setValueAtTime(freq || 600, audioCtx.currentTime);
-                gainNode.gain.setValueAtTime(vol || 0.08, audioCtx.currentTime);
-                osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-                osc.start(); osc.stop(audioCtx.currentTime + (duration || 0.2));
+            if(!audioCtx) { var A = window.AudioContext || window.webkitAudioContext; if(A) audioCtx = new A(); }
+            if(audioCtx) {
+                var o = audioCtx.createOscillator(); var g = audioCtx.createGain();
+                o.type = "sine"; o.frequency.setValueAtTime(f||600, audioCtx.currentTime);
+                g.gain.setValueAtTime(v||0.08, audioCtx.currentTime);
+                o.connect(g); g.connect(audioCtx.destination);
+                o.start(); o.stop(audioCtx.currentTime + (d||0.2));
             }
         } catch(e) {}
     }
     function playTick() { playBeep(900, 0.05, 0.01); }
 
-    var dayIcons = { spine: '🧘‍♂️', legs: '🦵', cardio: '🔥', walk: '⛰️' };
-    var dayNamesList = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
-
-    function updateCalendarUI() {
-        for(var i=0; i<=6; i++) {
-            var data = safeGet('day_' + i); var el = document.getElementById('day-' + i);
-            if(el) {
-                if(data) {
-                    var arr = data.split(','); var lastType = "";
-                    for(var j=0; j<arr.length; j++) { if(arr[j]) lastType = arr[j]; }
-                    el.innerText = dayIcons[lastType] || '✔️';
-                    el.style.borderColor = 'var(--success)'; el.style.color = 'var(--success)';
-                } else {
-                    el.innerText = dayNamesList[i];
-                    el.style.borderColor = 'var(--border)'; el.style.color = 'var(--text-sec)';
-                    el.style.background = 'var(--card-bg)';
+    function loadData() {
+        var saved = safeGet('sasan_routines');
+        if(saved) {
+            try {
+                var parsed = JSON.parse(saved);
+                for(var c in defaultRoutines) {
+                    if(parsed[c]) {
+                        for(var i=0; i<routines[c].exercises.length; i++) {
+                            var targetEx = routines[c].exercises[i];
+                            var pEx = parsed[c].exercises.find(e => e.title === targetEx.title);
+                            if(pEx) {
+                                targetEx.active = pEx.active !== false;
+                                if(pEx.sets) targetEx.sets = pEx.sets;
+                                if(pEx.val) targetEx.val = pEx.val;
+                                if(pEx.time) targetEx.time = pEx.time;
+                            } else { targetEx.active = true; }
+                        }
+                    }
                 }
-            }
+            } catch(e) {}
+        } else {
+            for(var c in routines) routines[c].exercises.forEach(e => e.active = true);
+        }
+    }
+    
+    function logHistory(title) {
+        var date = new Intl.DateTimeFormat('fa-IR', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }).format(new Date());
+        var h = JSON.parse(safeGet('sasan_history')||'[]');
+        h.unshift(date + " ⬅️ " + title);
+        safeSet('sasan_history', JSON.stringify(h.slice(0, 30)));
+    }
+    function showHistory() {
+        var h = JSON.parse(safeGet('sasan_history')||'[]');
+        document.getElementById('history-content').innerHTML = h.length ? h.join('<br><hr style="border:0;border-top:1px dashed #ccc;margin:8px 0;">') : 'هنوز تمرینی ثبت نشده است.';
+        document.getElementById('history-modal').classList.remove('hidden');
+    }
+
+    function openScreen(id) { document.getElementById('home-screen').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); if(id==='edit-screen') renderEditor(); }
+    function closeScreen(id) { document.getElementById(id).classList.add('hidden'); document.getElementById('home-screen').classList.remove('hidden'); }
+    function openWalkModal() { document.getElementById('modal-walk').classList.remove('hidden'); }
+
+    function toggleDark() {
+        var c = document.getElementById('chk-dark').checked;
+        if(c) { document.body.classList.add('dark-mode'); safeSet('dark', '1'); } else { document.body.classList.remove('dark-mode'); safeSet('dark', '0'); }
+    }
+    function toggleSound() { safeSet('sound', document.getElementById('chk-sound').checked ? '1' : '0'); }
+
+    function renderEditor() {
+        var html = '';
+        for(var cat in routines) {
+            html += '<div class="edit-group"><h3 style="margin-top:0; color:var(--primary);">'+routines[cat].title+'</h3>';
+            routines[cat].exercises.forEach((ex, idx) => {
+                var isChk = ex.active !== false ? 'checked' : '';
+                var qtyL = ex.type === 'reps' ? 'تکرار:' : 'ثانیه:';
+                var qtyV = ex.type === 'reps' ? ex.val : ex.time;
+                var setHtml = routines[cat].isCircuit ? '' : `<div>ست: <button class="ctrl-btn" onclick="updateEx('${cat}',${idx},'sets',-1)">-</button> <b>${ex.sets}</b> <button class="ctrl-btn" onclick="updateEx('${cat}',${idx},'sets',1)">+</button></div>`;
+                html += `
+                <div class="edit-item" style="opacity: ${ex.active !== false ? '1' : '0.5'};">
+                    <label style="font-weight:bold;"><input type="checkbox" ${isChk} onchange="toggleEx('${cat}',${idx})"> ${ex.title}</label>
+                    <div class="edit-controls">
+                        ${setHtml}
+                        <div>${qtyL} <button class="ctrl-btn" onclick="updateEx('${cat}',${idx},'qty',-1)">-</button> <b>${qtyV}</b> <button class="ctrl-btn" onclick="updateEx('${cat}',${idx},'qty',1)">+</button></div>
+                    </div>
+                </div>`;
+            });
+            html += '</div>';
+        }
+        document.getElementById('edit-container').innerHTML = html;
+    }
+    function toggleEx(cat, idx) { routines[cat].exercises[idx].active = !routines[cat].exercises[idx].active; renderEditor(); }
+    function updateEx(cat, idx, field, delta) {
+        var ex = routines[cat].exercises[idx];
+        if(field === 'sets' && !routines[cat].isCircuit) ex.sets = Math.max(1, ex.sets + delta);
+        if(field === 'qty') {
+            if(ex.type === 'reps') ex.val = Math.max(1, ex.val + delta);
+            else ex.time = Math.max(5, ex.time + (delta*5)); // step by 5 sec
+        }
+        renderEditor();
+    }
+    function saveEdits() { safeSet('sasan_routines', JSON.stringify(routines)); closeScreen('edit-screen'); }
+
+    function recordActivity(title, icon) {
+        closeScreen('modal-walk');
+        document.getElementById('btn-walk-open').innerHTML = '<span>'+icon+'</span> ۴. '+title+' (ثبت شد ✔️)';
+        logHistory(title);
+    }
+
+    function checkResumeState() {
+        var s = safeGet('sasan_resume'); var b = document.getElementById('resume-banner');
+        if(s) {
+            var state = JSON.parse(s);
+            if(Date.now() - state.stamp < 15 * 60 * 1000) { b.classList.remove('hidden'); } 
+            else { safeSet('sasan_resume', ''); b.classList.add('hidden'); }
+        } else { b.classList.add('hidden'); }
+    }
+
+    function saveState() {
+        if(curType) {
+            var s = { type: curType, idx: exIndex, set: currentSet, side: currentSide, gSecs: gSecs, stamp: Date.now() };
+            safeSet('sasan_resume', JSON.stringify(s));
         }
     }
 
-    function markTodayDone(type) {
-        var dayIdx = new Date().getDay(); var targetDay = (dayIdx === 6) ? 0 : dayIdx + 1;
-        safeSet('day_' + targetDay, type); updateCalendarUI();
-    }
-
-    function openSettings() { document.getElementById('home-screen').classList.add('hidden'); document.getElementById('settings-screen').classList.remove('hidden'); }
-    function closeSettings() { document.getElementById('settings-screen').classList.add('hidden'); document.getElementById('home-screen').classList.remove('hidden'); }
-    function openWalkModal() { document.getElementById('modal-walk').classList.remove('hidden'); }
-    function closeWalkModal() { document.getElementById('modal-walk').classList.add('hidden'); }
-
-    function recordActivity(title, icon, type) {
-        closeWalkModal(); var btn = document.getElementById('btn-walk-open');
-        if(btn) btn.innerHTML = '<span>' + icon + '</span> ۴. ' + title + ' (ثبت شد ✔️)';
-        markTodayDone(type);
-    }
-
-    function toggleDark() {
-        var chk = document.getElementById('chk-dark');
-        if(chk && chk.checked) { document.body.classList.add('dark-mode'); safeSet('dark', '1'); } 
-        else { document.body.classList.remove('dark-mode'); safeSet('dark', '0'); }
-    }
-    function toggleSound() {
-        var sChk = document.getElementById('chk-sound');
-        if(sChk && sChk.checked) safeSet('sound', '1'); else safeSet('sound', '0');
-    }
-
-    function startWorkout(type) {
-        playBeep(400, 0.1, 0.01); currentWorkoutType = type; exIndex = 0; currentSet = 1; 
-        var routine = routines[type]; currentSide = routine.exercises[0].bilateral ? 'left' : 'none';
-        document.getElementById('home-screen').classList.add('hidden'); document.getElementById('workout-screen').classList.remove('hidden');
+    function startWorkout(type, isResume) {
+        if(!isResume) {
+            curType = type; exIndex = 0; currentSet = 1;
+            activeExs = routines[type].exercises.filter(e => e.active !== false);
+            if(activeExs.length === 0) { alert('هیچ تمرین فعالی در این گروه وجود ندارد!'); return; }
+            currentSide = activeExs[0].bilateral ? 'left' : 'none'; gSecs = 0;
+            safeSet('sasan_resume', '');
+        }
         
-        globalSeconds = 0; if(globalTimerInterval) clearInterval(globalTimerInterval);
-        document.getElementById('global-timer').innerText = "00:00";
-        globalTimerInterval = setInterval(function() {
-            globalSeconds++;
-            var m = Math.floor(globalSeconds / 60).toString(); if(m.length < 2) m = '0' + m;
-            var s = (globalSeconds % 60).toString(); if(s.length < 2) s = '0' + s;
+        playBeep(400, 0.1, 0.01);
+        document.getElementById('home-screen').classList.add('hidden'); 
+        document.getElementById('workout-screen').classList.remove('hidden');
+        
+        if(gTimer) clearInterval(gTimer);
+        gTimer = setInterval(function() {
+            gSecs++;
+            var m = Math.floor(gSecs / 60).toString().padStart(2,'0');
+            var s = (gSecs % 60).toString().padStart(2,'0');
             document.getElementById('global-timer').innerText = m + ":" + s;
+            saveState();
         }, 1000);
 
-        var prepInp = document.getElementById('inp-prep');
-        var prepVal = prepInp ? parseInt(prepInp.value) : 5; if(isNaN(prepVal)) prepVal = 5;
-        startPhase('prep', prepVal);
+        var prepV = parseInt(document.getElementById('inp-prep').value) || 20;
+        startPhase('prep', isResume ? 5 : prepV); // Quick 5s prep on resume
     }
 
-    function goHome() {
-        if(stepTimer) clearInterval(stepTimer); if(globalTimerInterval) clearInterval(globalTimerInterval);
+    function resumeWorkout() {
+        var s = JSON.parse(safeGet('sasan_resume'));
+        curType = s.type; exIndex = s.idx; currentSet = s.set; currentSide = s.side; gSecs = s.gSecs || 0;
+        activeExs = routines[curType].exercises.filter(e => e.active !== false);
+        startWorkout(curType, true);
+    }
+
+    function pauseAndGoHome() {
+        if(stepTimer) clearInterval(stepTimer); if(gTimer) clearInterval(gTimer);
+        saveState();
         document.getElementById('workout-screen').classList.add('hidden');
-        document.getElementById('settings-screen').classList.add('hidden');
         document.getElementById('home-screen').classList.remove('hidden');
-        updateCalendarUI();
+        checkResumeState();
+    }
+    
+    function abortWorkout() {
+        safeSet('sasan_resume', '');
+        curType = '';
+        pauseAndGoHome();
     }
 
     function updateExUI() {
-        var routine = routines[currentWorkoutType];
-        if(exIndex >= routine.exercises.length) return;
-        var ex = routine.exercises[exIndex];
-
+        if(exIndex >= activeExs.length) return;
+        var ex = activeExs[exIndex];
         document.getElementById('ex-title').innerText = ex.title;
         document.getElementById('ex-en').innerText = ex.en;
         document.getElementById('ex-desc').innerText = ex.desc;
         
-        var totalSets = routine.isCircuit ? routine.sets : ex.sets;
-        var setLabel = routine.isCircuit ? "راند" : "ست";
-        document.getElementById('badge-info').innerText = setLabel + " " + currentSet + " از " + totalSets;
-
-        var sideBadge = document.getElementById('badge-side');
+        var totalSets = routines[curType].isCircuit ? routines[curType].sets : ex.sets;
+        document.getElementById('badge-info').innerText = "ست " + currentSet + " از " + totalSets;
+        
+        var sBadge = document.getElementById('badge-side');
         if (ex.bilateral && currentSide !== 'none') {
-            sideBadge.classList.remove('hidden');
-            sideBadge.innerText = currentSide === 'left' ? "سمت چپ ⬅️" : "سمت راست ➡️";
-        } else { sideBadge.classList.add('hidden'); }
+            sBadge.classList.remove('hidden'); sBadge.innerText = currentSide === 'left' ? "سمت چپ ⬅️" : "سمت راست ➡️";
+        } else { sBadge.classList.add('hidden'); }
     }
 
     function startPhase(newPhase, time) {
         if(stepTimer) clearInterval(stepTimer);
         phase = newPhase; timeLeft = time; updateExUI(); 
-        var phaseTitle = document.getElementById('phase-title'); var display = document.getElementById('timer-display'); var btnDone = document.getElementById('btn-done');
+        var pTitle = document.getElementById('phase-title'); var disp = document.getElementById('timer-display'); var btn = document.getElementById('btn-done');
 
         if (phase === 'prep') {
-            phaseTitle.innerText = "آماده‌سازی برای این حرکت...";
-            display.className = "timer"; display.style.color = "var(--warning)";
-            display.innerText = timeLeft; btnDone.classList.add('hidden');
+            pTitle.innerText = "آماده‌سازی برای حرکت جدید";
+            disp.className = "timer"; disp.style.color = "var(--warning)";
+            disp.innerText = timeLeft; btn.classList.add('hidden');
             runClock(); playBeep(500, 0.1, 0.05);
         } 
         else if (phase === 'work') {
-            var ex = routines[currentWorkoutType].exercises[exIndex];
-            phaseTitle.innerText = "🔥 در حال اجرا";
+            var ex = activeExs[exIndex];
+            pTitle.innerText = "🔥 در حال اجرا";
             if (ex.type === 'reps') {
-                display.className = "reps-display"; display.innerText = ex.val + " تکرار"; btnDone.classList.remove('hidden');
+                disp.className = "reps-display"; disp.innerText = ex.val + " تکرار"; btn.classList.remove('hidden');
             } else {
-                display.className = "timer"; display.style.color = "var(--success)";
-                display.innerText = timeLeft; btnDone.classList.add('hidden'); runClock();
+                disp.className = "timer"; disp.style.color = "var(--success)";
+                disp.innerText = timeLeft; btn.classList.add('hidden'); runClock();
             }
             playBeep(800, 0.3, 0.05);
         } 
         else if (phase === 'rest') {
-            phaseTitle.innerText = "استراحت ☕"; display.className = "timer"; display.style.color = "var(--danger)";
-            display.innerText = timeLeft; btnDone.classList.add('hidden');
+            pTitle.innerText = "استراحت ☕"; disp.className = "timer"; disp.style.color = "var(--danger)";
+            disp.innerText = timeLeft; btn.classList.add('hidden');
             runClock(); playBeep(400, 0.2, 0.05);
         }
     }
@@ -381,44 +432,50 @@
 
     function nextStep() {
         if(stepTimer) clearInterval(stepTimer);
-        var routine = routines[currentWorkoutType]; var ex = routine.exercises[exIndex];
-        var prepInp = document.getElementById('inp-prep'); var prepVal = prepInp ? parseInt(prepInp.value) : 5; if(isNaN(prepVal)) prepVal = 5;
-        var restInp = document.getElementById('inp-rest'); var restVal = restInp ? parseInt(restInp.value) : 20; if(isNaN(restVal)) restVal = 20;
+        var ex = activeExs[exIndex]; var isCirc = routines[curType].isCircuit;
+        var prepV = parseInt(document.getElementById('inp-prep').value) || 20;
+        var restV = parseInt(document.getElementById('inp-rest').value) || 20;
 
-        if (phase === 'prep') { startPhase('work', ex.type === 'time' ? (ex.time || 30) : 0); } 
+        if (phase === 'prep') { startPhase('work', ex.type === 'time' ? ex.time : 0); } 
         else if (phase === 'work') {
-            var isLastEx = (exIndex === routine.exercises.length - 1);
-            var isLastSet = (currentSet === (routine.isCircuit ? routine.sets : ex.sets));
+            var isLastEx = (exIndex === activeExs.length - 1);
+            var isLastSet = (currentSet === (isCirc ? routines[curType].sets : ex.sets));
             var isLastSide = (!ex.bilateral || currentSide === 'right' || currentSide === 'none');
             
             if (isLastEx && isLastSet && isLastSide) {
-                markTodayDone(currentWorkoutType); playBeep(1000, 0.5, 0.1);
-                setTimeout(function() { alert("🏆 عالی بود! تمرین امروز با موفقیت تمام شد."); goHome(); }, 500);
-            } else { startPhase('rest', restVal); }
+                logHistory(routines[curType].title); safeSet('sasan_resume', '');
+                playBeep(1000, 0.5, 0.1);
+                setTimeout(function() { alert("🏆 عالی بود! تمرین امروز با موفقیت تمام شد."); pauseAndGoHome(); }, 500);
+            } else { startPhase('rest', restV); }
         } 
         else if (phase === 'rest') {
-            if (routine.isCircuit) {
-                exIndex++; if (exIndex >= routine.exercises.length) { exIndex = 0; currentSet++; }
-                startPhase('prep', prepVal);
+            if (isCirc) {
+                exIndex++; if (exIndex >= activeExs.length) { exIndex = 0; currentSet++; }
+                startPhase('prep', prepV); // In circuit, every step is a new exercise
             } 
             else {
-                if (ex.bilateral && currentSide === 'left') { currentSide = 'right'; startPhase('prep', prepVal); } 
+                if (ex.bilateral && currentSide === 'left') { 
+                    currentSide = 'right'; startPhase('work', ex.type === 'time' ? ex.time : 0); // NO PREP between sides
+                } 
                 else {
-                    if (currentSet < ex.sets) { currentSet++; currentSide = ex.bilateral ? 'left' : 'none'; startPhase('prep', prepVal); } 
+                    if (currentSet < ex.sets) { 
+                        currentSet++; currentSide = ex.bilateral ? 'left' : 'none'; startPhase('work', ex.type === 'time' ? ex.time : 0); // NO PREP between sets
+                    } 
                     else {
-                        exIndex++; currentSet = 1; var nextEx = routine.exercises[exIndex];
-                        currentSide = nextEx.bilateral ? 'left' : 'none'; startPhase('prep', prepVal);
+                        exIndex++; currentSet = 1; var nextEx = activeExs[exIndex];
+                        currentSide = nextEx.bilateral ? 'left' : 'none'; startPhase('prep', prepV); // PREP ONLY on new exercise
                     }
                 }
             }
         }
     }
 
-    try {
-        if(safeGet('dark') === '1') { document.body.classList.add('dark-mode'); var chk = document.getElementById('chk-dark'); if(chk) chk.checked = true; }
-        if(safeGet('sound') === '0') { var sChk = document.getElementById('chk-sound'); if(sChk) sChk.checked = false; }
-        updateCalendarUI();
-    } catch(err) {}
+    window.onload = function() {
+        loadData();
+        if(safeGet('dark') === '1') { document.body.classList.add('dark-mode'); document.getElementById('chk-dark').checked = true; }
+        if(safeGet('sound') === '0') document.getElementById('chk-sound').checked = false;
+        checkResumeState();
+    };
 </script>
 </body>
 </html>
