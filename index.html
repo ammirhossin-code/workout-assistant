@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>اپلیکیشن ورزشی ساسان</title>
+    <title>اپلیکیشن ورزشی ساسان - باشگاه</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,12 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .exercise-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .timer-btn { transition: all 0.2s; }
-        .timer-btn.active { background-color: #ef4444; color: white; border-color: #ef4444; }
+        /* Modal Styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 50; justify-content: center; align-items: center; padding: 20px; }
+        .modal.active { display: flex; animation: fadeIn 0.2s ease; }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 15px; padding: 20px; max-height: 90vh; overflow-y: auto; }
+        .collapsible-content { display: none; padding: 15px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 0.85rem; line-height: 1.8; color: #475569; }
+        .collapsible-content.active { display: block; }
     </style>
 </head>
 <body>
@@ -25,8 +30,11 @@
 <div class="app-container">
     <!-- Header -->
     <header class="bg-blue-600 text-white p-4 sticky top-0 z-10 shadow-md flex justify-between items-center">
-        <h1 class="text-xl font-bold"><i class="fas fa-dumbbell ml-2"></i>تمرینات ساسان</h1>
-        <button onclick="goBack()" id="backBtn" class="hidden text-white"><i class="fas fa-arrow-left text-xl"></i></button>
+        <div class="flex items-center">
+            <h1 class="text-lg font-bold"><i class="fas fa-dumbbell ml-2"></i>تمرینات ساسان</h1>
+            <span class="bg-blue-800 text-[10px] px-2 py-1 rounded mr-2 font-mono">Gym-v1.1</span>
+        </div>
+        <button onclick="goBack()" id="backBtn" class="hidden text-white p-2"><i class="fas fa-arrow-left text-xl"></i></button>
     </header>
 
     <!-- VIEWS -->
@@ -35,7 +43,7 @@
     <div id="view-home" class="view active">
         <div class="mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100">
             <h2 class="font-bold text-blue-800 text-lg mb-2">خوش آمدید!</h2>
-            <p class="text-sm text-gray-600 leading-relaxed">برای امروز چه برنامه‌ای دارید؟ تمرینات خود را انتخاب کنید و پیشرفت خود را ثبت نمایید.</p>
+            <p class="text-sm text-gray-600 leading-relaxed">برای امروز چه برنامه‌ای دارید؟ تمرینات باشگاهی خود را انتخاب کنید و پیشرفت خود را ثبت نمایید.</p>
         </div>
         
         <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-star text-yellow-500 ml-1"></i> دسترسی سریع</h3>
@@ -62,11 +70,13 @@
     <div id="view-programs" class="view">
         <h2 class="font-bold text-xl text-gray-800 mb-4 border-b pb-2">📝🗒️ برنامه‌های من</h2>
         
-        <!-- Nested Gym Program Folder -->
         <div class="border border-gray-200 rounded-xl overflow-hidden mb-4 bg-white shadow-sm">
-            <div class="bg-gray-50 p-4 border-b border-gray-200 flex items-center">
-                <i class="fas fa-folder-open text-blue-500 text-xl ml-3"></i>
-                <h3 class="font-bold text-gray-800">برنامه تمرینات باشگاهی</h3>
+            <div class="bg-gray-50 p-4 border-b border-gray-200 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-folder-open text-blue-500 text-xl ml-3"></i>
+                    <h3 class="font-bold text-gray-800">برنامه تمرینات باشگاهی</h3>
+                </div>
+                <button onclick="resetToDefault()" class="text-xs text-red-500 bg-red-50 px-2 py-1 rounded border border-red-200"><i class="fas fa-sync-alt ml-1"></i>ریست برنامه</button>
             </div>
             <div class="p-2">
                 <div onclick="navigateTo('view-gym-intro')" class="p-3 border-b border-gray-100 flex justify-between items-center cursor-pointer hover:bg-gray-50">
@@ -95,13 +105,13 @@
         <h2 class="font-bold text-xl text-gray-800 mb-3">برنامه بدنسازی و عضله‌سازی ایمن</h2>
         <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-4 text-sm text-gray-800 leading-loose text-justify">
             <p class="mb-2"><strong>هدف:</strong> یک برنامه علمی، مجهز و اختصاصی برای ۳ جلسه در هفته، با تمرکز بر حداکثر عضله‌سازی (Hypertrophy) و حفظ ایمنی مطلق ستون فقرات.</p>
-            <p class="mb-2"><strong>ساختار (Full Body / Upper-Lower Integrated):</strong> بهترین الگوی عضله‌سازی برای ۳ جلسه در هفته تحریک عضلات بزرگ ۲ تا ۳ بار است. ترکیب عضلات با دستگاه‌ها و تکیه‌گاه‌های ایمن درگیر می‌شوند.</p>
-            <p class="mb-2"><strong>High Stability:</strong> استفاده از دستگاه‌ها و سیم‌کش‌ها باعث تحریک دقیق عضله تا خستگی می‌شود، بدون اینکه کمر باری تحمل کند (حذف اسکات سنگین با هالتر، ددلیفت و زیربغل هالتر خم).</p>
+            <p class="mb-2"><strong>ساختار (Full Body / Upper-Lower Integrated):</strong> بهترین الگوی عضله‌سازی برای ۳ جلسه در هفته تحریک عضلات بزرگ ۲ تا ۳ بار است. در هر جلسه، ترکیبی از عضلات بالاتنه و پایین‌تنه با دستگاه‌ها و تکیه‌گاه‌های ایمن درگیر می‌شوند.</p>
+            <p class="mb-2"><strong>High Stability:</strong> استفاده از دستگاه‌ها و سیم‌کش‌ها به دلیل ایجاد ثبات بالا، دقیقاً عضله هدف را تا حد خستگی تحریک می‌کند بدون اینکه کمر نیاز به تحمل بار یا حفظ تعادل داشته باشد (حذف کامل اسکات سنگین با هالتر روی دوش، ددلیفت و زیربغل هالتر خم).</p>
             <hr class="my-3 border-blue-200">
             <ul class="list-disc pr-4 space-y-1 text-xs">
                 <li><strong>جدول زمانی:</strong> ۳ روز غیرمتوالی</li>
                 <li><strong>استراحت:</strong> ۶۰ تا ۹۰ ثانیه</li>
-                <li><strong>اصل کلیدی:</strong> ۲ تکرار آخر هر ست چالش‌برانگیز باشد اما فرم کاملاً تمیز و بدون فشار کمری بماند.</li>
+                <li><strong>اصل کلیدی:</strong> وزنه را طوری انتخاب کنید که ۲ تکرار آخر هر ست چالش‌برانگیز باشد اما فرم حرکت ۱۰۰٪ تمیز و بدون کوچکترین فشار کمری بماند.</li>
             </ul>
         </div>
         <div class="grid grid-cols-1 gap-3">
@@ -117,8 +127,52 @@
             <h2 id="workout-title" class="font-bold text-lg mb-1">...</h2>
             <p id="workout-subtitle" class="text-xs text-gray-300">بدون کوچکترین فشار به ستون فقرات</p>
         </div>
+
+        <!-- Warm-up Section -->
+        <div class="border border-orange-200 rounded-xl mb-4 bg-white overflow-hidden shadow-sm">
+            <div class="p-3 bg-orange-50 flex justify-between items-center cursor-pointer" onclick="toggleCollapse('warmup-content')">
+                <span class="font-bold text-orange-700 text-sm"><i class="fas fa-fire ml-2"></i>پروتکل گرم کردن (Warm-up)</span>
+                <i class="fas fa-chevron-down text-orange-500"></i>
+            </div>
+            <div id="warmup-content" class="collapsible-content">
+                <p class="font-bold mb-2">مجموع زمان: ۵ تا ۷ دقیقه (داخل باشگاه)</p>
+                <ul class="list-disc pr-4 space-y-2">
+                    <li><strong>فاز اول (در مسیر باشگاه):</strong> همان ۱۰ دقیقه پیاده‌روی از خانه تا باشگاه، بهترین گرم‌کننده عمومی است. نیازی به تردمیل یا دوچرخه در شروع تمرین داخل باشگاه ندارید.</li>
+                    <li><strong>فاز دوم (داخل باشگاه - مفاصل):</strong> قبل از دست زدن به وزنه‌ها، مفاصل را آماده کنید (بدون وزنه):
+                        <ul class="list-circle pr-4 mt-1 space-y-1 text-gray-600">
+                            <li>Arm Circles (چرخش بازوها): ۱۵ بار به جلو، ۱۵ بار به عقب.</li>
+                            <li>Bodyweight Box Squat (اسکات روی نیمکت): ۱۵ تکرار با تمرکز کامل.</li>
+                            <li>Band Pull-Apart (کشش کش روبروی سینه): اگر کش همراه دارید (بله دارم)، ۱۵ تکرار.</li>
+                        </ul>
+                    </li>
+                    <li><strong>فاز سوم (ست‌های گرم‌کردنیِ حرکات):</strong> برای اولین حرکتِ هر جلسه، ۱ تا ۲ ستِ ۱۵ تکراری با وزنه بسیار سبک (یا حتی دستگاه خالی) انجام دهید.</li>
+                </ul>
+            </div>
+        </div>
+
         <div id="workout-container"></div>
-        <button onclick="finishWorkout()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl mt-4 mb-6 shadow-lg text-lg flex justify-center items-center">
+        
+        <button onclick="openEditModal('new')" class="w-full bg-white border-2 border-dashed border-gray-300 text-gray-500 font-bold py-3 rounded-xl mt-2 mb-4 hover:bg-gray-50">
+            <i class="fas fa-plus ml-2"></i> افزودن حرکت جدید
+        </button>
+
+        <!-- Cool-down Section -->
+        <div class="border border-blue-200 rounded-xl mb-4 bg-white overflow-hidden shadow-sm">
+            <div class="p-3 bg-blue-50 flex justify-between items-center cursor-pointer" onclick="toggleCollapse('cooldown-content')">
+                <span class="font-bold text-blue-700 text-sm"><i class="fas fa-snowflake ml-2"></i>پروتکل سرد کردن (Cool-down)</span>
+                <i class="fas fa-chevron-down text-blue-500"></i>
+            </div>
+            <div id="cooldown-content" class="collapsible-content">
+                <p class="font-bold mb-2">مجموع زمان: ۵ دقیقه (داخل باشگاه)</p>
+                <ul class="list-disc pr-4 space-y-2">
+                    <li><strong>فاز اول (رفع فشار):</strong> پس از اتمام آخرین ست، حرکت Dead Hang (آویزان شدن از میله بارفیکس) را انجام دهید. ۲ تا ۳ ستِ ۳۰ ثانیه‌ای آویزان شوید تا فشارها از روی دیسک‌ها برداشته شود.</li>
+                    <li><strong>فاز دوم (کشش ایستا):</strong> یک کشش ملایم برای عضلات سینه (قرار دادن ساعد روی چارچوب در و متمایل شدن به جلو) و یک کشش همسترینگ ملایم.</li>
+                    <li><strong>فاز سوم (در مسیر بازگشت):</strong> آن ۱۰ دقیقه پیاده‌رویِ برگشت، یک سرد کردنِ هوازیِ ایده‌آل (Active Recovery) است تا از گرفتگی شدید عضلات (DOMS) جلوگیری کند.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="finishWorkout()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl mt-2 mb-6 shadow-lg text-lg flex justify-center items-center">
             <i class="fas fa-check-circle ml-2"></i> پایان این جلسه و ثبت گزارش
         </button>
     </div>
@@ -126,9 +180,7 @@
     <!-- 5. Reports View -->
     <div id="view-reports" class="view">
         <h2 class="font-bold text-xl text-gray-800 mb-4 border-b pb-2"><i class="fas fa-chart-line ml-2 text-blue-500"></i>گزارشات تمرین</h2>
-        <div id="reports-container" class="space-y-3">
-            <!-- Reports will be loaded here -->
-        </div>
+        <div id="reports-container" class="space-y-3"></div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -148,63 +200,90 @@
     </nav>
 </div>
 
+<!-- Edit Modal -->
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <h3 class="font-bold text-lg mb-4 border-b pb-2" id="modal-title">ویرایش تمرین</h3>
+        <input type="hidden" id="edit-index">
+        <div class="space-y-3 text-sm">
+            <div><label class="block text-gray-600 mb-1">نام فارسی</label><input type="text" id="edit-fa" class="w-full border rounded p-2 focus:outline-none focus:border-blue-500"></div>
+            <div><label class="block text-gray-600 mb-1">نام انگلیسی</label><input type="text" id="edit-en" dir="ltr" class="w-full border rounded p-2 focus:outline-none focus:border-blue-500"></div>
+            <div><label class="block text-gray-600 mb-1">نحوه اجرا</label><textarea id="edit-exec" rows="2" class="w-full border rounded p-2 focus:outline-none focus:border-blue-500"></textarea></div>
+            <div><label class="block text-gray-600 mb-1">هدف</label><input type="text" id="edit-target" class="w-full border rounded p-2 focus:outline-none focus:border-blue-500"></div>
+            <div><label class="block text-gray-600 mb-1">تعداد ست و تکرار</label><input type="text" id="edit-reps" class="w-full border rounded p-2 focus:outline-none focus:border-blue-500"></div>
+            <div><label class="block text-gray-600 mb-1">زمان استراحت (ثانیه)</label><input type="number" id="edit-time" class="w-full border rounded p-2 focus:outline-none focus:border-blue-500"></div>
+        </div>
+        <div class="mt-5 flex justify-between">
+            <button onclick="deleteExercise()" id="delete-btn" class="text-red-500 px-3 py-2 text-sm"><i class="fas fa-trash"></i> حذف</button>
+            <div>
+                <button onclick="closeEditModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg ml-2">انصراف</button>
+                <button onclick="saveExercise()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold">ذخیره</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // --- Data Base ---
-    const workouts = {
+    // --- Data Base (Default & LocalStorage) ---
+    const defaultWorkouts = {
         day1: {
             title: "جلسه اول: سینه، پشت و چهارسر ران",
             exercises: [
-                { en: "Incline Dumbbell Bench Press", fa: "پرس سینه بالاسینه با دمبل (شیب کم 30 درجه)", exec: "پشتی صندلی روی شیب ۳۰ درجه. با تکیه کامل پشت به میز، دمبل‌ها را بالا ببرید.", target: "رشد عضلات بالاسینه", reps: "3 ست 10 تا 12 تکراری" },
-                { en: "Chest-Supported Machine Row", fa: "زیربغل دستگاه با تکیه‌گاه سینه", exec: "سینه کاملاً به پد دستگاه چسبیده، دسته‌ها را به سمت عقب بکشید و کتف‌ها را جمع کنید.", target: "ضخامت عضلات پشت بدون فشار به گودی کمر", reps: "3 ست 10 تا 12 تکراری" },
-                { en: "Leg Press (Controlled Depth)", fa: "پرس پا دستگاه (دامنه کنترل‌شده)", exec: "پاها عرض شانه. پایین آمدن تا جایی باشد که گودی کمر از تکیه‌گاه جدا نشود.", target: "حجم‌دهی به چهارسر ران و باسن", reps: "3 ست 12 تا 15 تکراری" },
-                { en: "Cable Lateral Raise", fa: "نشر جانب با سیم‌کش (یا دمبل)", exec: "ایستاده کنار سیم‌کش، دستگیره را تا ارتفاع شانه بالا بیاورید.", target: "پهن‌تر شدن سرشانه (دلتوئید جانبی)", reps: "3 ست 12 تا 15 تکراری" },
-                { en: "Cable Triceps Pushdown", fa: "پشت بازو سیم‌کش با طناب", exec: "ایستاده با بدن ثابت و شکم منقبض، طناب را به سمت پایین بکشید.", target: "حجم‌دهی به پشت بازو", reps: "3 ست 12 تا 15 تکراری" }
+                { en: "Incline Dumbbell Bench Press", fa: "پرس سینه بالاسینه با دمبل (شیب ۳۰)", exec: "پشتی صندلی روی شیب ۳۰ درجه. با تکیه کامل پشت به میز، دمبل‌ها را بالا ببرید.", target: "رشد عضلات بالاسینه", reps: "3 ست 10 تا 12 تکراری", time: 90 },
+                { en: "Chest-Supported Machine Row", fa: "زیربغل دستگاه با تکیه‌گاه سینه", exec: "سینه کاملاً به پد دستگاه چسبیده، دسته‌ها را به سمت عقب بکشید و کتف‌ها را جمع کنید.", target: "ضخامت عضلات پشت بدون فشار کمری", reps: "3 ست 10 تا 12 تکراری", time: 90 },
+                { en: "Leg Press (Controlled Depth)", fa: "پرس پا دستگاه (دامنه کنترل‌شده)", exec: "پاها عرض شانه. پایین آمدن تا جایی باشد که گودی کمر از تکیه‌گاه جدا نشود.", target: "حجم‌دهی به چهارسر ران و باسن", reps: "3 ست 12 تا 15 تکراری", time: 90 },
+                { en: "Cable Lateral Raise", fa: "نشر جانب با سیم‌کش", exec: "ایستاده کنار سیم‌کش، دستگیره را تا ارتفاع شانه بالا بیاورید.", target: "پهن‌تر شدن سرشانه", reps: "3 ست 12 تا 15 تکراری", time: 60 },
+                { en: "Cable Triceps Pushdown", fa: "پشت بازو سیم‌کش با طناب", exec: "ایستاده با بدن ثابت و شکم منقبض، طناب را به سمت پایین بکشید.", target: "حجم‌دهی به پشت بازو", reps: "3 ست 12 تا 15 تکراری", time: 60 }
             ]
         },
         day2: {
             title: "جلسه دوم: پشت، همسترینگ، باسن و سرشانه",
             exercises: [
-                { en: "Lat Pulldown (Neutral/Wide)", fa: "زیربغل سیم‌کش از جلو", exec: "نشسته با تکیه ران‌ها زیر پد، میله را تا بالای سینه پایین بکشید بدون خم شدن زیاد به عقب.", target: "عریض شدن عضلات پشت", reps: "3 ست 10 تا 12 تکراری" },
-                { en: "Seated Leg Curl", fa: "پشت پا دستگاه نشسته", exec: "کاملاً به پشتی دستگاه تکیه دهید و با کنترل، پد را به سمت زیر صندلی بکشید.", target: "حجیم‌سازی عضلات همسترینگ بدون فشار کمری", reps: "3 ست 12 تا 15 تکراری" },
-                { en: "Machine Shoulder Press", fa: "پرس سرشانه با دستگاه", exec: "پشت کاملاً به پشتی صندلی چسبیده، دسته‌ها را رو به بالا پرس کنید.", target: "افزایش حجم عضلات جلویی و میانی سرشانه", reps: "3 ست 10 تا 12 تکراری" },
-                { en: "Bulgarian Split Squat", fa: "اسکات بلغاری با دمبل سبک", exec: "یک پا روی میز پشت سر، پای دیگر جلو. با بالاتنه صاف به آرامی پایین بروید.", target: "تقویت و حجم‌دهی عضلات باسن و چهارسر ران", reps: "3 ست 10 تکراری برای هر پا" },
-                { en: "Dumbbell Incline Biceps Curl", fa: "جلو بازو دمبل روی میز شیب‌دار", exec: "روی میز با شیب ۴۵ درجه بنشینید، بازوها معلق به سمت پایین و دمبل‌ها را جمع کنید.", target: "کشش عالی و حجم‌دهی به جلو بازو", reps: "3 ست 12 تکراری" }
+                { en: "Lat Pulldown (Neutral/Wide)", fa: "زیربغل سیم‌کش از جلو", exec: "نشسته با تکیه ران‌ها زیر پد، میله را تا بالای سینه پایین بکشید بدون خم شدن زیاد به عقب.", target: "عریض شدن عضلات پشت", reps: "3 ست 10 تا 12 تکراری", time: 90 },
+                { en: "Seated Leg Curl", fa: "پشت پا دستگاه نشسته", exec: "کاملاً به پشتی دستگاه تکیه دهید و با کنترل، پد را به سمت زیر صندلی بکشید.", target: "حجیم‌سازی عضلات همسترینگ", reps: "3 ست 12 تا 15 تکراری", time: 90 },
+                { en: "Machine Shoulder Press", fa: "پرس سرشانه با دستگاه", exec: "پشت کاملاً به پشتی صندلی چسبیده، دسته‌ها را رو به بالا پرس کنید.", target: "افزایش حجم سرشانه", reps: "3 ست 10 تا 12 تکراری", time: 90 },
+                { en: "Bulgarian Split Squat", fa: "اسکات بلغاری با دمبل سبک", exec: "یک پا روی میز پشت سر، پای دیگر جلو. با بالاتنه صاف به آرامی پایین بروید.", target: "تقویت باسن و چهارسر ران", reps: "3 ست 10 تکراری برای هر پا", time: 90 },
+                { en: "Dumbbell Incline Biceps Curl", fa: "جلو بازو دمبل روی میز شیب‌دار", exec: "روی میز با شیب ۴۵ درجه بنشینید، بازوها معلق به سمت پایین و دمبل‌ها را جمع کنید.", target: "حجم‌دهی به جلو بازو", reps: "3 ست 12 تکراری", time: 60 }
             ]
         },
         day3: {
             title: "جلسه سوم: کامل‌کننده بالاتنه، چهارسر ران و ساق",
             exercises: [
-                { en: "Machine Chest Press", fa: "پرس سینه با دستگاه", exec: "تکیه کامل پشت به صندلی، پرس دسته‌ها رو به جلو با کنترل در فاز برگشت.", target: "حجیم‌سازی بخش میانی سینه با حداکثر ایمنی", reps: "3 ست 10 تا 12 تکراری" },
-                { en: "Seated Cable Row", fa: "زیربغل قایقی سیم‌کش نشسته", exec: "پاها روی تکیه‌گاه، ستون فقرات کاملاً عمود، کشیدن دستگیره به سمت پایین شکم.", target: "تقویت بخش میانی پشت و عضلات ذوزنقه‌ای", reps: "3 ست 10 تا 12 تکراری" },
-                { en: "Leg Extension", fa: "جلو پا دستگاه", exec: "نشسته روی دستگاه، صاف کردن زانوها با مکث ۱ ثانیه‌ای در بالاترین نقطه.", target: "ایزولاسیون چهارسر ران بدون هیچ بار محوری", reps: "3 ست 12 تا 15 تکراری" },
-                { en: "Face Pulls", fa: "فیس پول با سیم‌کش (با طناب)", exec: "قرقره در ارتفاع صورت، کشیدن طناب به سمت صورت و باز کردن دست‌ها.", target: "تقویت عضلات دلتوئید پشتی و اصلاح شانه", reps: "3 ست 15 تکراری" },
-                { en: "Seated/Standing Calf Raise", fa: "ساق پا دستگاه", exec: "پنجه پا روی پد، بالا آوردن کامل پاشنه و مکث ۲ ثانیه‌ای در بالا.", target: "حجم‌دهی به عضلات ساق پا", reps: "3 ست 15 تا 20 تکراری" }
+                { en: "Machine Chest Press", fa: "پرس سینه با دستگاه", exec: "تکیه کامل پشت به صندلی، پرس دسته‌ها رو به جلو با کنترل در فاز برگشت.", target: "حجیم‌سازی بخش میانی سینه", reps: "3 ست 10 تا 12 تکراری", time: 90 },
+                { en: "Seated Cable Row", fa: "زیربغل قایقی سیم‌کش نشسته", exec: "پاها روی تکیه‌گاه، ستون فقرات عمود، کشیدن دستگیره به سمت پایین شکم.", target: "تقویت بخش میانی پشت", reps: "3 ست 10 تا 12 تکراری", time: 90 },
+                { en: "Leg Extension", fa: "جلو پا دستگاه", exec: "نشسته روی دستگاه، صاف کردن زانوها با مکث ۱ ثانیه‌ای در بالاترین نقطه.", target: "ایزولاسیون چهارسر ران", reps: "3 ست 12 تا 15 تکراری", time: 90 },
+                { en: "Face Pulls", fa: "فیس پول با سیم‌کش (با طناب)", exec: "قرقره در ارتفاع صورت، کشیدن طناب به سمت صورت و باز کردن دست‌ها.", target: "تقویت عضلات دلتوئید پشتی", reps: "3 ست 15 تکراری", time: 60 },
+                { en: "Seated/Standing Calf Raise", fa: "ساق پا دستگاه", exec: "پنجه پا روی پد، بالا آوردن کامل پاشنه و مکث ۲ ثانیه‌ای در بالا.", target: "حجم‌دهی به عضلات ساق پا", reps: "3 ست 15 تا 20 تکراری", time: 60 }
             ]
         }
     };
 
+    let workouts = JSON.parse(localStorage.getItem('sasan_gym_data'));
+    if (!workouts) {
+        workouts = JSON.parse(JSON.stringify(defaultWorkouts));
+        localStorage.setItem('sasan_gym_data', JSON.stringify(workouts));
+    }
+
     let historyStack = ['view-home'];
     let currentDayId = '';
-    let timers = {};
+    
+    // Timer State
+    let activeTimer = { index: null, timeLeft: 0, interval: null, isRunning: false, totalTime: 0 };
 
-    // --- Navigation Logic ---
+    // --- Navigation ---
     function navigateTo(viewId) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        
-        if(historyStack[historyStack.length - 1] !== viewId) {
-            historyStack.push(viewId);
-        }
+        if(historyStack[historyStack.length - 1] !== viewId) historyStack.push(viewId);
         updateBackButton();
         window.scrollTo(0, 0);
-
         if(viewId === 'view-reports') loadReports();
     }
 
     function navigateNav(viewId, el) {
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
-        historyStack = [viewId]; // Reset history on main tab click
+        historyStack = [viewId];
         navigateTo(viewId);
     }
 
@@ -212,7 +291,6 @@
         if(historyStack.length > 1) {
             historyStack.pop(); 
             const prevView = historyStack[historyStack.length - 1];
-            
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(prevView).classList.add('active');
             updateBackButton();
@@ -228,68 +306,200 @@
         }
     }
 
-    // --- Workout Render Logic ---
+    function toggleCollapse(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('active');
+    }
+
+    // --- Workout Render ---
     function openDay(dayId) {
         currentDayId = dayId;
         const dayData = workouts[dayId];
         document.getElementById('workout-title').innerText = dayData.title;
+        renderExercises();
         
-        let container = document.getElementById('workout-container');
-        container.innerHTML = '';
-
-        dayData.exercises.forEach((ex, index) => {
-            container.innerHTML += `
-                <div class="exercise-card">
-                    <div class="flex justify-between items-start mb-2 border-b border-gray-100 pb-2">
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-md leading-tight">${ex.fa}</h4>
-                            <span class="text-xs text-gray-500 font-sans tracking-wide block mt-1" dir="ltr">${ex.en}</span>
-                        </div>
-                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded whitespace-nowrap">${index + 1}</span>
-                    </div>
-                    
-                    <div class="text-sm text-gray-700 space-y-2 mt-3 leading-loose">
-                        <p><strong class="text-gray-900"><i class="fas fa-dumbbell text-gray-400 ml-1"></i>نحوه اجرا:</strong> ${ex.exec}</p>
-                        <p><strong class="text-gray-900"><i class="fas fa-bullseye text-red-400 ml-1"></i>هدف:</strong> ${ex.target}</p>
-                        <div class="bg-gray-50 border border-gray-200 rounded p-2 text-center font-bold text-gray-800 mt-2 shadow-inner">
-                            <i class="fas fa-redo-alt text-green-500 ml-1"></i> ${ex.reps}
-                        </div>
-                    </div>
-                    
-                    <button id="btn-timer-${index}" onclick="startTimer(${index}, 90)" class="timer-btn w-full mt-3 border border-gray-300 text-gray-600 rounded-lg py-2 text-sm font-bold flex justify-center items-center">
-                        <i class="fas fa-stopwatch ml-2 text-lg"></i> شروع ۹۰ ثانیه استراحت
-                    </button>
-                </div>
-            `;
-        });
+        // Reset timer state when opening a new day
+        if(activeTimer.interval) clearInterval(activeTimer.interval);
+        activeTimer = { index: null, timeLeft: 0, interval: null, isRunning: false, totalTime: 0 };
         
         navigateTo('view-workout-day');
     }
 
-    // --- Timer Logic ---
-    function startTimer(index, seconds) {
+    function renderExercises() {
+        const dayData = workouts[currentDayId];
+        let container = document.getElementById('workout-container');
+        container.innerHTML = '';
+
+        dayData.exercises.forEach((ex, index) => {
+            const time = ex.time || 90;
+            container.innerHTML += `
+                <div class="exercise-card">
+                    <div class="flex justify-between items-start mb-2 border-b border-gray-100 pb-2">
+                        <div class="flex-1 pr-2">
+                            <h4 class="font-bold text-gray-800 text-md leading-tight">${ex.fa}</h4>
+                            <span class="text-xs text-gray-500 font-sans tracking-wide block mt-1" dir="ltr">${ex.en}</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">${index + 1}</span>
+                            <button onclick="openEditModal(${index})" class="text-gray-400 hover:text-blue-500"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-gray-700 space-y-2 mt-3 leading-loose">
+                        <p><strong class="text-gray-900"><i class="fas fa-dumbbell text-gray-400 ml-1"></i>اجرا:</strong> ${ex.exec}</p>
+                        <p><strong class="text-gray-900"><i class="fas fa-bullseye text-red-400 ml-1"></i>هدف:</strong> ${ex.target}</p>
+                        <div class="bg-gray-50 border border-gray-200 rounded p-2 text-center font-bold text-gray-800 mt-2 flex justify-center items-center gap-3">
+                            <span><i class="fas fa-redo-alt text-green-500 ml-1"></i> ${ex.reps}</span>
+                            <span class="text-gray-400">|</span>
+                            <span><i class="fas fa-clock text-blue-400 ml-1"></i> ${time} ثانیه</span>
+                        </div>
+                    </div>
+                    
+                    <button id="btn-timer-${index}" onclick="handleTimerClick(${index}, ${time})" class="timer-btn w-full mt-3 border border-gray-300 text-gray-600 bg-gray-50 rounded-lg py-2 text-sm font-bold flex justify-center items-center">
+                        <i class="fas fa-play ml-2 text-lg"></i> شروع تایمر (${time} ثانیه)
+                    </button>
+                </div>
+            `;
+        });
+    }
+
+    // --- Play/Pause Timer Logic ---
+    function handleTimerClick(index, totalSeconds) {
         const btn = document.getElementById(`btn-timer-${index}`);
-        if(timers[index]) {
-            clearInterval(timers[index].interval);
+        
+        // If clicking a completely different timer, reset the old one visually
+        if (activeTimer.index !== null && activeTimer.index !== index) {
+            const oldBtn = document.getElementById(`btn-timer-${activeTimer.index}`);
+            if(oldBtn) {
+                oldBtn.innerHTML = `<i class="fas fa-play ml-2 text-lg"></i> شروع تایمر (${activeTimer.totalTime} ثانیه)`;
+                oldBtn.className = "timer-btn w-full mt-3 border border-gray-300 text-gray-600 bg-gray-50 rounded-lg py-2 text-sm font-bold flex justify-center items-center";
+            }
+            clearInterval(activeTimer.interval);
+            activeTimer.isRunning = false;
+        }
+
+        // Toggle Logic for current timer
+        if (activeTimer.index === index && activeTimer.isRunning) {
+            // Pause
+            clearInterval(activeTimer.interval);
+            activeTimer.isRunning = false;
+            btn.innerHTML = `<i class="fas fa-play ml-2 text-lg"></i> ادامه (${activeTimer.timeLeft} ثانیه)`;
+            btn.className = "timer-btn w-full mt-3 border border-yellow-500 text-white bg-yellow-500 rounded-lg py-2 text-sm font-bold flex justify-center items-center shadow-md";
+        } else {
+            // Start or Resume
+            if (activeTimer.index !== index) {
+                activeTimer.timeLeft = totalSeconds;
+                activeTimer.totalTime = totalSeconds;
+            }
+            activeTimer.index = index;
+            activeTimer.isRunning = true;
+            
+            btn.className = "timer-btn w-full mt-3 border border-red-500 text-white bg-red-500 rounded-lg py-2 text-sm font-bold flex justify-center items-center shadow-md";
+            
+            // Immediate UI update before interval kicks in
+            btn.innerHTML = `<i class="fas fa-pause ml-2 text-lg"></i> توقف (${activeTimer.timeLeft} ثانیه)`;
+
+            activeTimer.interval = setInterval(() => {
+                activeTimer.timeLeft--;
+                if (activeTimer.timeLeft <= 0) {
+                    clearInterval(activeTimer.interval);
+                    activeTimer.isRunning = false;
+                    activeTimer.index = null;
+                    btn.className = "timer-btn w-full mt-3 border border-green-400 text-green-700 bg-green-100 rounded-lg py-2 text-sm font-bold flex justify-center items-center";
+                    btn.innerHTML = `<i class="fas fa-check ml-2"></i> استراحت تمام شد!`;
+                    
+                    // Vibrate if supported
+                    if("vibrate" in navigator) navigator.vibrate([200, 100, 200]);
+                } else {
+                    btn.innerHTML = `<i class="fas fa-pause ml-2 text-lg"></i> توقف (${activeTimer.timeLeft} ثانیه)`;
+                }
+            }, 1000);
+        }
+    }
+
+    // --- Edit Logic ---
+    function openEditModal(index) {
+        const isNew = index === 'new';
+        document.getElementById('modal-title').innerText = isNew ? "افزودن حرکت جدید" : "ویرایش تمرین";
+        document.getElementById('edit-index').value = index;
+        
+        if (isNew) {
+            document.getElementById('edit-fa').value = '';
+            document.getElementById('edit-en').value = '';
+            document.getElementById('edit-exec').value = '';
+            document.getElementById('edit-target').value = '';
+            document.getElementById('edit-reps').value = '3 ست 10 تکرار';
+            document.getElementById('edit-time').value = 90;
+            document.getElementById('delete-btn').style.display = 'none';
+        } else {
+            const ex = workouts[currentDayId].exercises[index];
+            document.getElementById('edit-fa').value = ex.fa;
+            document.getElementById('edit-en').value = ex.en;
+            document.getElementById('edit-exec').value = ex.exec;
+            document.getElementById('edit-target').value = ex.target;
+            document.getElementById('edit-reps').value = ex.reps;
+            document.getElementById('edit-time').value = ex.time || 90;
+            document.getElementById('delete-btn').style.display = 'block';
         }
         
-        let timeLeft = seconds;
-        btn.classList.add('active');
-        btn.innerHTML = `<i class="fas fa-stopwatch ml-2"></i> ${timeLeft} ثانیه مانده...`;
+        document.getElementById('edit-modal').classList.add('active');
+    }
 
-        timers[index] = {
-            interval: setInterval(() => {
-                timeLeft--;
-                if(timeLeft <= 0) {
-                    clearInterval(timers[index].interval);
-                    btn.classList.remove('active');
-                    btn.classList.add('bg-green-100', 'text-green-700', 'border-green-300');
-                    btn.innerHTML = `<i class="fas fa-check ml-2"></i> استراحت تمام شد! (دوباره)`;
-                } else {
-                    btn.innerHTML = `<i class="fas fa-stopwatch ml-2"></i> ${timeLeft} ثانیه مانده...`;
-                }
-            }, 1000)
+    function closeEditModal() {
+        document.getElementById('edit-modal').classList.remove('active');
+    }
+
+    function saveExercise() {
+        const index = document.getElementById('edit-index').value;
+        const newEx = {
+            fa: document.getElementById('edit-fa').value,
+            en: document.getElementById('edit-en').value,
+            exec: document.getElementById('edit-exec').value,
+            target: document.getElementById('edit-target').value,
+            reps: document.getElementById('edit-reps').value,
+            time: parseInt(document.getElementById('edit-time').value) || 90
         };
+
+        if (index === 'new') {
+            workouts[currentDayId].exercises.push(newEx);
+        } else {
+            workouts[currentDayId].exercises[index] = newEx;
+            // if we are editing the currently running timer, reset it
+            if(activeTimer.index == index) {
+                clearInterval(activeTimer.interval);
+                activeTimer.index = null;
+            }
+        }
+
+        saveToLocal();
+        closeEditModal();
+        renderExercises();
+    }
+
+    function deleteExercise() {
+        if(confirm("آیا از حذف این حرکت مطمئن هستید؟")) {
+            const index = document.getElementById('edit-index').value;
+            workouts[currentDayId].exercises.splice(index, 1);
+            if(activeTimer.index == index) {
+                clearInterval(activeTimer.interval);
+                activeTimer.index = null;
+            }
+            saveToLocal();
+            closeEditModal();
+            renderExercises();
+        }
+    }
+
+    function saveToLocal() {
+        localStorage.setItem('sasan_gym_data', JSON.stringify(workouts));
+    }
+
+    function resetToDefault() {
+        if(confirm("هشدار: تمام تغییراتی که در تمرینات داده‌اید پاک شده و به حالت اولیه بازمی‌گردد. آیا مطمئن هستید؟")) {
+            workouts = JSON.parse(JSON.stringify(defaultWorkouts));
+            saveToLocal();
+            alert("برنامه به حالت پیش‌فرض بازگشت.");
+        }
     }
 
     // --- Reports Logic ---
@@ -298,21 +508,19 @@
         const time = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute:'2-digit' });
         const dayTitle = workouts[currentDayId].title;
         
-        let reports = JSON.parse(localStorage.getItem('sasan_reports') || '[]');
-        reports.unshift({ title: dayTitle, date: date, time: time, type: 'gym' });
-        localStorage.setItem('sasan_reports', JSON.stringify(reports));
+        let reports = JSON.parse(localStorage.getItem('sasan_gym_reports') || '[]');
+        reports.unshift({ title: dayTitle, date: date, time: time });
+        localStorage.setItem('sasan_gym_reports', JSON.stringify(reports));
 
         alert("عالی بود! تمرین شما با موفقیت ثبت شد.");
         
-        // Stop all timers
-        Object.keys(timers).forEach(k => clearInterval(timers[k].interval));
-        
-        document.querySelectorAll('.nav-item')[2].click(); // Go to reports
+        if(activeTimer.interval) clearInterval(activeTimer.interval);
+        document.querySelectorAll('.nav-item')[2].click();
     }
 
     function loadReports() {
         const container = document.getElementById('reports-container');
-        let reports = JSON.parse(localStorage.getItem('sasan_reports') || '[]');
+        let reports = JSON.parse(localStorage.getItem('sasan_gym_reports') || '[]');
         
         if(reports.length === 0) {
             container.innerHTML = `<div class="text-center text-gray-500 py-10"><i class="fas fa-box-open text-4xl mb-3 opacity-50"></i><p>هنوز تمرینی ثبت نشده است.</p></div>`;
@@ -322,4 +530,16 @@
         container.innerHTML = reports.map(r => `
             <div class="bg-white border-l-4 border-green-500 rounded-lg p-4 shadow-sm flex flex-col">
                 <div class="flex justify-between items-center mb-2">
-                  
+                    <span class="font-bold text-gray-800 text-sm">${r.title}</span>
+                    <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded"><i class="fas fa-dumbbell ml-1"></i>باشگاه</span>
+                </div>
+                <div class="text-xs text-gray-500 flex items-center mt-1">
+                    <i class="far fa-calendar-alt ml-1"></i> ${r.date} 
+                    <i class="far fa-clock mr-3 ml-1"></i> ${r.time}
+                </div>
+            </div>
+        `).join('');
+    }
+</script>
+</body>
+</html>
