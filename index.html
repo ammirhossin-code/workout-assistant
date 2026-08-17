@@ -45,7 +45,10 @@
         .outline-btn { width: 100%; background: transparent; color: var(--text-sec); border: 2px solid var(--border); padding: 12px; border-radius: 10px; font-size: 1rem; margin-top: 5px; cursor: pointer; font-weight: bold;}
         body.dark-mode .outline-btn { color: #a0a0a0; border-color: #444; }
 
-        .timer { font-size: 4.2rem; font-weight: bold; color: var(--success); margin: 5px 0; font-family: monospace; line-height: 1;}
+        .timer { font-size: 4.2rem; font-weight: bold; margin: 5px 0; font-family: monospace; line-height: 1; transition: color 0.3s;}
+        .timer.prep { color: var(--warning); }
+        .timer.work { color: var(--success); }
+        .timer.rest { color: var(--danger); }
         .timer.reps-mode { font-size: 2.3rem; color: var(--primary); }
         
         details.instruction { background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border); text-align: justify; padding: 10px; font-size: 0.95rem; line-height: 1.6; margin-top: 10px; }
@@ -226,14 +229,12 @@
     </div>
 </div>
 
-<!-- صفحه پایان و سرد کردن -->
-<div id="cooldown-screen" class="hidden" style="height: 100vh; display: flex; flex-direction: column;">
-    <h3 style="color: var(--primary); margin: 15px 0 5px 0; flex-shrink: 0;">🎉 تمرین تمام شد! (ریکاوری و سرد کردن)</h3>
+<!-- صفحه پایان و سرد کردن (اصلاح شده برای جلوگیری از پرش دکمه) -->
+<div id="cooldown-screen" class="hidden">
+    <h3 style="color: var(--primary); margin: 15px 0 5px 0;">🎉 تمرین تمام شد! (ریکاوری و سرد کردن)</h3>
     <div class="progress-container"><div class="progress-bar" style="width: 100%;"></div></div>
-    <div id="cooldown-content" style="flex: 1; overflow-y: auto; text-align: right;"></div>
-    <div class="fixed-bottom">
-        <button class="action-btn" style="background:var(--primary); margin-bottom:10px;" onclick="finishWorkout()">✅ ثبت در گزارش و خروج</button>
-    </div>
+    <div id="cooldown-content" style="text-align: right; margin-bottom: 20px;"></div>
+    <button class="action-btn" style="background:var(--primary); margin-bottom: 20px;" onclick="finishWorkout()">✅ ثبت در گزارش و خروج</button>
 </div>
 
 <!-- صفحه اصلی تایمر تمرین -->
@@ -259,7 +260,7 @@
     
     <div class="card" style="margin-top: 10px;">
         <h4 id="phase-title" style="font-size: 1.2rem; color: var(--text-sec); margin: 0 0 5px 0;">آماده‌سازی</h4>
-        <div id="timer-display" class="timer">5</div>
+        <div id="timer-display" class="timer prep">5</div>
         <button id="btn-done" class="action-btn hidden" style="background: var(--success); width:100%; margin-top:10px;" onclick="nextStep()">✔️ پایان ست</button>
         <button id="btn-skip" class="outline-btn" style="margin-top:10px;" onclick="nextStep()">⏭️ پرش</button>
     </div>
@@ -620,6 +621,22 @@
         }, 1000);
     }
 
+    // به‌روزرسانی هوشمند نشانگرهای سمت و ست
+    function updateUIBadges(ex) {
+        document.getElementById('badge-info').innerText = 'ست ' + currentSet + ' از ' + ex.sets;
+        var sideBadge = document.getElementById('badge-side');
+        if(ex.bilateral) {
+            sideBadge.classList.remove('hidden');
+            if(currentSide === 'left') {
+                sideBadge.innerText = '⬅️ سمت چپ';
+            } else {
+                sideBadge.innerText = '➡️ سمت راست';
+            }
+        } else {
+            sideBadge.classList.add('hidden');
+        }
+    }
+
     function loadExercise() {
         if(exIndex >= activeExs.length) {
             clearInterval(stepTimer);
@@ -657,20 +674,7 @@
             directEl.innerText = ex.desc;
         }
 
-        // Set & Direction Indicator Fixes
-        document.getElementById('badge-info').innerText = 'ست ' + currentSet + ' از ' + ex.sets;
-        
-        var sideBadge = document.getElementById('badge-side');
-        if(ex.bilateral) {
-            sideBadge.classList.remove('hidden');
-            if(currentSide === 'left') {
-                sideBadge.innerText = '⬅️ سمت چپ';
-            } else {
-                sideBadge.innerText = '➡️ سمت راست';
-            }
-        } else {
-            sideBadge.classList.add('hidden');
-        }
+        updateUIBadges(ex);
         
         var pct = ((exIndex) / activeExs.length) * 100;
         document.getElementById('workout-progress').style.width = pct + '%';
@@ -680,7 +684,7 @@
         timeLeft = parseInt(document.getElementById('inp-prep').value) || 20;
         
         var timerDisplay = document.getElementById('timer-display');
-        timerDisplay.className = "timer";
+        timerDisplay.className = "timer prep";
         timerDisplay.innerText = timeLeft;
         
         document.getElementById('btn-done').classList.add('hidden');
@@ -723,7 +727,7 @@
         
         var timerDisplay = document.getElementById('timer-display');
         if(ex.type === 'time') {
-            timerDisplay.className = "timer";
+            timerDisplay.className = "timer work";
             timeLeft = ex.time;
             timerDisplay.innerText = timeLeft;
             runTimer();
@@ -739,6 +743,7 @@
         // Handle Bilateral Side Logic
         if(ex.bilateral && currentSide === 'left') {
             currentSide = 'right';
+            updateUIBadges(ex);
             triggerRestPhase();
             return;
         } else if(ex.bilateral && currentSide === 'right') {
@@ -748,6 +753,7 @@
         // Handle Set Increment
         if(currentSet < ex.sets) {
             currentSet++;
+            updateUIBadges(ex);
             triggerRestPhase();
         } else {
             exIndex++;
@@ -764,7 +770,7 @@
         timeLeft = restTime;
         
         var timerDisplay = document.getElementById('timer-display');
-        timerDisplay.className = "timer";
+        timerDisplay.className = "timer rest";
         timerDisplay.innerText = timeLeft;
         
         document.getElementById('btn-done').classList.add('hidden');
