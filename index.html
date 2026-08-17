@@ -270,9 +270,8 @@
 
     var defaultSettings = { prep: 20, rest_spine: 20, rest_cardio: 15, rest_legs: 30, rest_gym: 90 };
     
-    // اصلاح خطوط خالی در راهنمای باشگاه
-    var textWarmupGym = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه (پمپاژ خون).\nفاز ۲: چرخش بازوها به جلو و عقب (۱۵ بار)، و کشش دست‌ها روبروی سینه.\nفاز ۳: انجام ۱ ست ۱۵ تکراری از اولین حرکت فقط با دستگاه خالی.";
-    var textCooldownGym = "فاز ۱: آویزان شدن از میله بارفیکس (Dead Hang) به مدت ۲ تا ۳ ست ۳۰ ثانیه‌ای برای باز شدن فضای بین مهره‌ها.\nفاز ۲: ۱۰ دقیقه پیاده‌روی فعال (Active Recovery) در مسیر بازگشت برای دفع اسید لاکتیک و جلوگیری از کوفتگی عضلانی.";
+    var textWarmupGym = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه (پمپاژ خون).<br>فاز ۲: چرخش بازوها به جلو و عقب (۱۵ بار)، و کشش دست‌ها روبروی سینه.<br>فاز ۳: انجام ۱ ست ۱۵ تکراری از اولین حرکت فقط با دستگاه خالی.";
+    var textCooldownGym = "فاز ۱: آویزان شدن از میله بارفیکس (Dead Hang) به مدت ۲ تا ۳ ست ۳۰ ثانیه‌ای برای باز شدن فضای بین مهره‌ها.<br>فاز ۲: ۱۰ دقیقه پیاده‌روی فعال (Active Recovery) در مسیر بازگشت برای دفع اسید لاکتیک و جلوگیری از کوفتگی عضلانی.";
     var textWarmupHome = "نرمش مفاصل: چرخاندن شانه‌ها، مچ دست و پا، و درجا زدن سبک به مدت ۳ دقیقه.";
     var textCooldownHome = "کشش ایستا: کشش دست‌ها و پاها روی زمین. هر کشش را ۲۰ ثانیه نگه دارید و نفس عمیق بکشید.";
 
@@ -354,7 +353,7 @@
     var activeExs = []; var curType = ''; var exIndex = 0; var currentSet = 1; var currentSide = 'none'; 
     var phase = 'prep'; var stepTimer = null; var timeLeft = 0; var gSecs = 0; var gTimer = null; var audioCtx = null;
     var pauseInterval = null;
-    var historyWeekOffset = 0; // 0 = this week, -1 = last week, etc.
+    var historyWeekOffset = 0;
 
     function playBeep(f, d, v) {
         if(safeGet('sound')==='0') return;
@@ -378,12 +377,17 @@
             if(val) document.getElementById('inp-' + k.replace('_', '-')).value = val;
             else document.getElementById('inp-' + k.replace('_', '-')).value = defaultSettings[k];
         });
+        if(safeGet('sound') === '0') document.getElementById('chk-sound').checked = false;
+        var v = safeGet('sound_vol'); if(v) document.getElementById('inp-vol').value = v;
     }
     function saveRests() {
         ['prep', 'rest_spine', 'rest_cardio', 'rest_legs', 'rest_gym'].forEach(k => {
             safeSet('sasan_set_' + k, document.getElementById('inp-' + k.replace('_', '-')).value);
         });
     }
+    function saveVol() { safeSet('sound_vol', document.getElementById('inp-vol').value); }
+    function toggleSound() { safeSet('sound', document.getElementById('chk-sound').checked ? '1' : '0'); }
+
     function resetDefaults() {
         if(confirm('آیا مطمئن هستید که زمان‌های استراحت به حالت پیش‌فرض برگردند؟')) {
             ['prep', 'rest_spine', 'rest_cardio', 'rest_legs', 'rest_gym'].forEach(k => { safeSet('sasan_set_' + k, ''); });
@@ -417,10 +421,9 @@
         safeSet('sasan_hist_db', JSON.stringify(h));
     }
 
-    // --- History Logic (Saturday to Friday) ---
     function getStartOfIranianWeek(d) {
-        var day = d.getDay(); // 0:Sun, 1:Mon, ... 6:Sat
-        var diff = (day === 6) ? 0 : day + 1; // offset from Saturday
+        var day = d.getDay(); 
+        var diff = (day === 6) ? 0 : day + 1; 
         var start = new Date(d);
         start.setDate(d.getDate() - diff);
         start.setHours(0,0,0,0);
@@ -429,7 +432,6 @@
 
     function renderHistoryGrid() {
         var h = JSON.parse(safeGet('sasan_hist_db')||'{}');
-        
         var today = new Date();
         today.setHours(0,0,0,0);
         var baseDate = new Date(today);
@@ -437,21 +439,18 @@
         var startOfWeek = getStartOfIranianWeek(baseDate);
 
         var html = '<table class="hist-grid"><tr><th>روز</th><th>تاریخ</th><th title="کمر">🧘‍♂️</th><th title="پیاده‌روی">🚶‍♂️</th><th title="کوه">⛰️</th><th title="کاردیو">🔥</th><th title="پا">🦵</th><th title="باشگاه">🏋️‍♂️</th></tr>';
-        
         var faDays = ["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
         
         for(var i=0; i<7; i++) {
             var d = new Date(startOfWeek);
             d.setDate(d.getDate() + i);
-            
             var dateEn = new Intl.DateTimeFormat('en-US', { year:'numeric', month:'2-digit', day:'2-digit' }).format(d);
             var dateFa = new Intl.DateTimeFormat('fa-IR', { year:'numeric', month:'2-digit', day:'2-digit' }).format(d);
-            
             var isToday = (d.getTime() === today.getTime());
             var rowClass = isToday ? ' class="current-day-row"' : '';
             var todayMarker = isToday ? ' <span style="color:red; font-size:1.2rem;">•</span>' : '';
-            
             var rec = h[dateEn] || [];
+            
             html += '<tr'+rowClass+'><td>'+faDays[i]+todayMarker+'</td><td>'+dateFa+'</td>';
             html += '<td>'+(rec.includes('spine')?'✅':'')+'</td>';
             html += '<td>'+(rec.includes('walk')?'✅':'')+'</td>';
@@ -462,7 +461,6 @@
         }
         html += '</table>';
         document.getElementById('history-content').innerHTML = html;
-        
         var lbl = historyWeekOffset === 0 ? "هفته جاری" : (historyWeekOffset < 0 ? (Math.abs(historyWeekOffset) + " هفته قبل") : (historyWeekOffset + " هفته بعد"));
         document.getElementById('hist-week-label').innerText = lbl;
     }
@@ -470,12 +468,254 @@
     function changeWeek(delta) { historyWeekOffset += delta; renderHistoryGrid(); }
     function showHistory() { historyWeekOffset = 0; renderHistoryGrid(); document.getElementById('history-modal').classList.remove('hidden'); }
     
-    function openScreen(id) { ['home-screen', 'settings-screen', 'workout-screen', 'cooldown-screen', 'preview-screen', 'edit-home-screen', 'edit-detail-screen'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(idتغییرات و اصلاحاتی که درخواست کردید کاملاً منطقی هستند و باعث بهبود تجربه کاربری (UX) اپلیکیشن می‌شوند. از آنجا که به سورس کد فعلی شما دسترسی مستقیم ندارم، راهکارهای عملی و کدهای نمونه برای پیاده‌سازی هر مورد را در ادامه توضیح داده‌ام تا بتوانید آن‌ها را در فایل‌های خود اعمال کنید:
+    // Core Navigation
+    function openScreen(id) {
+        ['home-screen', 'settings-screen', 'workout-screen', 'cooldown-screen', 'preview-screen', 'edit-home-screen', 'edit-detail-screen', 'modal-gym', 'modal-walk', 'history-modal'].forEach(s => {
+            var el = document.getElementById(s);
+            if(el && !el.classList.contains('hidden')) el.classList.add('hidden');
+        });
+        document.getElementById(id).classList.remove('hidden');
+    }
+    function closeScreen(id) { document.getElementById(id).classList.add('hidden'); }
+    
+    // UI Helpers
+    function toggleDark() {
+        document.body.classList.toggle('dark-mode');
+        var isDark = document.body.classList.contains('dark-mode');
+        safeSet('sasan_dark', isDark ? '1' : '0');
+        var btn = document.getElementById('btn-dark-home');
+        if(btn) btn.innerText = isDark ? '☀️' : '🌙';
+    }
+    function toggleDarkFromHome() {
+        var chk = document.getElementById('chk-dark');
+        if(chk) chk.checked = !chk.checked;
+        toggleDark();
+    }
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`خطا در تمام صفحه کردن: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
+    }
+    
+    function openGymModal() { document.getElementById('modal-gym').classList.remove('hidden'); }
+    function openWalkModal() { document.getElementById('modal-walk').classList.remove('hidden'); }
+    
+    // Edit & Manage Routines
+    function openEditHome() {
+        var html = '';
+        for(var k in routines) {
+            html += `<button class="edit-cat-btn" onclick="openEditDetail('${k}')">${routines[k].title} <span>✏️</span></button>`;
+        }
+        document.getElementById('edit-cat-container').innerHTML = html;
+        openScreen('edit-home-screen');
+    }
+    function openEditDetail(k) {
+        curType = k;
+        var html = '';
+        routines[k].exercises.forEach((ex, i) => {
+            html += `<div class="edit-item">
+                <div style="display:flex; justify-content:space-between;">
+                    <b>${ex.title}</b>
+                    <input type="checkbox" ${ex.active !== false ? 'checked' : ''} onchange="toggleExActive(${i}, this)">
+                </div>
+            </div>`;
+        });
+        document.getElementById('edit-cat-title').innerText = 'ویرایش ' + routines[k].title;
+        document.getElementById('edit-container').innerHTML = html;
+        openScreen('edit-detail-screen');
+    }
+    function toggleExActive(i, cb) { routines[curType].exercises[i].active = cb.checked; }
+    function backToEditHome() { openScreen('edit-home-screen'); }
+    function saveEdits() {
+        var saved = JSON.parse(safeGet('sasan_routines_v13') || '{}');
+        saved[curType] = routines[curType];
+        safeSet('sasan_routines_v13', JSON.stringify(saved));
+        alert('تغییرات با موفقیت ذخیره شد');
+        backToEditHome();
+    }
 
-**۱. اضافه کردن آیکون حالت تاریک به صفحه اصلی (Home)**
-برای این کار کافی است یک دکمه جدید در هدر یا کنار دکمه تنظیمات در صفحه اصلی قرار دهید و همان تابع تغییر قالب را به آن متصل کنید.
-```html
-<!-- در بخش هدر صفحه اصلی (کنار دکمه تنظیمات) -->
-<button id="home-theme-toggle" onclick="toggleTheme()" style="font-size: 20px; background: none; border: none; cursor: pointer;">
-  🌙
-</button>
+    // Workout Flow
+    function initWorkout(type) {
+        curType = type;
+        activeExs = routines[type].exercises.filter(e => e.active !== false);
+        exIndex = 0; currentSet = 1;
+        document.getElementById('preview-title').innerText = routines[type].title;
+        var prepHtml = '<div class="text-box"><b>آمادگی و گرم کردن:</b><br><br>' + routines[type].warmup + '</div>';
+        
+        // As requested: the exercise list is hidden from preview and will be handled during the workout.
+        document.getElementById('preview-content').innerHTML = prepHtml;
+        openScreen('preview-screen');
+    }
+    
+    function startTimerLogic() {
+        startGlobalTimer();
+        document.getElementById('resume-banner').classList.add('hidden');
+        openScreen('workout-screen');
+        loadExercise();
+    }
+    
+    function startGlobalTimer() {
+        gSecs = 0; clearInterval(gTimer);
+        gTimer = setInterval(() => {
+            gSecs++;
+            var m = Math.floor(gSecs/60).toString().padStart(2,'0');
+            var s = (gSecs%60).toString().padStart(2,'0');
+            document.getElementById('global-timer').innerText = m + ':' + s;
+        }, 1000);
+    }
+
+    function loadExercise() {
+        if(exIndex >= activeExs.length) {
+            clearInterval(stepTimer);
+            clearInterval(gTimer);
+            openScreen('cooldown-screen');
+            document.getElementById('cooldown-content').innerHTML = '<div class="text-box"><b>دستورالعمل سرد کردن:</b><br><br>' + routines[curType].cooldown + '</div>';
+            return;
+        }
+        var ex = activeExs[exIndex];
+        document.getElementById('ex-title').innerText = ex.title;
+        document.getElementById('ex-en').innerText = ex.en;
+        document.getElementById('ex-desc').innerText = ex.desc;
+        document.getElementById('badge-info').innerText = 'ست ' + currentSet + ' از ' + ex.sets;
+        document.getElementById('badge-side').classList.add('hidden');
+        
+        var pct = ((exIndex) / activeExs.length) * 100;
+        document.getElementById('workout-progress').style.width = pct + '%';
+        
+        phase = 'prep';
+        document.getElementById('phase-title').innerText = 'آماده‌سازی برای شروع';
+        timeLeft = parseInt(document.getElementById('inp-prep').value) || 20;
+        document.getElementById('timer-display').innerText = timeLeft;
+        
+        document.getElementById('btn-done').classList.add('hidden');
+        document.getElementById('btn-skip').classList.remove('hidden');
+        runTimer();
+    }
+    
+    function runTimer() {
+        clearInterval(stepTimer);
+        stepTimer = setInterval(function() {
+            timeLeft--;
+            if(timeLeft > 0 && timeLeft <= 3) playTick();
+            if(timeLeft <= 0) {
+                clearInterval(stepTimer);
+                if(phase === 'prep' || phase === 'rest') {
+                    startExercisePhase();
+                } else if(phase === 'work') {
+                    finishSet();
+                }
+            } else {
+                document.getElementById('timer-display').innerText = timeLeft;
+            }
+        }, 1000);
+    }
+    
+    function startExercisePhase() {
+        playBeep(800, 0.4, 0.2);
+        var ex = activeExs[exIndex];
+        phase = 'work';
+        document.getElementById('phase-title').innerText = 'در حال اجرا';
+        document.getElementById('btn-done').classList.remove('hidden');
+        document.getElementById('btn-skip').classList.add('hidden');
+        
+        if(ex.type === 'time') {
+            timeLeft = ex.time;
+            document.getElementById('timer-display').innerText = timeLeft;
+            runTimer();
+        } else {
+            document.getElementById('timer-display').innerText = ex.val + ' تکرار';
+        }
+    }
+    
+    function finishSet() {
+        var ex = activeExs[exIndex];
+        if(currentSet < ex.sets) {
+            currentSet++;
+            phase = 'rest';
+            document.getElementById('phase-title').innerText = 'استراحت بین ست';
+            var restTime = parseInt(document.getElementById('inp-rest-' + routines[curType].typeKey).value) || 30;
+            timeLeft = restTime;
+            document.getElementById('timer-display').innerText = timeLeft;
+            document.getElementById('btn-done').classList.add('hidden');
+            document.getElementById('btn-skip').classList.remove('hidden');
+            runTimer();
+        } else {
+            exIndex++;
+            currentSet = 1;
+            loadExercise();
+        }
+    }
+    
+    function nextStep() {
+        clearInterval(stepTimer);
+        if(phase === 'prep' || phase === 'rest') startExercisePhase();
+        else finishSet();
+    }
+    
+    function pauseAndGoHome() {
+        clearInterval(stepTimer);
+        clearInterval(gTimer);
+        document.getElementById('resume-banner').classList.remove('hidden');
+        
+        // This will successfully hide the workout screen and show the home screen
+        openScreen('home-screen');
+    }
+    
+    function resumeWorkout() {
+        document.getElementById('resume-banner').classList.add('hidden');
+        
+        // Hides home screen and shows workout screen again without scrolling overlaps
+        openScreen('workout-screen');
+        
+        // Resume timers
+        gTimer = setInterval(() => {
+            gSecs++;
+            var m = Math.floor(gSecs/60).toString().padStart(2,'0');
+            var s = (gSecs%60).toString().padStart(2,'0');
+            document.getElementById('global-timer').innerText = m + ':' + s;
+        }, 1000);
+        
+        if(phase === 'prep' || phase === 'rest' || (activeExs[exIndex].type === 'time' && phase === 'work')) {
+            runTimer();
+        }
+    }
+    
+    function abortWorkout() {
+        if(confirm('آیا مطمئن هستید که می‌خواهید از تمرین خارج شوید؟')) {
+            clearInterval(stepTimer);
+            clearInterval(gTimer);
+            document.getElementById('resume-banner').classList.add('hidden');
+            openScreen('home-screen');
+        }
+    }
+    
+    function finishWorkout() {
+        logToDB(routines[curType].typeKey);
+        document.getElementById('resume-banner').classList.add('hidden');
+        openScreen('home-screen');
+    }
+    
+    function recordActivity(type, title, icon) {
+        logToDB(type);
+        alert('فعالیت ' + title + ' با موفقیت ثبت شد!');
+        closeScreen('modal-walk');
+    }
+    
+    // Init on Startup
+    window.onload = function() {
+        loadSettings();
+        loadData();
+        if(safeGet('sasan_dark') === '1') {
+            document.getElementById('chk-dark').checked = true;
+            document.body.classList.add('dark-mode');
+            var btn = document.getElementById('btn-dark-home');
+            if(btn) btn.innerText = '☀️';
+        }
+    };
+</script>
+</body>
+</html>
