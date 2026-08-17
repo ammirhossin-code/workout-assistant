@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2980b9">
     
-    <title>دستیار تمرین ساسان</title>
+    <title>دستیار تمرین v3.2</title>
     
     <style>
         :root {
@@ -52,8 +52,14 @@
         details.instruction summary { font-weight: bold; color: var(--primary); outline: none; cursor: pointer; list-style: none; font-size: 1rem;}
         body.dark-mode details.instruction { background: #121212; border-color: #333; }
         
-        .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; }
+        .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 0.95rem; font-weight: bold; margin: 2px 4px; }
         body.dark-mode .badge { background: #1b365d; color: #61b0ff; }
+        .badge-side { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        body.dark-mode .badge-side { background: #4d3800; color: #ffda6a; border-color: #664d00; }
+        
+        .section-tag { background: #e8f8f5; color: #16a085; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 6px; border: 1px solid #a3e4d7; }
+        body.dark-mode .section-tag { background: #0e3a33; color: #1abc9c; border-color: #16a085; }
+
         .en-subtitle { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 5px; direction: ltr; font-weight: bold; }
 
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; font-weight: bold; }
@@ -100,7 +106,7 @@
         <button class="icon-btn" onclick="openScreen('settings-screen')" title="تنظیمات">⚙️</button>
         <button class="icon-btn" onclick="toggleDarkFromHome()" id="btn-dark-home" title="تغییر حالت شب/روز">🌙</button>
         <button class="icon-btn" onclick="toggleFullScreen()" title="تمام صفحه">🔲</button>
-        <h2>دستیار تمرین</h2>
+        <h2>دستیار تمرین <span style="font-size:0.75rem; color:var(--text-sec);">(v3.2)</span></h2>
         <button class="icon-btn" onclick="openEditHome()" title="مدیریت حرکات">📋</button>
     </div>
 
@@ -110,7 +116,7 @@
     </div>
 
     <div class="card">
-        <button class="action-btn" onclick="initWorkout('spine')"><span>🧘‍♂️</span> ۱. روتین کمر و عضله‌سازی</button>
+        <button class="action-btn" onclick="initWorkout('spine')"><span>🧘‍♂️</span> ۱. روتین ستون فقرات و عضله‌سازی</button>
         <button class="action-btn legs" onclick="initWorkout('legs')"><span>🦵</span> ۲. تمرینات پا در منزل</button>
         <button class="action-btn cardio" onclick="initWorkout('cardio')"><span>🔥</span> ۳. کاردیو چربی‌سوزی در منزل</button>
         <button class="action-btn gym" onclick="openGymModal()"><span>🏋️‍♂️</span> ۴. تمرینات باشگاهی ایمن</button>
@@ -164,7 +170,7 @@
 <!-- تنظیمات -->
 <div id="settings-screen" class="hidden">
     <div class="header-bar">
-        <h2 style="font-size: 1.3rem; margin:0; text-align: right;">تنظیمات برنامه</h2>
+        <h2 style="font-size: 1.3rem; margin:0; text-align: right;">تنظیمات برنامه (v3.2)</h2>
     </div>
     <div class="card">
         <h3 style="font-size: 1rem; color: var(--primary); margin: 0 0 10px 0; text-align: right;">عمومی</h3>
@@ -178,7 +184,7 @@
             <h3 style="font-size: 1rem; color: var(--primary); margin: 0; text-align: right;">زمان استراحت ست‌ها ☕</h3>
             <button class="icon-btn" onclick="resetDefaults()" title="بازگشت به پیش‌فرض" style="padding:4px 8px; font-size:1rem;">🔄</button>
         </div>
-        <div class="settings-row"><span>استراحت روتین کمر 🧘‍♂️</span><input type="number" id="inp-rest-spine" value="20" onchange="saveRests()"></div>
+        <div class="settings-row"><span>استراحت روتین کمر 🧘‍♂️</span><input type="number" id="inp-rest-spine" value="30" onchange="saveRests()"></div>
         <div class="settings-row"><span>استراحت کاردیو 🔥</span><input type="number" id="inp-rest-cardio" value="15" onchange="saveRests()"></div>
         <div class="settings-row"><span>استراحت تمرین پا 🦵</span><input type="number" id="inp-rest-legs" value="30" onchange="saveRests()"></div>
         <div class="settings-row"><span>استراحت باشگاه 🏋️‍♂️</span><input type="number" id="inp-rest-gym" value="90" onchange="saveRests()"></div>
@@ -220,9 +226,9 @@
     </div>
 </div>
 
-<!-- صفحه سرد کردن -->
+<!-- صفحه پایان و سرد کردن -->
 <div id="cooldown-screen" class="hidden" style="height: 100vh; display: flex; flex-direction: column;">
-    <h3 style="color: var(--primary); margin: 15px 0 5px 0; flex-shrink: 0;">🎉 تمرین تمام شد! (سرد کردن)</h3>
+    <h3 style="color: var(--primary); margin: 15px 0 5px 0; flex-shrink: 0;">🎉 تمرین تمام شد! (ریکاوری و سرد کردن)</h3>
     <div class="progress-container"><div class="progress-bar" style="width: 100%;"></div></div>
     <div id="cooldown-content" style="flex: 1; overflow-y: auto; text-align: right;"></div>
     <div class="fixed-bottom">
@@ -238,8 +244,9 @@
     </div>
     <div class="progress-container"><div id="workout-progress" class="progress-bar"></div></div>
 
+    <div id="ex-section" class="section-tag hidden">بخش اول</div><br>
     <div class="badge" id="badge-info">ست ۱ از ۳</div>
-    <div class="badge hidden" id="badge-side" style="background:#fff3cd; color:#856404;">سمت چپ ⬅️</div>
+    <div class="badge badge-side hidden" id="badge-side">⬅️ سمت چپ</div>
     
     <h3 id="ex-title" style="color: var(--primary); font-size: 1.4rem; margin: 5px 0;">نام تمرین</h3>
     <div id="ex-en" class="en-subtitle">Exercise Name</div>
@@ -265,95 +272,115 @@
     function safeGet(k) { try { return window.localStorage ? window.localStorage.getItem(k) : null; } catch(e){ return null; } }
     function safeSet(k, v) { try { if(window.localStorage) window.localStorage.setItem(k, v); } catch(e){} }
 
-    var defaultSettings = { prep: 20, rest_spine: 20, rest_cardio: 15, rest_legs: 30, rest_gym: 90 };
+    var defaultSettings = { prep: 20, rest_spine: 30, rest_cardio: 15, rest_legs: 30, rest_gym: 90 };
     
-    var warmupSpine = "نرمش مفاصل ستون فقرات: ۵ بار حرکت گربه-گاو آرام، ۵ بار چرخش ملایم لگن، و ۵ تنفس عمیق شکمی برای آماده‌سازی کمر.";
+    var warmupSpine = "<b>توضیحات قبل از شروع:</b><br>" +
+        "• <b>زمان‌بندی و تغذیه:</b> بهترین زمان اجرای تمرینات ۱.۵ تا ۲ ساعت پس از وعده اصلی (ناهار یا شام) است تا از فشار معکوس به معده جلوگیری شود.<br>" +
+        "• <b>آماده‌سازی:</b> بخش اول (تحرک‌پذیری) نقش گرم‌کننده دینامیک را ایفا می‌کند و نیاز به گرم کردن مجزا نیست.<br>" +
+        "• <b>زمان استراحت:</b> استراحت بین ست‌ها در بخش‌های تحرک‌پذیری و ثبات ۳۰ تا ۴۵ ثانیه و در بخش‌های عضله‌سازی و پایین‌تنه ۴۵ تا ۶۰ ثانیه است.<br>" +
+        "• <b>تمرینات قابل تکرار:</b> حرکات «عقب کشیدن چانه»، «گربه-گاو» و «آویزان شدن از بارفیکس» را می‌توانید ۲ تا ۳ بار در روز انجام دهید.";
+
     var warmupLegs = "گرم کردن مفاصل پایین‌تنه: ۳۰ ثانیه درجا زدن سبک، ۱۰ بار چرخش زانوها و مچ پا به طرفین، و ۵ بار اسکات بدون وزنه بسیار نرم.";
     var warmupCardio = "آماده‌سازی سیستم قلبی-عروقی: ۲ دقیقه درجا زدن همراه با تاب دادن دست‌ها، ۱۰ بار پروانه سبک بدون پرش، و چرخش شانه.";
     
-    var warmupGym1 = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه (پمپاژ خون).<br>فاز ۲: چرخش بازوها به جلو و عقب (۱۵ بار)، و کشش دست‌ها روبروی سینه.<br>فاز ۳: انجام ۱ ست ۱۵ تکراری از اولین حرکت فقط با دستگاه خالی.";
-    var warmupGym2 = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه.<br>فاز ۲: کشش دینامیک عضلات پشت و همسترینگ (خم شدن به جلو و چرخش تنه).<br>فاز ۳: ۱ ست گرم کردن برای حرکت اول با وزنه بسیار سبک.";
-    var warmupGym3 = "فاز ۱: ۱۰ دقیقه پیاده‌روی گرم‌کننده.<br>فاز ۲: چرخش مفاصل کتف و لگن (۱۰ بار هر کدام).<br>فاز ۳: ۱ ست ۱۵ تکراری با وزنه سبک برای آماده‌سازی عضلات بالاتنه و پا.";
+    var warmupGym1 = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه.<br>فاز ۲: چرخش بازوها به جلو و عقب (۱۵ بار)، و کشش دست‌ها روبروی سینه.<br>فاز ۳: انجام ۱ ست ۱۵ تکراری از اولین حرکت فقط با دستگاه خالی.";
+    var warmupGym2 = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه.<br>فاز ۲: کشش دینامیک عضلات پشت و همسترینگ.<br>فاز ۳: ۱ ست گرم کردن برای حرکت اول با وزنه بسیار سبک.";
+    var warmupGym3 = "فاز ۱: ۱۰ دقیقه پیاده‌روی گرم‌کننده.<br>فاز ۲: چرخش مفاصل کتف و لگن (۱۰ بار هر کدام).<br>فاز ۳: ۱ ست ۱۵ تکراری با وزنه سبک.";
 
-    var textCooldownGym = "فاز ۱: آویزان شدن از میله بارفیکس (Dead Hang) به مدت ۲ تا ۳ ست ۳۰ ثانیه‌ای برای باز شدن فضای بین مهره‌ها.<br>فاز ۲: ۱۰ دقیقه پیاده‌روی فعال (Active Recovery) در مسیر بازگشت برای دفع اسید لاکتیک و جلوگیری از کوفتگی عضلانی.";
+    var cooldownSpineText = "<b>توضیحات و دستورالعمل پس از پایان جلسه تمرین:</b><br><br>" +
+        "💧 <b>آب‌رسانی دیسک‌ها:</b> پس از اتمام روتین، نوشیدن یک لیوان آب و ۵ دقیقه دراز کشیدن به پشت در وضعیت طاق‌باز (با یک بالشتک زیر زانوها) به جذب مایع مفصلی و بازگشت دیسک‌ها به وضعیت استراحت کمک می‌کند.<br><br>" +
+        "🦵 <b>نکته همسترینگ:</b> هنگام نشستن‌های روزمره، از گرد کردن کمر و لم دادن روی صندلی خودداری کنید، زیرا این حالت کوتاهی همسترینگ را تشدید می‌کند.";
+
+    var textCooldownGym = "فاز ۱: آویزان شدن از میله بارفیکس (Dead Hang) به مدت ۲ تا ۳ ست ۳۰ ثانیه‌ای برای باز شدن فضای بین مهره‌ها.<br>فاز ۲: ۱۰ دقیقه پیاده‌روی فعال (Active Recovery) در مسیر بازگشت برای دفع اسید لاکتیک.";
     var textCooldownHome = "کشش ایستا: کشش دست‌ها و پاها روی زمین. هر کشش را ۲۰ ثانیه نگه دارید و نفس عمیق بکشید.";
 
     var defaultRoutines = {
         spine: {
-            title: 'روتین کمر و روزانه', isCircuit: false, typeKey: 'spine', warmup: warmupSpine, cooldown: textCooldownHome,
+            title: 'روتین ستون فقرات، اصلاحی و عضله‌سازی', isCircuit: false, typeKey: 'spine', warmup: warmupSpine, cooldown: cooldownSpineText,
             exercises: [
-                { title: "چرخش لگن روی زمین", en: "Pelvic Tilt", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین.", type: "reps", val: 12, sets: 3, bilateral: false },
-                { title: "گربه-گاو آرام", en: "Slow Cat-Cow", desc: "چهار دست و پا. تمرکز فقط روی مهره‌های بالایی پشت.", type: "reps", val: 15, sets: 3, bilateral: false },
-                { title: "کتاب باز", en: "Open Book", desc: "خوابیده به پهلو، باز کردن دست بالایی به عقب.", type: "reps", val: 10, sets: 2, bilateral: true },
-                { title: "کرانچ اصلاح شده", en: "McGill Curl-up", desc: "یک پا خم، دست زیر کمر، بالا آوردن سر ۵ سانت.", type: "reps", val: 15, sets: 3, bilateral: false },
-                { title: "پلانک جانبی", en: "Side Plank", desc: "روی آرنج و لبه پا، بدن کاملاً در یک خط صاف.", type: "time", time: 30, sets: 3, bilateral: true },
-                { title: "پلانک ساعد با جیم‌بال", en: "Swiss Ball Plank", desc: "ساعدها روی توپ جیم‌بال، درگیری دوبرابری عمق شکم.", type: "time", time: 30, sets: 3, bilateral: false },
-                { title: "سگ پرنده متناوب ⬅️➡️", en: "Bird Dog Alternating", desc: "چهار دست و پا. یک در میان دست و پای مخالف را صاف کنید (جمعاً ۲۰ بار).", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "پل باسن آرام", en: "Slow Glute Bridge", desc: "بالا آوردن باسن بدون قوس دادن به کمر.", type: "reps", val: 10, sets: 3, bilateral: false },
-                { title: "چرخش لگن روی جیم‌بال", en: "Pelvic Tilt & Circles", desc: "نشسته روی توپ، حرکت چرخشی لگن (مانند روغن‌کاری مفاصل).", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "بالا آوردن پا از پهلو", en: "Side Hip Abduction", desc: "خوابیده به پهلو، بالا آوردن پای رویی.", type: "reps", val: 30, sets: 3, bilateral: true },
-                { title: "کشش همسترینگ با کش", en: "Band Hamstring", desc: "خوابیده، یک پا صاف، پای دیگر عمود.", type: "time", time: 30, sets: 3, bilateral: true },
-                { title: "چرخش دمبل دور سر", en: "Dumbbell Halo", desc: "دمبل ۱.۵ کیلویی، شکم منقبض.", type: "reps", val: 30, sets: 3, bilateral: false },
-                { title: "پرس سینه روی زمین", en: "Floor Press", desc: "خوابیده، پایین آوردن تا برخورد آرنج به زمین.", type: "reps", val: 12, sets: 3, bilateral: false },
-                { title: "پشت بازو خوابیده", en: "Lying Triceps", desc: "حرکت دمبل از کنار گوش به بالا.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "عقب کشیدن چانه", en: "Chin Tuck", desc: "بدون بالا بردن سر، چانه را به عقب بکشید.", type: "reps", val: 15, sets: 3, bilateral: false },
-                { title: "کشش دست‌ها با کش", en: "Band Pull-Apart", desc: "ایستاده، باز کردن کش تا رسیدن به سینه.", type: "reps", val: 15, sets: 3, bilateral: false },
-                { title: "آویزان شدن از بارفیکس", en: "Dead Hang", desc: "آویزان شدن کاملاً بی‌حرکت.", type: "time", time: 60, sets: 4, bilateral: false }
+                // بخش اول
+                { section: "بخش اول: آماده‌سازی و تحرک (Mobility)", title: "چرخش لگن روی زمین", en: "Pelvic Tilt on Floor", desc: "به پشت بخوابید و زانوها را خم کنید. بدون بالا آوردن باسن، با منقبض کردن شکم، گودی کمر را کاملاً به زمین بچسبانید. ۳ ثانیه مکث کنید و سپس به حالت عادی برگردید.", type: "reps", val: 12, sets: 3, bilateral: false },
+                { section: "بخش اول: آماده‌سازی و تحرک (Mobility)", title: "گربه-گاو آرام", en: "Slow Cat-Cow", desc: "روی چهار دست و پا قرار بگیرید. تمرکز حرکت فقط روی مهره‌های میانی و بالایی پشت (توراسیک) باشد. در فاز گربه، بالاتنه را گرد کنید و در فاز گاو سینه را باز کنید. از قوس دادن شدید در گودی کمر پرهیز کنید.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { section: "بخش اول: آماده‌سازی و تحرک (Mobility)", title: "کتاب باز (تحرک‌پذیری توراسیک)", en: "Open Book", desc: "به پهلو بخوابید، زانوها ۹۰ درجه خم و روی هم. دست‌ها کشیده روی هم قرار گیرند. دست بالایی را مانند باز کردن کتاب به سمت عقب بچرخانید و نگاهتان دست را دنبال کند. لگن و زانوها از زمین جدا نشوند.", type: "reps", val: 10, sets: 2, bilateral: true },
+                
+                // بخش دوم
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "کرانچ اصلاح‌شده مک‌گیل", en: "McGill Modified Curl-up", desc: "به پشت بخوابید، یک پا صاف و یک پا خم. دست‌ها زیر گودی کمر برای حفظ قوس طبیعی قرار گیرند. بدون خم کردن گردن، آرنج‌ها روی زمین بمانند و فقط شانه و سر ۵ سانتی‌متر از زمین بالا بیایند (همراه با ۵ ثانیه مکث در بالا).", type: "reps", val: 10, sets: 3, bilateral: false },
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "پلانک جانبی", en: "Side Plank", desc: "روی آرنج و لبه پا (یا زانو) قرار بگیرید. بدن از گردن تا مچ پا در یک خط کاملاً صاف باشد. باسن به سمت پایین افت نکند.", type: "time", time: 30, sets: 3, bilateral: true },
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "پلانک روی ساعد (استاندارد)", en: "Standard Forearm Plank", desc: "روی ساعدها و پنجه پا قرار بگیرید. شکم و باسن کاملاً منقبض و ستون فقرات صاف باشد. به هیچ وجه نباید در کمر احساس گودی یا افتادگی کنید؛ به محض احساس خستگی در کمر، ست را تمام کنید.", type: "time", time: 30, sets: 3, bilateral: false },
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "سگ پرنده (متناوب)", en: "Alternating Bird Dog", desc: "روی چهار دست و پا قرار بگیرید. دست راست و پای چپ را همزمان صاف کنید، ۳ ثانیه مکث کنید، به حالت اول برگردید و سپس بلافاصله دست چپ و پای راست را صاف کنید (۱۰ تکرار چپ / ۱۰ تکرار راست به صورت متناوب). چرخش یا قوسی در کمر ایجاد نشود.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "پل باسن آرام", en: "Slow Glute Bridge", desc: "به پشت بخوابید، زانوها خم. با فشار پاشنه پا به زمین، باسن را بالا بیاورید تا بدن از شانه تا زانو در یک خط قرار گیرد. باسن را منقبض کرده (مکث ۲ ثانیه‌ای) و از قوس دادن بیش از حد به کمر خودداری کنید.", type: "reps", val: 12, sets: 3, bilateral: false },
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "بالا آوردن پا از پهلو", en: "Side-Lying Hip Abduction", desc: "به پهلو کاملاً صاف بخوابید. پای رویی را کمی به سمت عقب متمایل کرده و به آرامی بالا بیاورید. پنجه پا کمی رو به پایین باشد تا عضله سرینی جانبی فعال شود.", type: "reps", val: 25, sets: 3, bilateral: true },
+                { section: "بخش دوم: ثبات مرکزی، گردن و اصلاحی (Core & Hips)", title: "کشش همسترینگ با کش", en: "Hamstring Stretch with Band", desc: "به پشت بخوابید. کش را دور کف یک پا بیندازید. زانو را کمی خم (Micro-bend) نگه دارید و تا جایی پا را بالا بیاورید که کشش ملایمی در شکم عضله پشت ران حس کنید (نه پشت زانو یا کمر).", type: "time", time: 30, sets: 3, bilateral: true },
+                
+                // بخش سوم
+                { section: "بخش سوم: بالاتنه، گردن و عضله‌سازی (Upper Body & Neck)", title: "عقب کشیدن چانه (اصلاح گردن پیامکی)", en: "Chin Tuck", desc: "نشسته یا ایستاده با بالاتنه صاف، بدون پایین آوردن سر، چانه را مستقیماً به سمت عقب (ایجاد غبغب) بکشید (مکث ۳ ثانیه‌ای). این حرکت عضلات عمقی جلوی گردن را تقویت کرده و وضعیت سر رو به جلو را اصلاح می‌کند.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { section: "بخش سوم: بالاتنه، گردن و عضله‌سازی (Upper Body & Neck)", title: "کشش دست‌ها با کش (اصلاح قوز پشتی)", en: "Band Pull-Apart", desc: "ایستاده، کش را با دو دست روبروی سینه بگیرید. آرنج‌ها را صاف نگه داشته و دست‌ها را به طرفین باز کنید تا کش به سینه برسد و کتف‌ها در پشت به هم نزدیک شوند.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "بخش سوم: بالاتنه، گردن و عضله‌سازی (Upper Body & Neck)", title: "چرخش دمبل دور سر", en: "Dumbbell Halo", desc: "ایستاده یا نشسته، دمبل ۱.۵ تا ۲ کیلویی را با دو دست جلوی سینه بگیرید و آن را نزدیک به سر، دایره‌وار دور سر بچرخانید (۱۰ دور سمت چپ / ۱۰ دور سمت راست). شکم کاملاً منقبض باشد تا کمر هیچ تاب یا قوسی برندارد.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "بخش سوم: بالاتنه، گردن و عضله‌سازی (Upper Body & Neck)", title: "پرس سینه روی زمین با دمبل", en: "Floor Press", desc: "به پشت روی زمین بخوابید، زانوها خم. دمبل‌ها را بالای سینه نگه دارید و با کنترل پایین بیاورید تا پشت آرنج‌ها به زمین برسد (فاز منفی ۳ ثانیه)، سپس به بالا پرس کنید.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { section: "بخش سوم: بالاتنه، گردن و عضله‌سازی (Upper Body & Neck)", title: "پشت بازو خوابیده روی زمین", en: "Lying Dumbbell Triceps Extension", desc: "به پشت روی زمین بخوابید. بازوها عمود بر زمین ثابت بمانند. دمبل‌های سبک را از کنار گوش‌ها به سمت بالا صاف کنید تا پشت بازو درگیر شود.", type: "reps", val: 20, sets: 3, bilateral: false },
+                
+                // بخش چهارم
+                { section: "بخش چهارم: تقویت پایین‌تنه (۳ روز در هفته)", title: "اسکات روی صندلی", en: "Box Squat", desc: "پاها به اندازه عرض شانه. با منقبض کردن شکم و سینه صاف، باسن را به سمت عقب برده و روی لبه صندلی بنشینید، سپس با فشار پاشنه‌ها بلند شوید.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { section: "بخش چهارم: تقویت پایین‌تنه (۳ روز در هفته)", title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم کنترل‌شده به جلو بردارید و زانوی عقب را به زمین نزدیک کنید. بالاتنه کاملاً عمود باشد و زانوی جلو از پنجه پا جلوتر نرود.", type: "reps", val: 10, sets: 3, bilateral: true },
+                { section: "بخش چهارم: تقویت پایین‌تنه (۳ روز در هفته)", title: "ساق پا ایستاده روی آجر یوگا", en: "Calf Raise on Block", desc: "پنجه پا روی آجر یوگا یا پله، پاشنه‌ها آزاد. برای حفظ تعادل دیوار را بگیرید. پاشنه را کاملاً بالا بکشید (مکث ۲ ثانیه‌ای در بالا) و با کنترل پایین بیاورید.", type: "reps", val: 20, sets: 3, bilateral: false },
+                
+                // بخش پنجم
+                { section: "بخش پنجم: ریکاوری و رفع فشار (Decompression)", title: "آویزان شدن از میله بارفیکس", en: "Dead Hang", desc: "از میله بارفیکس آویزان شوید به طوری که بدن کاملاً معلق باشد. برای جلوگیری از درد دست و خستگی پنجه‌ها، زمان هر ست حداکثر ۳۰ ثانیه تنظیم شده است. از پریدن در شروع یا انتهای حرکت جداً خودداری کنید.", type: "time", time: 30, sets: 4, bilateral: false }
             ]
         },
         legs: {
             title: 'تمرینات پا در منزل', isCircuit: false, typeKey: 'legs', warmup: warmupLegs, cooldown: textCooldownHome,
             exercises: [
-                { title: "اسکات روی صندلی", en: "Box Squat", desc: "به آرامی روی صندلی بنشینید و بلند شوید.", type: "reps", val: 15, sets: 3, bilateral: false },
-                { title: "اسکات دیواری با جیم‌بال", en: "Swiss Ball Wall Squat", desc: "توپ پشت کمر روی دیوار. سر خوردن تا زاویه ۹۰ درجه زانو.", type: "reps", val: 12, sets: 3, bilateral: false },
-                { title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم به جلو، زانوی عقب به زمین نزدیک شود.", type: "reps", val: 10, sets: 3, bilateral: true },
-                { title: "پشت پا با جیم‌بال", en: "Swiss Ball Hamstring Curl", desc: "پاشنه‌ها روی توپ، کشیدن توپ به سمت باسن.", type: "reps", val: 10, sets: 3, bilateral: false },
-                { title: "ساق پا ایستاده روی آجر", en: "Calf Raise", desc: "پاشنه‌ها را بالا بکشید و مکث کنید.", type: "reps", val: 20, sets: 3, bilateral: false }
+                { section: "پایین‌تنه در منزل", title: "اسکات روی صندلی", en: "Box Squat", desc: "به آرامی روی صندلی بنشینید و بلند شوید.", type: "reps", val: 15, sets: 3, bilateral: false },
+                { section: "پایین‌تنه در منزل", title: "اسکات دیواری با جیم‌بال", en: "Swiss Ball Wall Squat", desc: "توپ پشت کمر روی دیوار. سر خوردن تا زاویه ۹۰ درجه زانو.", type: "reps", val: 12, sets: 3, bilateral: false },
+                { section: "پایین‌تنه در منزل", title: "لانژ رو به جلو", en: "Forward Lunge", desc: "یک قدم به جلو، زانوی عقب به زمین نزدیک شود.", type: "reps", val: 10, sets: 3, bilateral: true },
+                { section: "پایین‌تنه در منزل", title: "پشت پا با جیم‌بال", en: "Swiss Ball Hamstring Curl", desc: "پاشنه‌ها روی توپ، کشیدن توپ به سمت باسن.", type: "reps", val: 10, sets: 3, bilateral: false },
+                { section: "پایین‌تنه در منزل", title: "ساق پا ایستاده روی آجر", en: "Calf Raise", desc: "پاشنه‌ها را بالا بکشید و مکث کنید.", type: "reps", val: 20, sets: 3, bilateral: false }
             ]
         },
         cardio: {
             title: 'کاردیو مداری منزل', isCircuit: true, sets: 4, typeKey: 'cardio', warmup: warmupCardio, cooldown: textCooldownHome,
             exercises: [
-                { title: "درجا زدن ایستاده", en: "Standing March", desc: "زانوها بالا، تاب دادن هماهنگ دست‌ها.", type: "time", time: 40, bilateral: false },
-                { title: "پروانه بدون پرش", en: "Step-Jacks", desc: "پای راست به راست و دست‌ها بالا، سپس چپ.", type: "time", time: 40, bilateral: false },
-                { title: "سایه زنی", en: "Shadow Boxing", desc: "مشت زدن رو به جلو به نوبت.", type: "time", time: 40, bilateral: false },
-                { title: "لگد به عقب ایستاده", en: "Glute Kickbacks", desc: "هل دادن پا به عقب برای انقباض باسن.", type: "time", time: 40, bilateral: false }
+                { section: "کاردیو و چربی‌سوزی", title: "درجا زدن ایستاده", en: "Standing March", desc: "زانوها بالا، تاب دادن هماهنگ دست‌ها.", type: "time", time: 40, bilateral: false },
+                { section: "کاردیو و چربی‌سوزی", title: "پروانه بدون پرش", en: "Step-Jacks", desc: "پای راست به راست و دست‌ها بالا، سپس چپ.", type: "time", time: 40, bilateral: false },
+                { section: "کاردیو و چربی‌سوزی", title: "سایه زنی", en: "Shadow Boxing", desc: "مشت زدن رو به جلو به نوبت.", type: "time", time: 40, bilateral: false },
+                { section: "کاردیو و چربی‌سوزی", title: "لگد به عقب ایستاده", en: "Glute Kickbacks", desc: "هل دادن پا به عقب برای انقباض باسن.", type: "time", time: 40, bilateral: false }
             ]
         },
         gym1: {
             title: 'باشگاه: جلسه اول', isCircuit: false, typeKey: 'gym', warmup: warmupGym1, cooldown: textCooldownGym,
             exercises: [
-                { title: "پرس سینه بالاسینه دمبل", en: "Incline Dumbbell Bench Press", desc: "شیب ۳۰ درجه. تکیه کامل پشت و سر به میز.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "زیربغل قایقی دستگاه", en: "Chest-Supported Machine Row", desc: "سینه کاملا به پد بچسبد. کتف‌ها را جمع کنید.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "پرس پا دستگاه", en: "Horizontal Leg Press", desc: "پایین آمدن تا جایی که لگن از پشتی جدا نشود.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "نشر جانب با دمبل نشسته", en: "Seated Dumbbell Lateral Raise", desc: "کمر چسبیده به پشتی ۹۰ درجه. بالا آوردن تا ارتفاع شانه.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "پشت بازو دمبل خوابیده", en: "Skullcrushers", desc: "خوابیده روی میز پرس صاف. دمبل به سمت پیشانی.", type: "reps", val: 20, sets: 3, bilateral: false }
+                { section: "باشگاه: جلسه اول", title: "پرس سینه بالاسینه دمبل", en: "Incline Dumbbell Bench Press", desc: "شیب ۳۰ درجه. تکیه کامل پشت و سر به میز.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه اول", title: "زیربغل قایقی دستگاه", en: "Chest-Supported Machine Row", desc: "سینه کاملا به پد بچسبد. کتف‌ها را جمع کنید.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه اول", title: "پرس پا دستگاه", en: "Horizontal Leg Press", desc: "پایین آمدن تا جایی که لگن از پشتی جدا نشود.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه اول", title: "نشر جانب با دمبل نشسته", en: "Seated Dumbbell Lateral Raise", desc: "کمر چسبیده به پشتی ۹۰ درجه. بالا آوردن تا ارتفاع شانه.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه اول", title: "پشت بازو دمبل خوابیده", en: "Skullcrushers", desc: "خوابیده روی میز پرس صاف. دمبل به سمت پیشانی.", type: "reps", val: 20, sets: 3, bilateral: false }
             ]
         },
         gym2: {
             title: 'باشگاه: جلسه دوم', isCircuit: false, typeKey: 'gym', warmup: warmupGym2, cooldown: textCooldownGym,
             exercises: [
-                { title: "زیربغل سیم‌کش از جلو", en: "Lat Pulldown", desc: "نشسته، زانوها زیر پد. کشیدن میله تا بالای سینه.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "پشت پا دستگاه نشسته", en: "Seated Leg Curl", desc: "تکیه کامل به پشتی. فشار پد روی مچ پا به پایین.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "دستگاه فلای معکوس", en: "Reverse Pec Deck Machine", desc: "سینه کاملا چسبیده به پد. برای باز شدن قوز پشت.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "پرس پا تک پا", en: "Single-Leg Press", desc: "روی دستگاه پرس پا، با یک پا.", type: "reps", val: 15, sets: 3, bilateral: true },
-                { title: "جلو بازو دمبل شیب‌دار", en: "Incline Dumbbell Biceps Curl", desc: "میز روی شیب ۴۵ تا ۶۰ درجه. تکیه کامل پشت.", type: "reps", val: 20, sets: 3, bilateral: false }
+                { section: "باشگاه: جلسه دوم", title: "زیربغل سیم‌کش از جلو", en: "Lat Pulldown", desc: "نشسته، زانوها زیر پد. کشیدن میله تا بالای سینه.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه دوم", title: "پشت پا دستگاه نشسته", en: "Seated Leg Curl", desc: "تکیه کامل به پشتی. فشار پد روی مچ پا به پایین.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه دوم", title: "دستگاه فلای معکوس", en: "Reverse Pec Deck Machine", desc: "سینه کاملا چسبیده به پد. برای باز شدن قوز پشت.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه دوم", title: "پرس پا تک پا", en: "Single-Leg Press", desc: "روی دستگاه پرس پا، با یک پا.", type: "reps", val: 15, sets: 3, bilateral: true },
+                { section: "باشگاه: جلسه دوم", title: "جلو بازو دمبل شیب‌دار", en: "Incline Dumbbell Biceps Curl", desc: "میز روی شیب ۴۵ تا ۶۰ درجه. تکیه کامل پشت.", type: "reps", val: 20, sets: 3, bilateral: false }
             ]
         },
         gym3: {
             title: 'باشگاه: جلسه سوم', isCircuit: false, typeKey: 'gym', warmup: warmupGym3, cooldown: textCooldownGym,
             exercises: [
-                { title: "پرس سینه با دستگاه نشسته", en: "Machine Chest Press", desc: "تکیه کامل پشتی. پرس دسته‌ها به جلو.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "پلاور سیم‌کش بازو صاف", en: "Straight Arm Pulldown", desc: "پشت به دیوار، سیم‌کش را با دست صاف به پایین بکشید.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "جلو پا دستگاه نشسته", en: "Leg Extension", desc: "تمرکز روی چهارسر با تکیه کامل کمر.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "فیس پول سیم‌کش نشسته", en: "Seated Cable Face Pulls", desc: "نشسته روی زمین با تکیه‌گاه پشت.", type: "reps", val: 20, sets: 3, bilateral: false },
-                { title: "ساق پا با دستگاه پرس پا", en: "Leg Press Calf Raise", desc: "روی دستگاه پرس پا بخوابید و با پنجه پا جابجا کنید.", type: "reps", val: 20, sets: 3, bilateral: false }
+                { section: "باشگاه: جلسه سوم", title: "پرس سینه با دستگاه نشسته", en: "Machine Chest Press", desc: "تکیه کامل پشتی. پرس دسته‌ها به جلو.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه سوم", title: "پلاور سیم‌کش بازو صاف", en: "Straight Arm Pulldown", desc: "پشت به دیوار، سیم‌کش را با دست صاف به پایین بکشید.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه سوم", title: "جلو پا دستگاه نشسته", en: "Leg Extension", desc: "تمرکز روی چهارسر با تکیه کامل کمر.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه سوم", title: "فیس پول سیم‌کش نشسته", en: "Seated Cable Face Pulls", desc: "نشسته روی زمین با تکیه‌گاه پشت.", type: "reps", val: 20, sets: 3, bilateral: false },
+                { section: "باشگاه: جلسه سوم", title: "ساق پا با دستگاه پرس پا", en: "Leg Press Calf Raise", desc: "روی دستگاه پرس پا بخوابید و با پنجه پا جابجا کنید.", type: "reps", val: 20, sets: 3, bilateral: false }
             ]
         }
     };
 
     var routines = JSON.parse(JSON.stringify(defaultRoutines));
-    var activeExs = []; var curType = ''; var exIndex = 0; var currentSet = 1; 
+    var activeExs = []; var curType = ''; var exIndex = 0; var currentSet = 1; var currentSide = 'left'; 
     var phase = 'prep'; var stepTimer = null; var timeLeft = 0; var gSecs = 0; var gTimer = null; var audioCtx = null;
     var historyWeekOffset = 0;
     var isWorkoutPaused = false;
@@ -399,7 +426,7 @@
     }
 
     function loadData() {
-        var saved = safeGet('sasan_routines_v13');
+        var saved = safeGet('sasan_routines_v14');
         if(saved) {
             try {
                 var parsed = JSON.parse(saved);
@@ -471,7 +498,7 @@
     function changeWeek(delta) { historyWeekOffset += delta; renderHistoryGrid(); }
     function showHistory() { historyWeekOffset = 0; renderHistoryGrid(); openScreen('history-modal'); }
     
-    // Core Navigation & Fixed Pause Bug
+    // Navigation & Screen Control
     function openScreen(id) {
         ['home-screen', 'settings-screen', 'workout-screen', 'cooldown-screen', 'preview-screen', 'edit-home-screen', 'edit-detail-screen', 'modal-gym', 'modal-walk', 'history-modal'].forEach(s => {
             var el = document.getElementById(s);
@@ -479,7 +506,6 @@
         });
         document.getElementById(id).classList.remove('hidden');
         
-        // Show/hide resume banner automatically on home screen
         if(id === 'home-screen') {
             if(isWorkoutPaused) document.getElementById('resume-banner').classList.remove('hidden');
             else document.getElementById('resume-banner').classList.add('hidden');
@@ -487,7 +513,7 @@
     }
     function closeScreen(id) { document.getElementById(id).classList.add('hidden'); }
     
-    // UI Helpers
+    // UI Options
     function toggleDark() {
         document.body.classList.toggle('dark-mode');
         var isDark = document.body.classList.contains('dark-mode');
@@ -511,7 +537,7 @@
     function openGymModal() { document.getElementById('modal-gym').classList.remove('hidden'); }
     function openWalkModal() { document.getElementById('modal-walk').classList.remove('hidden'); }
     
-    // Edit & Manage Routines
+    // Management Logic
     function openEditHome() {
         var html = '';
         for(var k in routines) {
@@ -538,29 +564,36 @@
     function toggleExActive(i, cb) { routines[curType].exercises[i].active = cb.checked; }
     function backToEditHome() { openScreen('edit-home-screen'); }
     function saveEdits() {
-        var saved = JSON.parse(safeGet('sasan_routines_v13') || '{}');
+        var saved = JSON.parse(safeGet('sasan_routines_v14') || '{}');
         saved[curType] = routines[curType];
-        safeSet('sasan_routines_v13', JSON.stringify(saved));
+        safeSet('sasan_routines_v14', JSON.stringify(saved));
         alert('تغییرات با موفقیت ذخیره شد');
         backToEditHome();
     }
 
-    // Workout Flow
+    // Workout Implementation
     function initWorkout(type) {
         curType = type;
         activeExs = routines[type].exercises.filter(e => e.active !== false);
-        exIndex = 0; currentSet = 1; isWorkoutPaused = false;
+        exIndex = 0; currentSet = 1; currentSide = 'left'; isWorkoutPaused = false;
         document.getElementById('preview-title').innerText = routines[type].title;
         
-        // Warmup & Exercise Preview List Restored
-        var html = '<div class="text-box"><b>📋 نکات و گرم کردن:</b><br>' + routines[type].warmup + '</div>';
+        var html = '<div class="text-box">' + routines[type].warmup + '</div>';
         html += '<h4 style="text-align:right; margin:15px 0 8px 0; color:var(--primary);">فهرست حرکات این جلسه:</h4>';
         html += '<div style="text-align:right;">';
+        
+        var lastSec = '';
         activeExs.forEach((ex, i) => {
+            if(ex.section && ex.section !== lastSec) {
+                lastSec = ex.section;
+                html += `<div class="section-tag" style="margin-top:10px;">${lastSec}</div>`;
+            }
             var detailStr = ex.type === 'time' ? (ex.time + ' ثانیه') : (ex.val + ' تکرار');
             var setsStr = ex.sets ? (ex.sets + ' ست') : '';
+            var sideStr = ex.bilateral ? ' (دو طرف)' : '';
+            
             html += `<div style="background:var(--card-bg); padding:10px; margin-bottom:8px; border-radius:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-                <div><b>${i+1}. ${ex.title}</b><div style="font-size:0.8rem; color:var(--text-sec); text-align:left; direction:ltr;">${ex.en}</div></div>
+                <div><b>${i+1}. ${ex.title}</b>${sideStr}<div style="font-size:0.8rem; color:var(--text-sec); text-align:left; direction:ltr;">${ex.en}</div></div>
                 <span style="font-size:0.85rem; font-weight:bold; color:var(--primary);">${setsStr} ${setsStr?'|':''} ${detailStr}</span>
             </div>`;
         });
@@ -593,14 +626,24 @@
             clearInterval(gTimer);
             isWorkoutPaused = false;
             openScreen('cooldown-screen');
-            document.getElementById('cooldown-content').innerHTML = '<div class="text-box"><b>دستورالعمل سرد کردن:</b><br><br>' + routines[curType].cooldown + '</div>';
+            document.getElementById('cooldown-content').innerHTML = '<div class="text-box">' + routines[curType].cooldown + '</div>';
             return;
         }
         var ex = activeExs[exIndex];
+        
+        // Section Badge Display
+        var secEl = document.getElementById('ex-section');
+        if(ex.section) {
+            secEl.innerText = ex.section;
+            secEl.classList.remove('hidden');
+        } else {
+            secEl.classList.add('hidden');
+        }
+
         document.getElementById('ex-title').innerText = ex.title;
         document.getElementById('ex-en').innerText = ex.en;
         
-        // Smart Hide/Show for exercise description
+        // Smart Hide/Show description (hide if > 90 chars)
         var detailsEl = document.getElementById('ex-desc-details');
         var directEl = document.getElementById('ex-desc-direct');
         if(ex.desc.length > 90) {
@@ -614,8 +657,20 @@
             directEl.innerText = ex.desc;
         }
 
+        // Set & Direction Indicator Fixes
         document.getElementById('badge-info').innerText = 'ست ' + currentSet + ' از ' + ex.sets;
-        document.getElementById('badge-side').classList.add('hidden');
+        
+        var sideBadge = document.getElementById('badge-side');
+        if(ex.bilateral) {
+            sideBadge.classList.remove('hidden');
+            if(currentSide === 'left') {
+                sideBadge.innerText = '⬅️ سمت چپ';
+            } else {
+                sideBadge.innerText = '➡️ سمت راست';
+            }
+        } else {
+            sideBadge.classList.add('hidden');
+        }
         
         var pct = ((exIndex) / activeExs.length) * 100;
         document.getElementById('workout-progress').style.width = pct + '%';
@@ -638,9 +693,9 @@
         stepTimer = setInterval(function() {
             timeLeft--;
             if(timeLeft > 0 && timeLeft <= 3) {
-                playBeep(900, 0.15, 0.2); // Alert sound on last 3s
+                playBeep(900, 0.15, 0.2); // Alarm for last 3s
             } else if(timeLeft > 3) {
-                playTick(); // Tick on every second
+                playTick(); // Tick sound every second
             }
             
             if(timeLeft <= 0) {
@@ -680,25 +735,41 @@
     
     function finishSet() {
         var ex = activeExs[exIndex];
+        
+        // Handle Bilateral Side Logic
+        if(ex.bilateral && currentSide === 'left') {
+            currentSide = 'right';
+            triggerRestPhase();
+            return;
+        } else if(ex.bilateral && currentSide === 'right') {
+            currentSide = 'left';
+        }
+
+        // Handle Set Increment
         if(currentSet < ex.sets) {
             currentSet++;
-            phase = 'rest';
-            document.getElementById('phase-title').innerText = 'استراحت بین ست';
-            var restTime = parseInt(document.getElementById('inp-rest-' + routines[curType].typeKey).value) || 30;
-            timeLeft = restTime;
-            
-            var timerDisplay = document.getElementById('timer-display');
-            timerDisplay.className = "timer";
-            timerDisplay.innerText = timeLeft;
-            
-            document.getElementById('btn-done').classList.add('hidden');
-            document.getElementById('btn-skip').classList.remove('hidden');
-            runTimer();
+            triggerRestPhase();
         } else {
             exIndex++;
             currentSet = 1;
+            currentSide = 'left';
             loadExercise();
         }
+    }
+
+    function triggerRestPhase() {
+        phase = 'rest';
+        document.getElementById('phase-title').innerText = 'استراحت بین ست';
+        var restTime = parseInt(document.getElementById('inp-rest-' + routines[curType].typeKey).value) || 30;
+        timeLeft = restTime;
+        
+        var timerDisplay = document.getElementById('timer-display');
+        timerDisplay.className = "timer";
+        timerDisplay.innerText = timeLeft;
+        
+        document.getElementById('btn-done').classList.add('hidden');
+        document.getElementById('btn-skip').classList.remove('hidden');
+        runTimer();
     }
     
     function nextStep() {
@@ -745,7 +816,7 @@
         closeScreen('modal-walk');
     }
     
-    // Init on Startup
+    // Application Initialization
     window.onload = function() {
         loadSettings();
         loadData();
