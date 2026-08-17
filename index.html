@@ -30,8 +30,7 @@
         .header-bar { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); gap:6px; flex-wrap: wrap;}
         .header-bar h2 { font-size: 1.15rem; margin: 0; flex: 1; text-align: center; color: var(--primary); font-weight: bold; min-width: 90px;}
         .icon-btn { background: var(--card-bg); border: 1px solid var(--border); font-size: 1.1rem; padding: 8px 10px; margin: 0; border-radius: 8px; cursor: pointer; color: var(--text-main); flex-shrink: 0; display:flex; align-items:center; justify-content:center;}
-        .version-tag { font-size: 0.85rem; font-weight: bold; color: white; padding: 5px 8px; border-radius: 8px; background: #8e44ad; margin-right: auto;}
-
+        
         .action-btn { background: var(--primary); color: white; border: none; padding: 14px; font-size: 1.05rem; font-weight: bold; border-radius: 10px; width: 100%; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         body.dark-mode .action-btn { background: #22303c; color: #ecf0f1; border: 1px solid #324454; }
         body.dark-mode .action-btn.legs { background: #3d2d14; border-color: #5c431d; color: #f39c12; }
@@ -47,7 +46,7 @@
         body.dark-mode .outline-btn { color: #a0a0a0; border-color: #444; }
 
         .timer { font-size: 4.2rem; font-weight: bold; color: var(--success); margin: 5px 0; font-family: monospace; line-height: 1;}
-        .reps-display { font-size: 3rem; font-weight: bold; color: var(--primary); margin: 5px 0; }
+        .timer.reps-mode { font-size: 2.3rem; color: var(--primary); }
         
         details.instruction { background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border); text-align: justify; padding: 10px; font-size: 0.95rem; line-height: 1.6; margin-top: 10px; }
         details.instruction summary { font-weight: bold; color: var(--primary); outline: none; cursor: pointer; list-style: none; font-size: 1rem;}
@@ -55,7 +54,7 @@
         
         .badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; }
         body.dark-mode .badge { background: #1b365d; color: #61b0ff; }
-        .en-subtitle { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 5px; direction: ltr; font-weight: bold; }
+        .en-subtitle { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 5px; direction: ltr; font-weight: bold; }
 
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; font-weight: bold; }
         .settings-row input[type="number"] { padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); color: var(--text-main); font-size: 1rem; width: 50px;}
@@ -72,9 +71,6 @@
         .edit-cat-btn { background: var(--card-bg); color: var(--primary); border: 2px solid var(--primary); padding: 15px; font-size: 1.1rem; font-weight: bold; border-radius: 10px; width: 100%; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;}
         body.dark-mode .edit-cat-btn { background: #212f3d; color: #61b0ff; border-color: #3498db; }
         .edit-item { background: var(--card-bg); padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:8px;}
-        .edit-controls { display:flex; justify-content: space-between; font-size:0.9rem; align-items:center;}
-        .ctrl-btn { background: var(--border); border: none; padding: 4px 10px; font-weight: bold; border-radius: 4px; color: var(--text-main); font-size: 1.1rem; }
-        body.dark-mode .ctrl-btn { background: #333; color: white; }
         
         #resume-banner { background: var(--warning); color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
         
@@ -162,7 +158,7 @@
         🔥: کاردیو و چربی‌سوزی | 🦵: تمرینات پا | 🏋️‍♂️: باشگاه
     </div>
 
-    <button class="alt-btn" style="position: sticky; bottom: 10px; margin-top:15px;" onclick="closeScreen('history-modal')">بازگشت 🏠</button>
+    <button class="alt-btn" style="position: sticky; bottom: 10px; margin-top:15px;" onclick="openScreen('home-screen')">بازگشت 🏠</button>
 </div>
 
 <!-- تنظیمات -->
@@ -187,7 +183,7 @@
         <div class="settings-row"><span>استراحت تمرین پا 🦵</span><input type="number" id="inp-rest-legs" value="30" onchange="saveRests()"></div>
         <div class="settings-row"><span>استراحت باشگاه 🏋️‍♂️</span><input type="number" id="inp-rest-gym" value="90" onchange="saveRests()"></div>
     </div>
-    <button class="alt-btn" onclick="closeScreen('settings-screen')">بازگشت به منو 🏠</button>
+    <button class="alt-btn" onclick="openScreen('home-screen')">بازگشت به منو 🏠</button>
 </div>
 
 <!-- مدیریت حرکات: صفحه دسته‌بندی‌ها -->
@@ -196,7 +192,7 @@
         <h2 style="font-size: 1.2rem; margin:0; text-align: right; color:var(--primary);">📋 انتخاب گروه تمرینی</h2>
     </div>
     <div id="edit-cat-container" style="flex: 1; overflow-y: auto; padding-bottom: 20px;"></div>
-    <button class="outline-btn" style="margin-top:auto;" onclick="closeScreen('edit-home-screen')">بازگشت به منو 🏠</button>
+    <button class="outline-btn" style="margin-top:auto;" onclick="openScreen('home-screen')">بازگشت به منو 🏠</button>
 </div>
 
 <!-- مدیریت حرکات: صفحه ویرایش دسته خاص -->
@@ -211,7 +207,7 @@
     </div>
 </div>
 
-<!-- صفحه پیش‌نمایش و گرم کردن -->
+<!-- صفحه پیش‌نمایش و لیست حرکات -->
 <div id="preview-screen" class="hidden" style="height: 100vh; display: flex; flex-direction: column;">
     <h3 id="preview-title" style="color: var(--primary); margin: 15px 0 5px 0; flex-shrink: 0;"></h3>
     <div class="progress-container"><div class="progress-bar" style="width: 0%;"></div></div>
@@ -220,7 +216,7 @@
     
     <div class="fixed-bottom">
         <button class="action-btn" style="background:var(--success); margin-bottom:10px;" onclick="startTimerLogic()">🔥 شروع تمرین</button>
-        <button class="outline-btn" style="margin-top:0;" onclick="closeScreen('preview-screen')">بازگشت 🏠</button>
+        <button class="outline-btn" style="margin-top:0;" onclick="openScreen('home-screen')">بازگشت 🏠</button>
     </div>
 </div>
 
@@ -248,10 +244,11 @@
     <h3 id="ex-title" style="color: var(--primary); font-size: 1.4rem; margin: 5px 0;">نام تمرین</h3>
     <div id="ex-en" class="en-subtitle">Exercise Name</div>
     
-    <details class="instruction" id="ex-desc-details">
+    <details class="instruction hidden" id="ex-desc-details">
         <summary>📖 توضیحات و نحوه اجرا</summary>
         <div id="ex-desc" style="margin-top:8px;"></div>
     </details>
+    <div id="ex-desc-direct" class="hidden" style="text-align: justify; font-size: 0.95rem; line-height: 1.6; margin-top: 10px; padding: 10px; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border);"></div>
     
     <div class="card" style="margin-top: 10px;">
         <h4 id="phase-title" style="font-size: 1.2rem; color: var(--text-sec); margin: 0 0 5px 0;">آماده‌سازی</h4>
@@ -270,14 +267,20 @@
 
     var defaultSettings = { prep: 20, rest_spine: 20, rest_cardio: 15, rest_legs: 30, rest_gym: 90 };
     
-    var textWarmupGym = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه (پمپاژ خون).<br>فاز ۲: چرخش بازوها به جلو و عقب (۱۵ بار)، و کشش دست‌ها روبروی سینه.<br>فاز ۳: انجام ۱ ست ۱۵ تکراری از اولین حرکت فقط با دستگاه خالی.";
+    var warmupSpine = "نرمش مفاصل ستون فقرات: ۵ بار حرکت گربه-گاو آرام، ۵ بار چرخش ملایم لگن، و ۵ تنفس عمیق شکمی برای آماده‌سازی کمر.";
+    var warmupLegs = "گرم کردن مفاصل پایین‌تنه: ۳۰ ثانیه درجا زدن سبک، ۱۰ بار چرخش زانوها و مچ پا به طرفین، و ۵ بار اسکات بدون وزنه بسیار نرم.";
+    var warmupCardio = "آماده‌سازی سیستم قلبی-عروقی: ۲ دقیقه درجا زدن همراه با تاب دادن دست‌ها، ۱۰ بار پروانه سبک بدون پرش، و چرخش شانه.";
+    
+    var warmupGym1 = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه (پمپاژ خون).<br>فاز ۲: چرخش بازوها به جلو و عقب (۱۵ بار)، و کشش دست‌ها روبروی سینه.<br>فاز ۳: انجام ۱ ست ۱۵ تکراری از اولین حرکت فقط با دستگاه خالی.";
+    var warmupGym2 = "فاز ۱: ۱۰ دقیقه پیاده‌رویِ مسیرِ خانه تا باشگاه.<br>فاز ۲: کشش دینامیک عضلات پشت و همسترینگ (خم شدن به جلو و چرخش تنه).<br>فاز ۳: ۱ ست گرم کردن برای حرکت اول با وزنه بسیار سبک.";
+    var warmupGym3 = "فاز ۱: ۱۰ دقیقه پیاده‌روی گرم‌کننده.<br>فاز ۲: چرخش مفاصل کتف و لگن (۱۰ بار هر کدام).<br>فاز ۳: ۱ ست ۱۵ تکراری با وزنه سبک برای آماده‌سازی عضلات بالاتنه و پا.";
+
     var textCooldownGym = "فاز ۱: آویزان شدن از میله بارفیکس (Dead Hang) به مدت ۲ تا ۳ ست ۳۰ ثانیه‌ای برای باز شدن فضای بین مهره‌ها.<br>فاز ۲: ۱۰ دقیقه پیاده‌روی فعال (Active Recovery) در مسیر بازگشت برای دفع اسید لاکتیک و جلوگیری از کوفتگی عضلانی.";
-    var textWarmupHome = "نرمش مفاصل: چرخاندن شانه‌ها، مچ دست و پا، و درجا زدن سبک به مدت ۳ دقیقه.";
     var textCooldownHome = "کشش ایستا: کشش دست‌ها و پاها روی زمین. هر کشش را ۲۰ ثانیه نگه دارید و نفس عمیق بکشید.";
 
     var defaultRoutines = {
         spine: {
-            title: 'روتین کمر و روزانه', isCircuit: false, typeKey: 'spine', warmup: textWarmupHome, cooldown: textCooldownHome,
+            title: 'روتین کمر و روزانه', isCircuit: false, typeKey: 'spine', warmup: warmupSpine, cooldown: textCooldownHome,
             exercises: [
                 { title: "چرخش لگن روی زمین", en: "Pelvic Tilt", desc: "خوابیده به پشت، زانوها خم، چسباندن گودی کمر به زمین.", type: "reps", val: 12, sets: 3, bilateral: false },
                 { title: "گربه-گاو آرام", en: "Slow Cat-Cow", desc: "چهار دست و پا. تمرکز فقط روی مهره‌های بالایی پشت.", type: "reps", val: 15, sets: 3, bilateral: false },
@@ -299,7 +302,7 @@
             ]
         },
         legs: {
-            title: 'تمرینات پا در منزل', isCircuit: false, typeKey: 'legs', warmup: textWarmupHome, cooldown: textCooldownHome,
+            title: 'تمرینات پا در منزل', isCircuit: false, typeKey: 'legs', warmup: warmupLegs, cooldown: textCooldownHome,
             exercises: [
                 { title: "اسکات روی صندلی", en: "Box Squat", desc: "به آرامی روی صندلی بنشینید و بلند شوید.", type: "reps", val: 15, sets: 3, bilateral: false },
                 { title: "اسکات دیواری با جیم‌بال", en: "Swiss Ball Wall Squat", desc: "توپ پشت کمر روی دیوار. سر خوردن تا زاویه ۹۰ درجه زانو.", type: "reps", val: 12, sets: 3, bilateral: false },
@@ -309,7 +312,7 @@
             ]
         },
         cardio: {
-            title: 'کاردیو مداری منزل', isCircuit: true, sets: 4, typeKey: 'cardio', warmup: textWarmupHome, cooldown: textCooldownHome,
+            title: 'کاردیو مداری منزل', isCircuit: true, sets: 4, typeKey: 'cardio', warmup: warmupCardio, cooldown: textCooldownHome,
             exercises: [
                 { title: "درجا زدن ایستاده", en: "Standing March", desc: "زانوها بالا، تاب دادن هماهنگ دست‌ها.", type: "time", time: 40, bilateral: false },
                 { title: "پروانه بدون پرش", en: "Step-Jacks", desc: "پای راست به راست و دست‌ها بالا، سپس چپ.", type: "time", time: 40, bilateral: false },
@@ -318,7 +321,7 @@
             ]
         },
         gym1: {
-            title: 'باشگاه: جلسه اول', isCircuit: false, typeKey: 'gym', warmup: textWarmupGym, cooldown: textCooldownGym,
+            title: 'باشگاه: جلسه اول', isCircuit: false, typeKey: 'gym', warmup: warmupGym1, cooldown: textCooldownGym,
             exercises: [
                 { title: "پرس سینه بالاسینه دمبل", en: "Incline Dumbbell Bench Press", desc: "شیب ۳۰ درجه. تکیه کامل پشت و سر به میز.", type: "reps", val: 20, sets: 3, bilateral: false },
                 { title: "زیربغل قایقی دستگاه", en: "Chest-Supported Machine Row", desc: "سینه کاملا به پد بچسبد. کتف‌ها را جمع کنید.", type: "reps", val: 20, sets: 3, bilateral: false },
@@ -328,7 +331,7 @@
             ]
         },
         gym2: {
-            title: 'باشگاه: جلسه دوم', isCircuit: false, typeKey: 'gym', warmup: textWarmupGym, cooldown: textCooldownGym,
+            title: 'باشگاه: جلسه دوم', isCircuit: false, typeKey: 'gym', warmup: warmupGym2, cooldown: textCooldownGym,
             exercises: [
                 { title: "زیربغل سیم‌کش از جلو", en: "Lat Pulldown", desc: "نشسته، زانوها زیر پد. کشیدن میله تا بالای سینه.", type: "reps", val: 20, sets: 3, bilateral: false },
                 { title: "پشت پا دستگاه نشسته", en: "Seated Leg Curl", desc: "تکیه کامل به پشتی. فشار پد روی مچ پا به پایین.", type: "reps", val: 20, sets: 3, bilateral: false },
@@ -338,7 +341,7 @@
             ]
         },
         gym3: {
-            title: 'باشگاه: جلسه سوم', isCircuit: false, typeKey: 'gym', warmup: textWarmupGym, cooldown: textCooldownGym,
+            title: 'باشگاه: جلسه سوم', isCircuit: false, typeKey: 'gym', warmup: warmupGym3, cooldown: textCooldownGym,
             exercises: [
                 { title: "پرس سینه با دستگاه نشسته", en: "Machine Chest Press", desc: "تکیه کامل پشتی. پرس دسته‌ها به جلو.", type: "reps", val: 20, sets: 3, bilateral: false },
                 { title: "پلاور سیم‌کش بازو صاف", en: "Straight Arm Pulldown", desc: "پشت به دیوار، سیم‌کش را با دست صاف به پایین بکشید.", type: "reps", val: 20, sets: 3, bilateral: false },
@@ -350,10 +353,10 @@
     };
 
     var routines = JSON.parse(JSON.stringify(defaultRoutines));
-    var activeExs = []; var curType = ''; var exIndex = 0; var currentSet = 1; var currentSide = 'none'; 
+    var activeExs = []; var curType = ''; var exIndex = 0; var currentSet = 1; 
     var phase = 'prep'; var stepTimer = null; var timeLeft = 0; var gSecs = 0; var gTimer = null; var audioCtx = null;
-    var pauseInterval = null;
     var historyWeekOffset = 0;
+    var isWorkoutPaused = false;
 
     function playBeep(f, d, v) {
         if(safeGet('sound')==='0') return;
@@ -369,7 +372,7 @@
             }
         } catch(e) {}
     }
-    function playTick() { playBeep(900, 0.05, 0.05); }
+    function playTick() { playBeep(700, 0.05, 0.04); }
 
     function loadSettings() {
         ['prep', 'rest_spine', 'rest_cardio', 'rest_legs', 'rest_gym'].forEach(k => {
@@ -466,15 +469,21 @@
     }
     
     function changeWeek(delta) { historyWeekOffset += delta; renderHistoryGrid(); }
-    function showHistory() { historyWeekOffset = 0; renderHistoryGrid(); document.getElementById('history-modal').classList.remove('hidden'); }
+    function showHistory() { historyWeekOffset = 0; renderHistoryGrid(); openScreen('history-modal'); }
     
-    // Core Navigation
+    // Core Navigation & Fixed Pause Bug
     function openScreen(id) {
         ['home-screen', 'settings-screen', 'workout-screen', 'cooldown-screen', 'preview-screen', 'edit-home-screen', 'edit-detail-screen', 'modal-gym', 'modal-walk', 'history-modal'].forEach(s => {
             var el = document.getElementById(s);
             if(el && !el.classList.contains('hidden')) el.classList.add('hidden');
         });
         document.getElementById(id).classList.remove('hidden');
+        
+        // Show/hide resume banner automatically on home screen
+        if(id === 'home-screen') {
+            if(isWorkoutPaused) document.getElementById('resume-banner').classList.remove('hidden');
+            else document.getElementById('resume-banner').classList.add('hidden');
+        }
     }
     function closeScreen(id) { document.getElementById(id).classList.add('hidden'); }
     
@@ -493,9 +502,7 @@
     }
     function toggleFullScreen() {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.log(`خطا در تمام صفحه کردن: ${err.message}`);
-            });
+            document.documentElement.requestFullscreen().catch(err => {});
         } else {
             if (document.exitFullscreen) document.exitFullscreen();
         }
@@ -518,8 +525,8 @@
         var html = '';
         routines[k].exercises.forEach((ex, i) => {
             html += `<div class="edit-item">
-                <div style="display:flex; justify-content:space-between;">
-                    <b>${ex.title}</b>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:1rem;">${ex.title}</b>
                     <input type="checkbox" ${ex.active !== false ? 'checked' : ''} onchange="toggleExActive(${i}, this)">
                 </div>
             </div>`;
@@ -542,24 +549,36 @@
     function initWorkout(type) {
         curType = type;
         activeExs = routines[type].exercises.filter(e => e.active !== false);
-        exIndex = 0; currentSet = 1;
+        exIndex = 0; currentSet = 1; isWorkoutPaused = false;
         document.getElementById('preview-title').innerText = routines[type].title;
-        var prepHtml = '<div class="text-box"><b>آمادگی و گرم کردن:</b><br><br>' + routines[type].warmup + '</div>';
         
-        // As requested: the exercise list is hidden from preview and will be handled during the workout.
-        document.getElementById('preview-content').innerHTML = prepHtml;
+        // Warmup & Exercise Preview List Restored
+        var html = '<div class="text-box"><b>📋 نکات و گرم کردن:</b><br>' + routines[type].warmup + '</div>';
+        html += '<h4 style="text-align:right; margin:15px 0 8px 0; color:var(--primary);">فهرست حرکات این جلسه:</h4>';
+        html += '<div style="text-align:right;">';
+        activeExs.forEach((ex, i) => {
+            var detailStr = ex.type === 'time' ? (ex.time + ' ثانیه') : (ex.val + ' تکرار');
+            var setsStr = ex.sets ? (ex.sets + ' ست') : '';
+            html += `<div style="background:var(--card-bg); padding:10px; margin-bottom:8px; border-radius:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                <div><b>${i+1}. ${ex.title}</b><div style="font-size:0.8rem; color:var(--text-sec); text-align:left; direction:ltr;">${ex.en}</div></div>
+                <span style="font-size:0.85rem; font-weight:bold; color:var(--primary);">${setsStr} ${setsStr?'|':''} ${detailStr}</span>
+            </div>`;
+        });
+        html += '</div>';
+
+        document.getElementById('preview-content').innerHTML = html;
         openScreen('preview-screen');
     }
     
     function startTimerLogic() {
         startGlobalTimer();
-        document.getElementById('resume-banner').classList.add('hidden');
+        isWorkoutPaused = false;
         openScreen('workout-screen');
         loadExercise();
     }
     
     function startGlobalTimer() {
-        gSecs = 0; clearInterval(gTimer);
+        clearInterval(gTimer);
         gTimer = setInterval(() => {
             gSecs++;
             var m = Math.floor(gSecs/60).toString().padStart(2,'0');
@@ -572,6 +591,7 @@
         if(exIndex >= activeExs.length) {
             clearInterval(stepTimer);
             clearInterval(gTimer);
+            isWorkoutPaused = false;
             openScreen('cooldown-screen');
             document.getElementById('cooldown-content').innerHTML = '<div class="text-box"><b>دستورالعمل سرد کردن:</b><br><br>' + routines[curType].cooldown + '</div>';
             return;
@@ -579,7 +599,21 @@
         var ex = activeExs[exIndex];
         document.getElementById('ex-title').innerText = ex.title;
         document.getElementById('ex-en').innerText = ex.en;
-        document.getElementById('ex-desc').innerText = ex.desc;
+        
+        // Smart Hide/Show for exercise description
+        var detailsEl = document.getElementById('ex-desc-details');
+        var directEl = document.getElementById('ex-desc-direct');
+        if(ex.desc.length > 90) {
+            detailsEl.classList.remove('hidden');
+            directEl.classList.add('hidden');
+            document.getElementById('ex-desc').innerText = ex.desc;
+            detailsEl.open = false;
+        } else {
+            detailsEl.classList.add('hidden');
+            directEl.classList.remove('hidden');
+            directEl.innerText = ex.desc;
+        }
+
         document.getElementById('badge-info').innerText = 'ست ' + currentSet + ' از ' + ex.sets;
         document.getElementById('badge-side').classList.add('hidden');
         
@@ -589,7 +623,10 @@
         phase = 'prep';
         document.getElementById('phase-title').innerText = 'آماده‌سازی برای شروع';
         timeLeft = parseInt(document.getElementById('inp-prep').value) || 20;
-        document.getElementById('timer-display').innerText = timeLeft;
+        
+        var timerDisplay = document.getElementById('timer-display');
+        timerDisplay.className = "timer";
+        timerDisplay.innerText = timeLeft;
         
         document.getElementById('btn-done').classList.add('hidden');
         document.getElementById('btn-skip').classList.remove('hidden');
@@ -600,7 +637,12 @@
         clearInterval(stepTimer);
         stepTimer = setInterval(function() {
             timeLeft--;
-            if(timeLeft > 0 && timeLeft <= 3) playTick();
+            if(timeLeft > 0 && timeLeft <= 3) {
+                playBeep(900, 0.15, 0.2); // Alert sound on last 3s
+            } else if(timeLeft > 3) {
+                playTick(); // Tick on every second
+            }
+            
             if(timeLeft <= 0) {
                 clearInterval(stepTimer);
                 if(phase === 'prep' || phase === 'rest') {
@@ -609,7 +651,9 @@
                     finishSet();
                 }
             } else {
-                document.getElementById('timer-display').innerText = timeLeft;
+                if(phase !== 'work' || activeExs[exIndex].type === 'time') {
+                    document.getElementById('timer-display').innerText = timeLeft;
+                }
             }
         }, 1000);
     }
@@ -622,12 +666,15 @@
         document.getElementById('btn-done').classList.remove('hidden');
         document.getElementById('btn-skip').classList.add('hidden');
         
+        var timerDisplay = document.getElementById('timer-display');
         if(ex.type === 'time') {
+            timerDisplay.className = "timer";
             timeLeft = ex.time;
-            document.getElementById('timer-display').innerText = timeLeft;
+            timerDisplay.innerText = timeLeft;
             runTimer();
         } else {
-            document.getElementById('timer-display').innerText = ex.val + ' تکرار';
+            timerDisplay.className = "timer reps-mode";
+            timerDisplay.innerText = ex.val + ' تکرار';
         }
     }
     
@@ -639,7 +686,11 @@
             document.getElementById('phase-title').innerText = 'استراحت بین ست';
             var restTime = parseInt(document.getElementById('inp-rest-' + routines[curType].typeKey).value) || 30;
             timeLeft = restTime;
-            document.getElementById('timer-display').innerText = timeLeft;
+            
+            var timerDisplay = document.getElementById('timer-display');
+            timerDisplay.className = "timer";
+            timerDisplay.innerText = timeLeft;
+            
             document.getElementById('btn-done').classList.add('hidden');
             document.getElementById('btn-skip').classList.remove('hidden');
             runTimer();
@@ -659,27 +710,16 @@
     function pauseAndGoHome() {
         clearInterval(stepTimer);
         clearInterval(gTimer);
-        document.getElementById('resume-banner').classList.remove('hidden');
-        
-        // This will successfully hide the workout screen and show the home screen
+        isWorkoutPaused = true;
         openScreen('home-screen');
     }
     
     function resumeWorkout() {
-        document.getElementById('resume-banner').classList.add('hidden');
-        
-        // Hides home screen and shows workout screen again without scrolling overlaps
         openScreen('workout-screen');
+        isWorkoutPaused = false;
         
-        // Resume timers
-        gTimer = setInterval(() => {
-            gSecs++;
-            var m = Math.floor(gSecs/60).toString().padStart(2,'0');
-            var s = (gSecs%60).toString().padStart(2,'0');
-            document.getElementById('global-timer').innerText = m + ':' + s;
-        }, 1000);
-        
-        if(phase === 'prep' || phase === 'rest' || (activeExs[exIndex].type === 'time' && phase === 'work')) {
+        startGlobalTimer();
+        if(phase === 'prep' || phase === 'rest' || (activeExs[exIndex] && activeExs[exIndex].type === 'time' && phase === 'work')) {
             runTimer();
         }
     }
@@ -688,14 +728,14 @@
         if(confirm('آیا مطمئن هستید که می‌خواهید از تمرین خارج شوید؟')) {
             clearInterval(stepTimer);
             clearInterval(gTimer);
-            document.getElementById('resume-banner').classList.add('hidden');
+            isWorkoutPaused = false;
             openScreen('home-screen');
         }
     }
     
     function finishWorkout() {
         logToDB(routines[curType].typeKey);
-        document.getElementById('resume-banner').classList.add('hidden');
+        isWorkoutPaused = false;
         openScreen('home-screen');
     }
     
